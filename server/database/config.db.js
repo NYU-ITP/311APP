@@ -7,13 +7,13 @@ var conn = mysql.createConnection({
     host: '34.234.205.122',
     user: 'root',
     password: 'DWDStudent2017',
-    database:'imdb',
+    database:'311app',
     port: 3306
 });
 conn.connect();
 console.log("Connect Mysql Success");
  
-var selectSQL = 'SELECT * from actors LIMIT 10';
+var selectSQL = 'SELECT * from issue';
 var insertSQL = 'insert into UserTB values("conan"),("fens.me")';
 var deleteSQL = 'delete from t_user';
 var updateSQL = 'update t_user set name="conan update"  where name="conan"';
