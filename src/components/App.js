@@ -5,9 +5,6 @@ import HomePage from './HomePage';
 import NewIssue from './NewIssue';
 
 
-
-const IssueNew = () => <h2>IssueNew</h2>
-
 class App extends React.Component {
     render () {
         return (
