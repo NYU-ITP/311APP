@@ -1,4 +1,5 @@
 # 311APP
+[![Build Status](https://travis-ci.org/NYU-ITP/311APP.svg?branch=master)](https://travis-ci.org/NYU-ITP/311APP)
 
 311 RESTful service allows user to report issues.
 
