@@ -1,5 +1,4 @@
 # 311APP
-[![Build Status](https://travis-ci.org/NYU-ITP/311APP.svg?branch=master)](https://travis-ci.org/NYU-ITP/311APP)
 
 311 RESTful service allows user to report issues.
 
@@ -12,5 +11,7 @@ You need to clone this repo for setting up.
     git clone https://github.com/NYU-ITP/311APP.git
     cd 311APP
     npm install
-    npm start
+    cd client
+    npm install
+    npm run dev
 ```
