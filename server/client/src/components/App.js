@@ -3,7 +3,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import Header from './Header';
 import HomePage from './HomePage';
 // import NewIssue from './NewIssue';
-import { MapContainer } from './MapContainer';
+
 
 
 class App extends React.Component {

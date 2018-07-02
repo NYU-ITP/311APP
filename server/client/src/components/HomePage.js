@@ -46,7 +46,7 @@ class HomePage extends Component {
             <MyGoogleMap isMarkerShown
             googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjFZnvXXlS5OXSbKSpLRSD-c6dFdsplo4&libraries=geometry,drawing,places"
             loadingElement={<div style={{ height: `100%` }} />}
-            containerElement={<div style={{ height: `300px` }} />}
+            containerElement={<div style={{ height: `400px` }} />}
             mapElement={<div style={{ height: `100%` }} />}
              />
            
