@@ -2,7 +2,8 @@ import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import Header from './Header';
 import HomePage from './HomePage';
-import NewIssue from './NewIssue';
+// import NewIssue from './NewIssue';
+import { MapContainer } from './MapContainer';
 
 
 class App extends React.Component {
@@ -13,7 +14,6 @@ class App extends React.Component {
                 <div>
                     <Header /> 
                     <Route exact path="/" component={HomePage} />
-                    <Route path="/issues" component={NewIssue} />
                 </div>
             </BrowserRouter>
             </div>
