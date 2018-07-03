@@ -33,7 +33,7 @@ function Header(props) {
           <Typography variant="title" color="inherit" className={classes.flex}>
             311
           </Typography>
-          <Button color="inherit">Button or not</Button>
+          <Button color="inherit">Button</Button>
         </Toolbar>
       </AppBar>
     </div>
@@ -45,7 +45,3 @@ Header.propTypes = {
 };
 
 export default withStyles(styles)(Header);
-Header.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
-
