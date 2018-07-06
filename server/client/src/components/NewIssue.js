@@ -85,6 +85,7 @@ function NewIssue(props) {
         defaultValue="Tell us what happened"
         label="IssueHeading"
         id="bootstrap-input"
+        multiline = {true}
         InputProps={{
           disableUnderline: true,
           classes: {

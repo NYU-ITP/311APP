@@ -66,13 +66,6 @@ class MyGoogleMap extends React.PureComponent {
     return (
       <div>
       <MapWithAMarkerClusterer markers={this.state.markers} />
-      <ul>
-                {this.state.markers.map(marker =>
-                <li>
-                    <h2>{marker.latitude}</h2>
-                    <p>{marker.longitude}</p>
-                </li>)}
-              </ul>
       </div>
       
     );

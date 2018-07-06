@@ -26,8 +26,6 @@ class HomePage extends Component {
       return (
           <div>
             <MyGoogleMap />
-            <NewIssue />
-           
           </div>
       );
 
