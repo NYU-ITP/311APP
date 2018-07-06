@@ -20,7 +20,6 @@ class Comments extends React.Component {
   }
 
   getCommentsGorIssue = _ => {
-    console.log(this.props);
     fetch('http://localhost:5000/issueComments/' + this.props.issueId)
       .then(response => response.json())
       .then(response => this.setState({ comments: response.data }))

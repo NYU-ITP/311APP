@@ -9,21 +9,23 @@ import IssueDetail from './IssueDetail';
 
 
 class App extends React.Component {
-    render () {
-        return (
-            <div>
-            <BrowserRouter>
-                <div>
-                    <Header /> 
-                    <Route exact path="/" component={HomePage} />
-                    <Route exact path="/issues" component={Issues} />
-                    <Route exact path="/issues/:issueIdInRoute" component={IssueDetail}/>
-                </div>
-            </BrowserRouter>
-            </div>
+  render() {
+    return (
+      <div>
+        <BrowserRouter
+          basename={location.hostname === 'nyu-itp.github.io/311APP/'}
+        >
+          <div>
+            <Header />
+            <Route exact path="/" component={HomePage} />
+            <Route exact path="/issues" component={Issues} />
+            <Route exact path="/issues/:issueIdInRoute" component={IssueDetail} />
+          </div>
+        </BrowserRouter>
+      </div>
 
-        );
-    }
+    );
+  }
 };
 
 export default App;
