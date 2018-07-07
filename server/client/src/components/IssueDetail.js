@@ -76,18 +76,6 @@ class IssueDetail extends React.Component {
               <Paper className={this.state.classes.paperHeading}>{issue.heading}</Paper>
             </Grid>
             <Grid item xs={12}>
-              <Paper className={this.state.classes.paper}>Category: {issue.category}</Paper>
-            </Grid>
-            <Grid item xs={12}>
-              <Paper className={this.state.classes.paper}>Post Time: {issue.time.substring(0, 10)}</Paper>
-            </Grid>
-            <Grid item xs={12}>
-              <Paper className={this.state.classes.paperLeft}>Content: {issue.content}</Paper>
-            </Grid >
-            <Grid item xs={12}>
-              <Paper className={this.state.classes.paper}>Location: {issue.location}</Paper>
-            </Grid>
-            <Grid item xs={12}>
               <Paper className={this.state.classes.paper}>Urgent: {issue.urgent == 1 ? 'Yes' : 'No'}</Paper>
             </Grid>
             <Grid item xs={6}>
@@ -105,6 +93,18 @@ class IssueDetail extends React.Component {
                 </ListItemIcon>
                 {issue.downvote == null ? 0 : issue.downvote}
               </Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper className={this.state.classes.paper}>Category: {issue.category}</Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper className={this.state.classes.paper}>Post Time: {issue.time.substring(0, 10)}</Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper className={this.state.classes.paperLeft}>Content: {issue.content}</Paper>
+            </Grid >
+            <Grid item xs={12}>
+              <Paper className={this.state.classes.paper}>Location: {issue.location}</Paper>
             </Grid>
             <Grid item xs={12}>
               <Comments issueId={this.state.issueId}/>
