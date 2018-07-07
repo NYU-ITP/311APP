@@ -10,8 +10,10 @@
   "scripts": {
     "start": "node index.js",
     "server": "nodemon index.js",
-    "client": "npm run start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "client": "npm run start --prefix client" ,
+    "clientDep": "concurrently \"npm run start --prefix client\" \"npm run deploy --prefix client\" ", 
+    "dev": "concurrently \"npm run server\" \"npm run client\" ",
+    "dep": "concurrently \"npm run server\" \"npm run clientDep\" "
   },
   "author": "",
   "license": "ISC",
