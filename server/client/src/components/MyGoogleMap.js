@@ -41,6 +41,7 @@ const MapWithAMarkerClusterer = compose(
   <GoogleMap
     defaultZoom={16}
     center={{ lat: props.currentLocation.lat, lng: props.currentLocation.lng }}
+    onClick={props.onMapClick}
   >
     <MarkerClusterer
       onClick={props.onMarkerClustererClick}
@@ -67,7 +68,8 @@ class MyGoogleMap extends React.Component {
       currentLatLng: {
         lat: 0,
         lng: 0
-      }
+      },
+      userMarkerShown: false
     }
   }
   
@@ -89,6 +91,16 @@ class MyGoogleMap extends React.Component {
       error => console.log(error)
     }
   }
+
+  handleMapClick = (event) => {
+    console.log("user is setting lat:" + event.latLng.lat() + " lng:" + event.latLng.lng());
+    this.setState({
+      
+      markers: this.state.markers.concat({ latitude: event.latLng.lat(), longitude: event.latLng.lng()})
+    })
+    
+  }
+
   componentWillMount() {
     this.getGeoLocation()
   }
@@ -99,6 +111,7 @@ class MyGoogleMap extends React.Component {
       <MapWithAMarkerClusterer 
       markers={this.state.markers} 
       currentLocation = {this.state.currentLatLng} 
+      onMapClick = {(e) => this.handleMapClick(e)} 
      />
       </div>
       
