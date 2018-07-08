@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import MyGoogleMap from './MyGoogleMap';
-import NewIssue from './NewIssue';
+
 
 
 class HomePage extends Component {
