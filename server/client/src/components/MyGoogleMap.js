@@ -1,3 +1,4 @@
+
 import React from 'react';
 const fetch = require("isomorphic-fetch");
 const { compose, withProps, withHandlers } = require("recompose");
@@ -10,7 +11,7 @@ const {
 const { MarkerClusterer } = require("react-google-maps/lib/components/addons/MarkerClusterer");
 
 const testLoc = [
-  { latitude: -33.8688, longitude: 151.2093},
+  { latitude: -34.397, longitude: 150.644 },
   { latitude: -34.4278, longitude: 150.8931},
   { latitude: -34.4792, longitude: 150.4181},
   { latitude: -34.6738, longitude: 150.8444},
@@ -21,9 +22,10 @@ const testLoc = [
 
 const MapWithAMarkerClusterer = compose(
   withProps({
-    googleMapURL:"https://maps.googleapis.com/maps/api/js?key=AIzaSyDjFZnvXXlS5OXSbKSpLRSD-c6dFdsplo4&libraries=geometry,drawing,places",
+    
+    googleMapURL:"https://maps.googleapis.com/maps/api/js?key=AIzaSyDjFZnvXXlS5OXSbKSpLRSD-c6dFdsplo4&v=3.exp&libraries=geometry,drawing,places",
     loadingElement: <div style={{ height: `100%` }} />,
-    containerElement: <div style={{ height: `400px` }} />,
+    containerElement: <div style={{ height: `510px` }} />,
     mapElement: <div style={{ height: `100%` }} />,
   }),
   withHandlers({
@@ -37,8 +39,9 @@ const MapWithAMarkerClusterer = compose(
   withGoogleMap
 )(props =>
   <GoogleMap
-    defaultZoom={8}
-    defaultCenter={{ lat: -34.397, lng: 150.644 }}
+    defaultZoom={16}
+    center={{ lat: props.currentLocation.lat, lng: props.currentLocation.lng }}
+    onClick={props.onMapClick}
   >
     <MarkerClusterer
       onClick={props.onMarkerClustererClick}
@@ -57,15 +60,59 @@ const MapWithAMarkerClusterer = compose(
 
 
 
-class MyGoogleMap extends React.PureComponent {
+class MyGoogleMap extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      markers:testLoc ,
+      currentLatLng: {
+        lat: 0,
+        lng: 0
+      },
+      userMarkerShown: false
+    }
+  }
+  
+  getGeoLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          console.log("User's position is lat :" + position.coords.latitude + "; lng: " + position.coords.longitude);
+          this.setState(prevState => ({
+            currentLatLng: {
+              ...prevState.currentLatLng,
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            }
+          }))
+        }
+      )  
+    } else {
+      error => console.log(error)
+    }
+  }
+
+  handleMapClick = (event) => {
+    console.log("user is setting lat:" + event.latLng.lat() + " lng:" + event.latLng.lng());
+    this.setState({
+      
+      markers: this.state.markers.concat({ latitude: event.latLng.lat(), longitude: event.latLng.lng()})
+    })
+    
+  }
+
   componentWillMount() {
-    this.setState({ markers: testLoc })
+    this.getGeoLocation()
   }
 
   render () {
     return (
       <div>
-      <MapWithAMarkerClusterer markers={this.state.markers} />
+      <MapWithAMarkerClusterer 
+      markers={this.state.markers} 
+      currentLocation = {this.state.currentLatLng} 
+      onMapClick = {(e) => this.handleMapClick(e)} 
+     />
       </div>
       
     );
