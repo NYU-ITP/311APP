@@ -12,7 +12,7 @@ const connection = mysql.createConnection({
   host: '34.234.205.122',
   user: 'root',
   password: 'DWDStudent2017',
-  database:'311app',
+  database: '311app',
   port: 3306
 });
 
@@ -31,12 +31,12 @@ app.get('/', (req, res) => {
 });
 
 app.get('/issues', (req, res) => {
-  connection.query(SELECT_ALL_ISSUES_QUERY, (err, results) => { 
+  connection.query(SELECT_ALL_ISSUES_QUERY, (err, results) => {
     if (err) {
       return res.send(err)
     } else {
       return res.json({
-        data: [{"issueId":1,"time":"2000-01-01T05:00:00.000Z","heading":"Trash disposal","category":"Garbage storage","content":"Property owners must clean and sweep the sidewalks and gutters next to their property, including 18 inches from the curb into the street. Property owners who do not clean the sidewalks and gutters bordering their property may be issued a summons.","location":"Washington Square","urgent":1,"downvote":1,"upvote":3}]
+        data: results
       })
     }
   });
