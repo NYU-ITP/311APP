@@ -8,7 +8,10 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 
-const styles = {
+const styles = theme => ( {
+  button: {
+    margin: theme.spacing.unit,
+  },
   root: {
     flexGrow: 1,
   },
@@ -19,7 +22,7 @@ const styles = {
     marginLeft: -12,
     marginRight: 20,
   },
-};
+});
 
 function Header(props) {
   const { classes } = props;
@@ -33,15 +36,17 @@ function Header(props) {
           <Typography variant="title" color="inherit" className={classes.flex}>
             311
           </Typography>
-          <Button color="inherit">Make a Complaint</Button>
+          <Button variant="contained" color="primary" className={classes.button}>Make a Complaint</Button>
         </Toolbar>
       </AppBar>
     </div>
   );
 }
 
-Header.propTypes = {
+
+  Header.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(Header);
+

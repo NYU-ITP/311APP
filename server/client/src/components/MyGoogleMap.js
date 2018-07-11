@@ -1,5 +1,13 @@
 
 import React from 'react';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@material-ui/core/Button';
+import { Route , withRouter} from 'react-router-dom';
+import { History } from 'history';
 const fetch = require("isomorphic-fetch");
 const { compose, withProps, withHandlers } = require("recompose");
 const {
@@ -65,6 +73,7 @@ class MyGoogleMap extends React.Component {
     super(props)
     this.state = {
       markers:testLoc ,
+      diaogOpen: false,
       currentLatLng: {
         lat: 0,
         lng: 0
@@ -94,12 +103,33 @@ class MyGoogleMap extends React.Component {
 
   handleMapClick = (event) => {
     console.log("user is setting lat:" + event.latLng.lat() + " lng:" + event.latLng.lng());
+    
     this.setState({
       
       markers: this.state.markers.concat({ latitude: event.latLng.lat(), longitude: event.latLng.lng()})
-    })
+    });
+    this.setState({ dialogOpen: true });
     
   }
+
+  handleDialogClose = () => {
+    this.setState({ dialogOpen: false });
+  };
+
+  handleCancleMarker = () => {
+    this.setState({ dialogOpen: false });
+    var newMarkers = [...this.state.markers];
+    console.log(this.state.markers.length);
+    newMarkers.splice(this.state.markers.length - 1, 1);
+    this.setState({markers: newMarkers});  
+    console.log(this.state.markers.length);
+  };
+
+  handleContinue = () => {
+    this.setState({ dialogOpen: false });
+    this.props.history.push('/newIssue/');
+  };
+
 
   componentWillMount() {
     this.getGeoLocation()
@@ -113,13 +143,35 @@ class MyGoogleMap extends React.Component {
       currentLocation = {this.state.currentLatLng} 
       onMapClick = {(e) => this.handleMapClick(e)} 
      />
+     <Dialog
+          open={this.state.dialogOpen}
+          onClose={this.handleDialogClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">{"Adding marker to the map?"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              The marker indicates the location of your issue to be reported. You can continue to tell us more 
+              about what happeed.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleCancleMarker} color="primary">
+              Cancle
+            </Button>
+            <Button onClick={this.handleContinue} color="primary" autoFocus>
+              Next 
+            </Button>
+          </DialogActions>
+        </Dialog>
       </div>
       
     );
   }
 }
 
-export default MyGoogleMap;
+export default withRouter(MyGoogleMap);
 
 
 
