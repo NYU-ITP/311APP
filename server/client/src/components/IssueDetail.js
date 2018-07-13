@@ -14,6 +14,11 @@ const styles = theme => ({
   root: {
     flexGrow: 1,
   },
+  container: {
+    maxWidth: 700,
+    marginTop: 20,
+    margin: "auto"
+  },
   paper: {
     padding: theme.spacing.unit * 2,
     textAlign: 'center',
@@ -35,9 +40,6 @@ const styles = theme => ({
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
   },
-  button: {
-    alignSelf: 'center'
-  },
   center: {
     textAlign: 'center'
   }
@@ -52,7 +54,7 @@ class IssueDetail extends React.Component {
     this.state = {
       classes: props.classes,
       issueId: issueId,
-      issueDetail: [],
+      issueDetail: [{"issueId":1,"time":"2000-01-01T05:00:00.000Z","heading":"Trash disposal","category":"Garbage storage","content":"Property owners must clean and sweep the sidewalks and gutters next to their property, including 18 inches from the curb into the street. Property owners who do not clean the sidewalks and gutters bordering their property may be issued a summons.","location":"Washington Square","urgent":1,"downvote":1,"upvote":3}],
     }
   }
 
@@ -70,7 +72,7 @@ class IssueDetail extends React.Component {
   render() {
     return (
       <div className={this.state.classes.root}>{this.state.issueDetail.map(issue =>
-        <div>
+        <div className={this.state.classes.container}>
           <Grid container spacing={24}>
             <Grid item xs={12}>
               <Paper className={this.state.classes.paperHeading}>{issue.heading}</Paper>
@@ -118,11 +120,10 @@ class IssueDetail extends React.Component {
               // }}
               placeholder="Add a comment"
               fullWidth
-              margin="normal"
               multiline={true}
             />
             <Grid item xs={12} className={this.state.classes.center}>
-              <Button variant="contained" size="large" color="primary" className={this.state.classes.button}>
+              <Button variant="contained" size="large" color="primary">
                 Submit Comment
               </Button>
             </Grid>

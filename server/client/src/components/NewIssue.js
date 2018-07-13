@@ -20,74 +20,26 @@ import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 
 const styles = theme => ({
+  root: {
+    flexGrow: 1
+  },
   container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  category: {
-    display: 'flex',
-  },
-  paper: {
-    marginRight: theme.spacing.unit * 2,
+    maxWidth: 700,
+    marginTop: 20,
+    margin: "auto"
   },
   popperClose: {
-    pointerEvents: 'none',
+    pointerEvents: 'none'
   },
-  margin: {
-    margin: theme.spacing.unit,
+  textField: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
   },
-  cssLabel: {
-    '&$cssFocused': {
-      color: purple[500],
-    },
-  },
-  cssFocused: {},
-  cssUnderline: {
-    '&:after': {
-      borderBottomColor: purple[500],
-    },
-  },
-  bootstrapRoot: {
-    padding: 0,
-    'label + &': {
-      marginTop: theme.spacing.unit * 3,
-    },
-  },
-  bootstrapInput: {
-    borderRadius: 4,
-    backgroundColor: theme.palette.common.white,
-    border: '1px solid #ced4da',
-    fontSize: 16,
-    padding: '10px 12px',
-    width: 'calc(100% - 24px)',
-    transition: theme.transitions.create(['border-color', 'box-shadow']),
-    fontFamily: [
-      '-apple-system',
-      'BlinkMacSystemFont',
-      '"Segoe UI"',
-      'Roboto',
-      '"Helvetica Neue"',
-      'Arial',
-      'sans-serif',
-      '"Apple Color Emoji"',
-      '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"',
-    ].join(','),
-    '&:focus': {
-      borderColor: '#80bdff',
-      boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
-    },
-  },
-  bootstrapFormLabel: {
-    fontSize: 18,
-  },
+  center: {
+    textAlign: 'center'
+  }
 });
 
-const theme = createMuiTheme({
-  palette: {
-    primary: green,
-  },
-});
 
 class NewIssue extends React.Component {
   constructor(props) {
@@ -113,89 +65,72 @@ class NewIssue extends React.Component {
     this.setState({ open: false });
   };
 
-
-  render () {
+  render() {
     return (
-      <div className={this.state.classes.container}>
-      <Grid container spacing={24}>
-        <Grid item xs={12}>
-          <MuiThemeProvider theme={theme}>
-            <TextField
-             className={this.state.classes.margin}
-             label="IssueHeading"
-             id="mui-theme-provider-input"
-             />
-          </MuiThemeProvider>
-        </Grid>
+      <div className={this.state.classes.root}>
+        <div className={this.state.classes.container}>
+          <Grid container spacing={24}>
+            <Grid item xs={12}>
+              <TextField
+                id="full-width-textArea"
+                className={this.state.classes.textField}
+                label="Heading"
+                fullWidth
+                multiline={true}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                className={this.state.classes.textField}
+                label="Content"
+                fullWidth
+                multiline={true}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                className={this.state.classes.textField}
+                label="Location"
+                fullWidth
+                multiline={true}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Manager>
+                <Target>
+                  <div
+                    ref={node => {
+                      this.target1 = node;
+                    }}>
+                    <Button variant="contained" size="large" color="primary"
+                      aria-owns={this.state.open ? 'menu-list-grow' : null}
+                      aria-haspopup="true"
+                      onClick={this.handleToggle}>
+                      Category
+                    </Button>
+                  </div>
+                </Target>
+                <Popper
+                  placement="bottom-start"
+                  eventsEnabled={this.state.open}
+                  className={classNames({ [this.state.classes.popperClose]: !this.state.open })}>
+                  <ClickAwayListener onClickAway={this.handleClose} >
+                    <Grow in={this.state.open} id="menu-list-grow" style={{ transformOrigin: '0 0 0' }}>
+                      <Paper>
+                        <MenuList role="menu">
+                          <MenuItem onClick={this.handleClose}>Categroy 1</MenuItem>
+                          <MenuItem onClick={this.handleClose}>Categroy 2</MenuItem>
+                          <MenuItem onClick={this.handleClose}>Categroy 3</MenuItem>
+                        </MenuList>
+                      </Paper>
+                    </Grow>
+                  </ClickAwayListener>
+                </Popper>
+              </Manager>
+            </Grid>
+          </Grid>
 
-        <Grid item xs={12}>
-        <TextField
-          defaultValue="Tell us what happened"
-          label="IssueContent"
-          id="bootstrap-input"
-          multiline = {true}
-          InputProps={{
-            disableUnderline: true,
-            classes: {
-              root: this.state.classes.bootstrapRoot,
-              input: this.state.classes.bootstrapInput,
-            },
-          }}
-          InputLabelProps={{
-            shrink: true,
-            className: this.state.classes.bootstrapFormLabel,
-          }}
-          />
-        </Grid>
-
-        <Grid item xs={12}>
-          <MuiThemeProvider theme={theme}>
-            <TextField
-             className={this.state.classes.margin}
-             label="IssueLocation"
-             id="mui-theme-provider-input"
-             />
-          </MuiThemeProvider>
-        </Grid>
-      </Grid>
-
-      <Grid item xs={12}>
-        <Manager className={this.state.classes.container}>
-          <Target>
-            <div
-              ref={node => {
-                this.target1 = node;
-              }}
-            >
-              <Button
-                aria-owns={this.state.open ? 'menu-list-grow' : null}
-                aria-haspopup="true"
-                onClick={this.handleToggle}
-              >
-                Issue Category
-              </Button>
-            </div>
-          </Target>
-          <Popper
-            placement="bottom-start"
-            eventsEnabled={this.state.open}
-            className={classNames({ [this.state.classes.popperClose]: !this.state.open })}
-          >
-            <ClickAwayListener onClickAway={this.handleClose}>
-              <Grow in={this.state.open} id="menu-list-grow" style={{ transformOrigin: '0 0 0' }}>
-                <Paper>
-                  <MenuList role="menu">
-                    <MenuItem onClick={this.handleClose}>Categroy 1</MenuItem>
-                    <MenuItem onClick={this.handleClose}>Categroy 2</MenuItem>
-                    <MenuItem onClick={this.handleClose}>Categroy 3</MenuItem>
-                  </MenuList>
-                </Paper>
-              </Grow>
-            </ClickAwayListener>
-          </Popper>
-        </Manager>
-        </Grid>
-
+        </div>
       </div>
 
     );
