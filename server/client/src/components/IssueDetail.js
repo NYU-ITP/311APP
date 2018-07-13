@@ -14,6 +14,11 @@ const styles = theme => ({
   root: {
     flexGrow: 1,
   },
+  container: {
+    maxWidth: 700,
+    marginTop: 20,
+    margin: "auto"
+  },
   paper: {
     padding: theme.spacing.unit * 2,
     textAlign: 'center',
@@ -70,7 +75,7 @@ class IssueDetail extends React.Component {
   render() {
     return (
       <div className={this.state.classes.root}>{this.state.issueDetail.map(issue =>
-        <div>
+        <div className={this.state.classes.container}>
           <Grid container spacing={24}>
             <Grid item xs={12}>
               <Paper className={this.state.classes.paperHeading}>{issue.heading}</Paper>
