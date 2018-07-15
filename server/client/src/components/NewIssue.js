@@ -69,6 +69,7 @@ class NewIssue extends React.Component {
     return (
       <div className={this.state.classes.root}>
         <div className={this.state.classes.container}>
+        {this.props.location.state}
           <Grid container spacing={24}>
             <Grid item xs={12}>
               <TextField
