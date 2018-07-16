@@ -84,6 +84,8 @@ class MyGoogleMap extends React.Component {
       markers: testLoc,
       diaogOpen: false,
       instructionOpen: false,
+      lat:0,
+      lng:0,
       address: "",
       cityUs: "",
       countyUs: "",
@@ -118,7 +120,9 @@ class MyGoogleMap extends React.Component {
 
   handleMapClick = (event) => {
     console.log("user is setting lat:" + event.latLng.lat() + " lng:" + event.latLng.lng());
-
+    this.setState({lat : event.latLng.lat(),
+                   lng : event. latLng.lng()
+    });
     this.setState({
 
       markers: this.state.markers.concat({ latitude: event.latLng.lat(), longitude: event.latLng.lng() })
@@ -172,7 +176,13 @@ class MyGoogleMap extends React.Component {
     this.setState({ dialogOpen: false });
     this.props.history.push({
         pathname: '/newIssue/' ,
-        state: {address : this.state.address}, 
+        state: {address : this.state.address,
+                cityUs : this.state.cityUs,
+                lat : this.state.lat,
+                lng : this.state.lng,
+                countyUs: this.state.countyUs,
+                stateUs: this.state.stateUs
+        }, 
     });
   };
 
