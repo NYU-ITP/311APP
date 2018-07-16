@@ -18,6 +18,7 @@ import Paper from '@material-ui/core/Paper';
 import Portal from '@material-ui/core/Portal';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
+import { category } from '../globals';
 
 const styles = theme => ({
   root: {
@@ -69,7 +70,7 @@ class NewIssue extends React.Component {
     return (
       <div className={this.state.classes.root}>
         <div className={this.state.classes.container}>
-        {this.props.location.state}
+        {this.props.history.location.state.cityUs}
           <Grid container spacing={24}>
             <Grid item xs={12}>
               <TextField
