@@ -120,13 +120,13 @@ class NewIssue extends React.Component {
               <TextField
                 id="full-width-textArea"
                 className={this.state.classes.textField}
-                label="Topic : ex Noise, Transportation"
-                fullWidth
+                label="Topic: Noise..."
                 multiline={true}
               />
             </Grid>
             <Grid item xs={12}>
             <FormControlLabel
+              className={this.state.classes.textField}
               control={
                 <Checkbox
                   color="primary"
@@ -140,7 +140,6 @@ class NewIssue extends React.Component {
               className={this.state.classes.textField}
               label="Details"
               id="bootstrap-input"
-              fullWidth
               multiline={true}
               InputProps={{
                 disableUnderline: true,
