@@ -19,12 +19,21 @@ const {
 const { MarkerClusterer } = require("react-google-maps/lib/components/addons/MarkerClusterer");
 
 const testLoc = [
-  { latitude: -34.397, longitude: 150.644 },
-  { latitude: -34.4278, longitude: 150.8931},
-  { latitude: -34.4792, longitude: 150.4181},
-  { latitude: -34.6738, longitude: 150.8444},
-  { latitude: -34.8833, longitude: 150.6000},
-  { latitude: -34.7479, longitude: 149.7277},
+  { latitude: 40.732086575353854, longitude: -73.98798983538211},
+  { latitude: 40.73223291482773, longitude: -73.99138014757693},
+  { latitude: 40.732736970551905, longitude: -74.0021089836365},
+  { latitude: 40.73181015546955, longitude: -74.00307457888186},
+  { latitude: 40.72836294045953, longitude: -74.00288145983279},
+  { latitude: 40.73148495413541 , longitude: -73.99487774813235},
+  { latitude: 40.73211909526478, longitude: -73.99861138308108},
+  { latitude: 40.725925340669626, longitude: -73.99736166000366 },
+  { latitude: 40.72623273248103, longitude: -73.99440567934573},
+  { latitude: 40.72844424475662, longitude: -73.99970572435916 },
+  { latitude: 40.730037788925166 , longitude:-73.99934094393313},
+  { latitude: 40.72963127618141, longitude:-74.00217335665286 },
+  { latitude: 40.72849302728718, longitude: -74.00414746248782},
+  { latitude: 40.727712502506876, longitude: -74.00373976671756},
+  { latitude: 40.727631197315795 , longitude:-74.00380413973392 },
 
 ];
 
@@ -74,10 +83,15 @@ class MyGoogleMap extends React.Component {
     this.state = {
       markers:testLoc ,
       diaogOpen: false,
+      address: "",
+      cityUs: "",
+      countyUs: "",
+      stateUs:"",
       currentLatLng: {
         lat: 0,
         lng: 0
       },
+     
       userMarkerShown: false
     }
   }
@@ -110,6 +124,32 @@ class MyGoogleMap extends React.Component {
     });
     this.setState({ dialogOpen: true });
     
+    let geocoder = new window.google.maps.Geocoder();
+     geocoder.geocode( { 'location': event.latLng}, function(results, status) {
+            if (status == 'OK') {
+              const geoResult = results[0];
+              console.log("The address is "  + results[0].formatted_address); 
+              this.setState({address: results[0].formatted_address});
+              console.log(geoResult);
+              for (let address of results[0].address_components) {
+                for (let level of address.types) {
+                  if (level === "locality" || level === "sublocality") {
+                    this.setState({cityUs: address.long_name});
+                  }
+                  if (level === "administrative_area_level_2") {
+                    this.setState({countyUs: address.long_name});
+                  }
+                  if (level === "administrative_area_level_1") {
+                    this.setState({stateUs: address.long_name});
+                  }
+                }      
+              }
+              console.log("State: " + this.state.stateUs + " County: " + this.state.countyUs + 
+              " City: " + this.state.cityUs);
+            } else {
+                console.log('Geocode was not successful for the following reason: ' + status);
+            }
+     }.bind(this));  
   }
 
   handleDialogClose = () => {
@@ -119,15 +159,15 @@ class MyGoogleMap extends React.Component {
   handleCancleMarker = () => {
     this.setState({ dialogOpen: false });
     var newMarkers = [...this.state.markers];
-    console.log(this.state.markers.length);
     newMarkers.splice(this.state.markers.length - 1, 1);
     this.setState({markers: newMarkers});  
-    console.log(this.state.markers.length);
   };
 
   handleContinue = () => {
     this.setState({ dialogOpen: false });
-    this.props.history.push('/newIssue/');
+    this.props.history.push(
+      '/newIssue/'
+    );
   };
 
 
@@ -153,7 +193,7 @@ class MyGoogleMap extends React.Component {
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
               The marker indicates the location of your issue to be reported. You can continue to tell us more 
-              about what happeed.
+              about what happeed. 
             </DialogContentText>
           </DialogContent>
           <DialogActions>
