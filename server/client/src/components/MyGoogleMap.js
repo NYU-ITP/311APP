@@ -83,6 +83,7 @@ class MyGoogleMap extends React.Component {
     this.state = {
       markers:testLoc ,
       diaogOpen: false,
+      instructionOpen: false,
       address: "",
       cityUs: "",
       countyUs: "",
@@ -156,6 +157,10 @@ class MyGoogleMap extends React.Component {
     this.setState({ dialogOpen: false });
   };
 
+  handleInstructionClose = () => {
+    this.setState({ instructionOpen: false });
+  };
+
   handleCancleMarker = () => {
     this.setState({ dialogOpen: false });
     var newMarkers = [...this.state.markers];
@@ -165,14 +170,16 @@ class MyGoogleMap extends React.Component {
 
   handleContinue = () => {
     this.setState({ dialogOpen: false });
-    this.props.history.push(
-      '/newIssue/'
-    );
+    this.props.history.push({
+        pathname: '/newIssue/' ,
+        state: {address : this.state.address}, 
+    });
   };
 
 
   componentWillMount() {
-    this.getGeoLocation()
+    this.getGeoLocation();
+    this.setState({ instructionOpen: true});
   }
 
   render () {
@@ -183,6 +190,25 @@ class MyGoogleMap extends React.Component {
       currentLocation = {this.state.currentLatLng} 
       onMapClick = {(e) => this.handleMapClick(e)} 
      />
+     <Dialog
+          open={this.state.instructionOpen}
+          onClose={this.handleinstructionClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">{"Do you want to make a complaint?"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Please click on map to tell us the location of your issue. Click on marker will take you to the 
+              existing issue.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleInstructionClose} color="primary" autoFocus>
+              Ok, Got it !
+            </Button>
+          </DialogActions>
+        </Dialog>
      <Dialog
           open={this.state.dialogOpen}
           onClose={this.handleDialogClose}

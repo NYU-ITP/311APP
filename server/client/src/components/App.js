@@ -12,7 +12,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <HashRouter>
+          <HashRouter>
           <div>
             <Header />
             <Route exact path="/" component={HomePage} />
@@ -20,7 +20,7 @@ class App extends React.Component {
             <Route exact path="/issues/:issueIdInRoute" component={IssueDetail} />
             <Route exact path="/newIssue" component={NewIssue} />
           </div>
-        </HashRouter>
+          </HashRouter>
       </div>
     );
   }

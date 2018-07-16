@@ -36,7 +36,7 @@ function Header(props) {
           <Typography variant="title" color="inherit" className={classes.flex}>
             311
           </Typography>
-          <Button variant="contained" color="primary" className={classes.button}>Make a Complaint</Button>
+          <Button variant="contained" color="primary" className={classes.button}>Login</Button>
         </Toolbar>
       </AppBar>
     </div>
