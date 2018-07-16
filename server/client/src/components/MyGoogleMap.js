@@ -174,14 +174,6 @@ class MyGoogleMap extends React.Component {
         pathname: '/newIssue/' ,
         state: {address : this.state.address}, 
     });
-    this.props.history.push(
-      {
-        pathname: '/newIssue',
-        state: {
-          cityUs: this.state.cityUs
-        }
-      }
-    );
   };
 
 
@@ -193,7 +185,6 @@ class MyGoogleMap extends React.Component {
   render() {
     return (
       <div>
-<<<<<<< HEAD
       <MapWithAMarkerClusterer 
       markers={this.state.markers} 
       currentLocation = {this.state.currentLatLng} 
@@ -218,15 +209,7 @@ class MyGoogleMap extends React.Component {
             </Button>
           </DialogActions>
         </Dialog>
-     <Dialog
-=======
-        <MapWithAMarkerClusterer
-          markers={this.state.markers}
-          currentLocation={this.state.currentLatLng}
-          onMapClick={(e) => this.handleMapClick(e)}
-        />
         <Dialog
->>>>>>> fa208f822203e01a0268741226d275af515eb010
           open={this.state.dialogOpen}
           onClose={this.handleDialogClose}
           aria-labelledby="alert-dialog-title"
