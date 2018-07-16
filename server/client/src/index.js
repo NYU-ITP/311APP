@@ -13,7 +13,7 @@ import App from './components/App';
 ReactDom.render(
   <div>
         <BrowserRouter
-          // basename={window.location.hostname === 'nyu-itp.github.io' ? '/311APP' : '/'}
+          basename={window.location.hostname === 'nyu-itp.github.io' ? '/311APP' : '/'}
         >
           <Route path="/" component={App} />
         </BrowserRouter>
