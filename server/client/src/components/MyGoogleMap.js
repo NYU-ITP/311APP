@@ -6,7 +6,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
-import { Route , withRouter} from 'react-router-dom';
+import { Route, withRouter } from 'react-router-dom';
 import { History } from 'history';
 const fetch = require("isomorphic-fetch");
 const { compose, withProps, withHandlers } = require("recompose");
@@ -19,28 +19,28 @@ const {
 const { MarkerClusterer } = require("react-google-maps/lib/components/addons/MarkerClusterer");
 
 const testLoc = [
-  { latitude: 40.732086575353854, longitude: -73.98798983538211},
-  { latitude: 40.73223291482773, longitude: -73.99138014757693},
-  { latitude: 40.732736970551905, longitude: -74.0021089836365},
-  { latitude: 40.73181015546955, longitude: -74.00307457888186},
-  { latitude: 40.72836294045953, longitude: -74.00288145983279},
-  { latitude: 40.73148495413541 , longitude: -73.99487774813235},
-  { latitude: 40.73211909526478, longitude: -73.99861138308108},
+  { latitude: 40.732086575353854, longitude: -73.98798983538211 },
+  { latitude: 40.73223291482773, longitude: -73.99138014757693 },
+  { latitude: 40.732736970551905, longitude: -74.0021089836365 },
+  { latitude: 40.73181015546955, longitude: -74.00307457888186 },
+  { latitude: 40.72836294045953, longitude: -74.00288145983279 },
+  { latitude: 40.73148495413541, longitude: -73.99487774813235 },
+  { latitude: 40.73211909526478, longitude: -73.99861138308108 },
   { latitude: 40.725925340669626, longitude: -73.99736166000366 },
-  { latitude: 40.72623273248103, longitude: -73.99440567934573},
+  { latitude: 40.72623273248103, longitude: -73.99440567934573 },
   { latitude: 40.72844424475662, longitude: -73.99970572435916 },
-  { latitude: 40.730037788925166 , longitude:-73.99934094393313},
-  { latitude: 40.72963127618141, longitude:-74.00217335665286 },
-  { latitude: 40.72849302728718, longitude: -74.00414746248782},
-  { latitude: 40.727712502506876, longitude: -74.00373976671756},
-  { latitude: 40.727631197315795 , longitude:-74.00380413973392 },
+  { latitude: 40.730037788925166, longitude: -73.99934094393313 },
+  { latitude: 40.72963127618141, longitude: -74.00217335665286 },
+  { latitude: 40.72849302728718, longitude: -74.00414746248782 },
+  { latitude: 40.727712502506876, longitude: -74.00373976671756 },
+  { latitude: 40.727631197315795, longitude: -74.00380413973392 },
 
 ];
 
 const MapWithAMarkerClusterer = compose(
   withProps({
-    
-    googleMapURL:"https://maps.googleapis.com/maps/api/js?key=AIzaSyDjFZnvXXlS5OXSbKSpLRSD-c6dFdsplo4&v=3.exp&libraries=geometry,drawing,places",
+
+    googleMapURL: "https://maps.googleapis.com/maps/api/js?key=AIzaSyDjFZnvXXlS5OXSbKSpLRSD-c6dFdsplo4&v=3.exp&libraries=geometry,drawing,places",
     loadingElement: <div style={{ height: `100%` }} />,
     containerElement: <div style={{ height: `510px` }} />,
     mapElement: <div style={{ height: `100%` }} />,
@@ -81,22 +81,22 @@ class MyGoogleMap extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      markers:testLoc ,
+      markers: testLoc,
       diaogOpen: false,
       instructionOpen: false,
       address: "",
       cityUs: "",
       countyUs: "",
-      stateUs:"",
+      stateUs: "",
       currentLatLng: {
         lat: 0,
         lng: 0
       },
-     
+
       userMarkerShown: false
     }
   }
-  
+
   getGeoLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -110,7 +110,7 @@ class MyGoogleMap extends React.Component {
             }
           }))
         }
-      )  
+      )
     } else {
       error => console.log(error)
     }
@@ -118,39 +118,39 @@ class MyGoogleMap extends React.Component {
 
   handleMapClick = (event) => {
     console.log("user is setting lat:" + event.latLng.lat() + " lng:" + event.latLng.lng());
-    
+
     this.setState({
-      
-      markers: this.state.markers.concat({ latitude: event.latLng.lat(), longitude: event.latLng.lng()})
+
+      markers: this.state.markers.concat({ latitude: event.latLng.lat(), longitude: event.latLng.lng() })
     });
     this.setState({ dialogOpen: true });
-    
+
     let geocoder = new window.google.maps.Geocoder();
-     geocoder.geocode( { 'location': event.latLng}, function(results, status) {
-            if (status == 'OK') {
-              const geoResult = results[0];
-              console.log("The address is "  + results[0].formatted_address); 
-              this.setState({address: results[0].formatted_address});
-              console.log(geoResult);
-              for (let address of results[0].address_components) {
-                for (let level of address.types) {
-                  if (level === "locality" || level === "sublocality") {
-                    this.setState({cityUs: address.long_name});
-                  }
-                  if (level === "administrative_area_level_2") {
-                    this.setState({countyUs: address.long_name});
-                  }
-                  if (level === "administrative_area_level_1") {
-                    this.setState({stateUs: address.long_name});
-                  }
-                }      
-              }
-              console.log("State: " + this.state.stateUs + " County: " + this.state.countyUs + 
-              " City: " + this.state.cityUs);
-            } else {
-                console.log('Geocode was not successful for the following reason: ' + status);
+    geocoder.geocode({ 'location': event.latLng }, function (results, status) {
+      if (status == 'OK') {
+        const geoResult = results[0];
+        console.log("The address is " + results[0].formatted_address);
+        this.setState({ address: results[0].formatted_address });
+        console.log(geoResult);
+        for (let address of results[0].address_components) {
+          for (let level of address.types) {
+            if (level === "locality" || level === "sublocality") {
+              this.setState({ cityUs: address.long_name });
             }
-     }.bind(this));  
+            if (level === "administrative_area_level_2") {
+              this.setState({ countyUs: address.long_name });
+            }
+            if (level === "administrative_area_level_1") {
+              this.setState({ stateUs: address.long_name });
+            }
+          }
+        }
+        console.log("State: " + this.state.stateUs + " County: " + this.state.countyUs +
+          " City: " + this.state.cityUs);
+      } else {
+        console.log('Geocode was not successful for the following reason: ' + status);
+      }
+    }.bind(this));
   }
 
   handleDialogClose = () => {
@@ -165,7 +165,7 @@ class MyGoogleMap extends React.Component {
     this.setState({ dialogOpen: false });
     var newMarkers = [...this.state.markers];
     newMarkers.splice(this.state.markers.length - 1, 1);
-    this.setState({markers: newMarkers});  
+    this.setState({ markers: newMarkers });
   };
 
   handleContinue = () => {
@@ -174,6 +174,14 @@ class MyGoogleMap extends React.Component {
         pathname: '/newIssue/' ,
         state: {address : this.state.address}, 
     });
+    this.props.history.push(
+      {
+        pathname: '/newIssue',
+        state: {
+          cityUs: this.state.cityUs
+        }
+      }
+    );
   };
 
 
@@ -182,9 +190,10 @@ class MyGoogleMap extends React.Component {
     this.setState({ instructionOpen: true});
   }
 
-  render () {
+  render() {
     return (
       <div>
+<<<<<<< HEAD
       <MapWithAMarkerClusterer 
       markers={this.state.markers} 
       currentLocation = {this.state.currentLatLng} 
@@ -210,6 +219,14 @@ class MyGoogleMap extends React.Component {
           </DialogActions>
         </Dialog>
      <Dialog
+=======
+        <MapWithAMarkerClusterer
+          markers={this.state.markers}
+          currentLocation={this.state.currentLatLng}
+          onMapClick={(e) => this.handleMapClick(e)}
+        />
+        <Dialog
+>>>>>>> fa208f822203e01a0268741226d275af515eb010
           open={this.state.dialogOpen}
           onClose={this.handleDialogClose}
           aria-labelledby="alert-dialog-title"
@@ -218,8 +235,8 @@ class MyGoogleMap extends React.Component {
           <DialogTitle id="alert-dialog-title">{"Adding marker to the map?"}</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              The marker indicates the location of your issue to be reported. You can continue to tell us more 
-              about what happeed. 
+              The marker indicates the location of your issue to be reported. You can continue to tell us more
+              about what happeed.
             </DialogContentText>
           </DialogContent>
           <DialogActions>
@@ -227,12 +244,12 @@ class MyGoogleMap extends React.Component {
               Cancle
             </Button>
             <Button onClick={this.handleContinue} color="primary" autoFocus>
-              Next 
+              Next
             </Button>
           </DialogActions>
         </Dialog>
       </div>
-      
+
     );
   }
 }

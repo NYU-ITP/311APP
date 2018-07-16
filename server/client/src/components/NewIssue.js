@@ -7,11 +7,16 @@ import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
+<<<<<<< HEAD
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+=======
+import MenuList from '@material-ui/core/MenuList';
+import { category } from '../globals';
+>>>>>>> fa208f822203e01a0268741226d275af515eb010
 
 const styles = theme => ({
   root: {
@@ -101,6 +106,7 @@ class NewIssue extends React.Component {
     return (
       <div className={this.state.classes.root}>
         <div className={this.state.classes.container}>
+<<<<<<< HEAD
           <div className={this.state.classes.textField}>
             User Alert
             <div>
@@ -115,6 +121,9 @@ class NewIssue extends React.Component {
             Describe the problem.
             </div>
           </div>
+=======
+        {this.props.history.location.state.cityUs}
+>>>>>>> fa208f822203e01a0268741226d275af515eb010
           <Grid container spacing={24}>
             
             <Grid item xs={12}>
