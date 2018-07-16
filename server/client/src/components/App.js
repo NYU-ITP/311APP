@@ -13,7 +13,7 @@ class App extends React.Component {
     return (
       <div>
         <div>
-          <Route path="/" component={Header} />
+          <Header />
           <Route exact path="/" component={HomePage} />
           <Route exact path="/issues" component={Issues} />
           <Route exact path="/issues/:issueIdInRoute" component={IssueDetail} />
