@@ -49,11 +49,11 @@ class IssueDetail extends React.Component {
 
   constructor(props) {
     super(props);
-    let issueId = props.location.pathname.split('/');
-    issueId = issueId[issueId.length - 1];
+     let issueId = props.location.pathname.split('/');
+   issueId = issueId[issueId.length - 1];
     this.state = {
       classes: props.classes,
-      issueId: issueId,
+       issueId: issueId,
       issueDetail: [{"issueId":1,"time":"2000-01-01T05:00:00.000Z","heading":"Trash disposal","category":"Garbage storage","content":"Property owners must clean and sweep the sidewalks and gutters next to their property, including 18 inches from the curb into the street. Property owners who do not clean the sidewalks and gutters bordering their property may be issued a summons.","location":"Washington Square","urgent":1,"downvote":1,"upvote":3}],
     }
   }

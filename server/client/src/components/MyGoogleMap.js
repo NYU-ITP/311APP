@@ -6,8 +6,12 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
-import { Route, withRouter } from 'react-router-dom';
-import { History } from 'history';
+import Paper from '@material-ui/core/Paper';
+import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import { withRouter } from 'react-router-dom';
 const fetch = require("isomorphic-fetch");
 const { compose, withProps, withHandlers } = require("recompose");
 const {
@@ -69,21 +73,46 @@ const MapWithAMarkerClusterer = compose(
       {props.markers.map(marker => (
         <Marker
           position={{ lat: marker.latitude, lng: marker.longitude }}
+          onClick={props.onMarkerClick}
         />
       ))}
     </MarkerClusterer>
   </GoogleMap>
 );
 
-
+const styles = theme => ({
+  container: {
+    maxWidth: 700,
+    marginTop: 20,
+    margin: "auto"
+  },
+  center: {
+    textAlign: 'center'
+  },
+  paper: {
+    padding: theme.spacing.unit * 2,
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+  },
+  paperHeading: {
+    fontSize: 20,
+    fontWeight: 1000,
+    padding: theme.spacing.unit * 2,
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+  }
+});
 
 class MyGoogleMap extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      classes: props.classes,
       markers: testLoc,
       diaogOpen: false,
       instructionOpen: false,
+      issueDetailOpen: false,
+      scroll: 'paper',
       lat:0,
       lng:0,
       address: "",
@@ -157,12 +186,21 @@ class MyGoogleMap extends React.Component {
     }.bind(this));
   }
 
+  handleMarkerClick = () => {
+    console.log("marker clicked");
+    this.setState({ issueDetailOpen: true});
+  };
+
   handleDialogClose = () => {
     this.setState({ dialogOpen: false });
   };
 
   handleInstructionClose = () => {
     this.setState({ instructionOpen: false });
+  };
+
+  handleIssueDetailClose = () => {
+    this.setState({ issueDetailOpen: false });
   };
 
   handleCancleMarker = () => {
@@ -198,8 +236,72 @@ class MyGoogleMap extends React.Component {
       <MapWithAMarkerClusterer 
       markers={this.state.markers} 
       currentLocation = {this.state.currentLatLng} 
-      onMapClick = {(e) => this.handleMapClick(e)} 
+      onMapClick = {(e) => this.handleMapClick(e)}
+      onMarkerClick = {this.handleMarkerClick} 
      />
+     <Dialog
+          open={this.state.issueDetailOpen}
+          onClose={this.handleIssueDetailClose}
+          scroll={this.state.scroll}
+          aria-labelledby="scroll-dialog-title"
+        >
+          <DialogTitle id="scroll-dialog-title">IssueDetail</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+            <div className={this.state.classes.container}>
+            <Grid container spacing={24}>
+            <Grid item xs={12}>
+              <Paper className={this.state.classes.paperHeading}>Trash disposal</Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper className={this.state.classes.paper}>Urgent</Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper className={this.state.classes.paper}>Category: jhvkjhv</Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper className={this.state.classes.paper}>Post Time: 2018-07-17</Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper className={this.state.classes.paperLeft}>Content: 
+              Property owners must clean and sweep the sidewalks and gutters next to their property, including 18 inches from the curb into the street. Property owners who do not clean the sidewalks and gutters bordering their property may be issued a summons.
+              </Paper>
+            </Grid >
+            <Grid item xs={12}>
+              <Paper className={this.state.classes.paper}>Location: washington square park</Paper>
+            </Grid>
+            <Grid item xs={12}>
+              
+            </Grid>
+            <TextField
+              id="full-width-textArea"
+              className={this.state.classes.textField}
+              // label="Label"
+              // InputLabelProps={{
+              //   shrink: true,
+              // }}
+              placeholder="Add a comment"
+              fullWidth
+              multiline={true}
+            />
+            <Grid item xs={12} className={this.state.classes.center}>
+              <Button variant="contained" size="large" color="primary">
+                Submit Comment
+              </Button>
+            </Grid>
+            </Grid>
+            </div>
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button color="primary">
+              UpVote
+            </Button>
+            <Button color="primary">
+              DownVote
+            </Button>
+          </DialogActions>
+        </Dialog>
      <Dialog
           open={this.state.instructionOpen}
           onClose={this.handleinstructionClose}
@@ -247,7 +349,12 @@ class MyGoogleMap extends React.Component {
   }
 }
 
-export default withRouter(MyGoogleMap);
+MyGoogleMap.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+// export default withRouter(MyGoogleMap);
+export default withStyles(styles)(withRouter(MyGoogleMap));
 
 
 
