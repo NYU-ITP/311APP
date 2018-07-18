@@ -12,6 +12,7 @@ import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
+import IssueDetail from './IssueDetail';
 const fetch = require("isomorphic-fetch");
 const { compose, withProps, withHandlers } = require("recompose");
 const {
@@ -113,8 +114,8 @@ class MyGoogleMap extends React.Component {
       instructionOpen: false,
       issueDetailOpen: false,
       scroll: 'paper',
-      lat:0,
-      lng:0,
+      lat: 0,
+      lng: 0,
       address: "",
       cityUs: "",
       countyUs: "",
@@ -149,8 +150,9 @@ class MyGoogleMap extends React.Component {
 
   handleMapClick = (event) => {
     console.log("user is setting lat:" + event.latLng.lat() + " lng:" + event.latLng.lng());
-    this.setState({lat : event.latLng.lat(),
-                   lng : event. latLng.lng()
+    this.setState({
+      lat: event.latLng.lat(),
+      lng: event.latLng.lng()
     });
     this.setState({
 
@@ -188,7 +190,7 @@ class MyGoogleMap extends React.Component {
 
   handleMarkerClick = () => {
     console.log("marker clicked");
-    this.setState({ issueDetailOpen: true});
+    this.setState({ issueDetailOpen: true });
   };
 
   handleDialogClose = () => {
@@ -213,33 +215,34 @@ class MyGoogleMap extends React.Component {
   handleContinue = () => {
     this.setState({ dialogOpen: false });
     this.props.history.push({
-        pathname: '/newIssue/' ,
-        state: {address : this.state.address,
-                cityUs : this.state.cityUs,
-                lat : this.state.lat,
-                lng : this.state.lng,
-                countyUs: this.state.countyUs,
-                stateUs: this.state.stateUs
-        }, 
+      pathname: '/newIssue/',
+      state: {
+        address: this.state.address,
+        cityUs: this.state.cityUs,
+        lat: this.state.lat,
+        lng: this.state.lng,
+        countyUs: this.state.countyUs,
+        stateUs: this.state.stateUs
+      },
     });
   };
 
 
   componentWillMount() {
     this.getGeoLocation();
-    this.setState({ instructionOpen: true});
+    this.setState({ instructionOpen: true });
   }
 
   render() {
     return (
       <div>
-      <MapWithAMarkerClusterer 
-      markers={this.state.markers} 
-      currentLocation = {this.state.currentLatLng} 
-      onMapClick = {(e) => this.handleMapClick(e)}
-      onMarkerClick = {this.handleMarkerClick} 
-     />
-     <Dialog
+        <MapWithAMarkerClusterer
+          markers={this.state.markers}
+          currentLocation={this.state.currentLatLng}
+          onMapClick={(e) => this.handleMapClick(e)}
+          onMarkerClick={this.handleMarkerClick}
+        />
+        <Dialog
           open={this.state.issueDetailOpen}
           onClose={this.handleIssueDetailClose}
           scroll={this.state.scroll}
@@ -248,61 +251,11 @@ class MyGoogleMap extends React.Component {
           <DialogTitle id="scroll-dialog-title">IssueDetail</DialogTitle>
           <DialogContent>
             <DialogContentText>
-            <div className={this.state.classes.container}>
-            <Grid container spacing={24}>
-            <Grid item xs={12}>
-              <Paper className={this.state.classes.paperHeading}>Trash disposal</Paper>
-            </Grid>
-            <Grid item xs={12}>
-              <Paper className={this.state.classes.paper}>Urgent</Paper>
-            </Grid>
-            <Grid item xs={12}>
-              <Paper className={this.state.classes.paper}>Category: jhvkjhv</Paper>
-            </Grid>
-            <Grid item xs={12}>
-              <Paper className={this.state.classes.paper}>Post Time: 2018-07-17</Paper>
-            </Grid>
-            <Grid item xs={12}>
-              <Paper className={this.state.classes.paperLeft}>Content: 
-              Property owners must clean and sweep the sidewalks and gutters next to their property, including 18 inches from the curb into the street. Property owners who do not clean the sidewalks and gutters bordering their property may be issued a summons.
-              </Paper>
-            </Grid >
-            <Grid item xs={12}>
-              <Paper className={this.state.classes.paper}>Location: washington square park</Paper>
-            </Grid>
-            <Grid item xs={12}>
-              
-            </Grid>
-            <TextField
-              id="full-width-textArea"
-              className={this.state.classes.textField}
-              // label="Label"
-              // InputLabelProps={{
-              //   shrink: true,
-              // }}
-              placeholder="Add a comment"
-              fullWidth
-              multiline={true}
-            />
-            <Grid item xs={12} className={this.state.classes.center}>
-              <Button variant="contained" size="large" color="primary">
-                Submit Comment
-              </Button>
-            </Grid>
-            </Grid>
-            </div>
+              <IssueDetail issueId='1'/>
             </DialogContentText>
           </DialogContent>
-          <DialogActions>
-            <Button color="primary">
-              UpVote
-            </Button>
-            <Button color="primary">
-              DownVote
-            </Button>
-          </DialogActions>
         </Dialog>
-     <Dialog
+        <Dialog
           open={this.state.instructionOpen}
           onClose={this.handleinstructionClose}
           aria-labelledby="alert-dialog-title"
@@ -311,7 +264,7 @@ class MyGoogleMap extends React.Component {
           <DialogTitle id="alert-dialog-title">{"Do you want to make a complaint?"}</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              Please click on map to tell us the location of your issue. Click on marker will take you to the 
+              Please click on map to tell us the location of your issue. Click on marker will take you to the
               existing issue.
             </DialogContentText>
           </DialogContent>

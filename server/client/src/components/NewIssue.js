@@ -230,12 +230,12 @@ class NewIssue extends React.Component {
                   <FormHelperText>Required</FormHelperText>
                 </FormControl>
               </Grid>
-            </Grid>
-            <Grid>
-              <Button variant="contained" size="large" color="primary">
-                Submit
-              </Button>
-              <input type="submit" value="Submit" />
+              <Grid item xs={12}>
+                {/* <Button variant="contained" size="large" color="primary">
+                  Submit
+                </Button> */}
+                <input type="submit" value="Submit" />
+              </Grid>
             </Grid>
           </div>
         </div>

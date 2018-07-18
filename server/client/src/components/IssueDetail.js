@@ -49,11 +49,11 @@ class IssueDetail extends React.Component {
 
   constructor(props) {
     super(props);
-    let issueId = props.location.pathname.split('/');
-    issueId = issueId[issueId.length - 1];
+    // let issueId = props.location.pathname.split('/');
+    // issueId = issueId[issueId.length - 1];
     this.state = {
       classes: props.classes,
-      issueId: issueId,
+      issueId: props.issueId,
       issueDetail: [{ "issueId": 1, "time": "2000-01-01T05:00:00.000Z", "heading": "Trash disposal", "category": "Garbage storage", "content": "Property owners must clean and sweep the sidewalks and gutters next to their property, including 18 inches from the curb into the street. Property owners who do not clean the sidewalks and gutters bordering their property may be issued a summons.", "location": "Washington Square", "urgent": 1, "downvote": 1, "upvote": 3 }],
     }
   }
@@ -77,24 +77,24 @@ class IssueDetail extends React.Component {
             <Grid item xs={12}>
               <Paper className={this.state.classes.paperHeading}>{issue.heading}</Paper>
             </Grid>
-            <Grid item xs={12}>
-              <Paper className={this.state.classes.paper}>Urgent: {issue.urgent == 1 ? 'Yes' : 'No'}</Paper>
-            </Grid>
-            <Grid item xs={6}>
-              <Paper className={this.state.classes.paper}>
+            <Grid item xs={6} className={this.state.classes.center}>
+              <Button color="primary">
                 <ListItemIcon>
                   <ThumbUpIcon />
                 </ListItemIcon>
                 {issue.upvote == null ? 0 : issue.upvote}
-              </Paper>
+              </Button>
             </Grid>
-            <Grid item xs={6}>
-              <Paper className={this.state.classes.paper}>
+            <Grid item xs={6} className={this.state.classes.center}>
+              <Button color="primary">
                 <ListItemIcon>
                   <ThumbDownIcon />
                 </ListItemIcon>
                 {issue.downvote == null ? 0 : issue.downvote}
-              </Paper>
+              </Button>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper className={this.state.classes.paper}>Urgent: {issue.urgent == 1 ? 'Yes' : 'No'}</Paper>
             </Grid>
             <Grid item xs={12}>
               <Paper className={this.state.classes.paper}>Category: {issue.category}</Paper>
