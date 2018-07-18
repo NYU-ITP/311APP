@@ -12,10 +12,9 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import MenuList from '@material-ui/core/MenuList';
 import { category } from '../globals';
-import Form from 'react-validation/build/form';
-import { Input as ValidationInput } from 'react-validation/build/input';
+
+
 
 const styles = theme => ({
   root: {
