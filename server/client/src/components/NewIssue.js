@@ -46,6 +46,9 @@ class NewIssue extends React.Component {
       classes: props.classes,
       heading: '',
       content:'',
+      cityUs: '',
+      countyUs: '',
+      stateUs: ''
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -73,7 +76,10 @@ class NewIssue extends React.Component {
       location: "Washington Square",
       urgent: 1,
       downvote: 1,
-      upvote: 3
+      upvote: 3,
+      cityUs: this.props.history.location.state.cityUs,
+      countyUs: this.props.history.location.state.countyUs,
+      stateUs: this.props.history.location.state.stateUs
     };
     // On submit of the form, send a POST request with the data to the server.
     fetch('http://localhost:5000/api/newIssue', {
