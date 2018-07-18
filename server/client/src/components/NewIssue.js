@@ -33,44 +33,6 @@ const styles = theme => ({
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
   },
-  formControl: {
-    margin: theme.spacing.unit,
-    minWidth: 120,
-  },
-  bootstrapRoot: {
-    padding: 0,
-    'label + &': {
-      marginTop: theme.spacing.unit * 3,
-    },
-  },
-  bootstrapInput: {
-    borderRadius: 4,
-    backgroundColor: theme.palette.common.white,
-    border: '1px solid #ced4da',
-    fontSize: 16,
-    padding: '10px 12px',
-    width: 'calc(100% - 24px)',
-    transition: theme.transitions.create(['border-color', 'box-shadow']),
-    fontFamily: [
-      '-apple-system',
-      'BlinkMacSystemFont',
-      '"Segoe UI"',
-      'Roboto',
-      '"Helvetica Neue"',
-      'Arial',
-      'sans-serif',
-      '"Apple Color Emoji"',
-      '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"',
-    ].join(','),
-    '&:focus': {
-      borderColor: '#80bdff',
-      boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
-    },
-  },
-  bootstrapFormLabel: {
-    fontSize: 18,
-  },
   center: {
     textAlign: 'center'
   }
@@ -81,14 +43,14 @@ class NewIssue extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      open: false,
       classes: props.classes,
+      heading: '',
+      content:'',
     }
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
-
-  state = {
-    open: false,
-  };
 
   handleToggle = () => {
     this.setState(state => ({ open: !state.open }));
@@ -104,12 +66,11 @@ class NewIssue extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    var self = this;
     let postData = {
       time: "2000-01-01",
-      heading: "Trash disposal",
+      heading: this.state.heading,
       category: "Garbage storage",
-      content: "Property owners must clean and sweep the sidewalks and gutters next to their property, including 18 inches from the curb into the street. Property owners who do not clean the sidewalks and gutters bordering their property may be issued a summons.",
+      content: this.state.content,
       location: "Washington Square",
       urgent: 1,
       downvote: 1,
@@ -133,6 +94,10 @@ class NewIssue extends React.Component {
       });
   }
 
+  handleChange(event) {
+    this.setState({[event.target.name]: event.target.value});
+  }
+  
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
@@ -155,11 +120,12 @@ class NewIssue extends React.Component {
             <Grid container spacing={24}>
               <Grid item xs={12}>
                 <TextField
-                  id="full-width-textArea"
+                  name="heading"
                   className={this.state.classes.textField}
                   label="Heading"
                   multiline={true}
-                  ref="heading"
+                  value={this.state.heading}
+                  onChange={this.handleChange}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -175,21 +141,12 @@ class NewIssue extends React.Component {
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  name="content"
                   className={this.state.classes.textField}
                   label="Content"
-                  id="bootstrap-input"
                   multiline={true}
-                  InputProps={{
-                    disableUnderline: true,
-                    classes: {
-                      root: this.state.classes.bootstrapRoot,
-                      input: this.state.classes.bootstrapInput,
-                    },
-                  }}
-                  InputLabelProps={{
-                    shrink: true,
-                    className: this.state.classes.bootstrapFormLabel,
-                  }}
+                  value={this.state.content}
+                  onChange={this.handleChange}
                 />
               </Grid>
               <Grid item xs={12}>
