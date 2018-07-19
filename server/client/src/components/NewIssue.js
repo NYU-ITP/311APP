@@ -13,6 +13,7 @@ import Select from '@material-ui/core/Select';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import { category } from '../globals';
+import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
   root: {
@@ -123,7 +124,11 @@ class NewIssue extends React.Component {
       <form onSubmit={this.handleSubmit}>
         <div className={this.state.classes.root}>
           <div className={this.state.classes.container}>
-            <div className={this.state.classes.textField}>
+          <Typography variant="subheading" gutterBottom>
+            <b>DISCLAIMER:</b> Emergency assistance is not available through this Service Request. 
+            <br/>Call 911 to report a crime or medical emergency; fighting, screaming, gunshots, explosions, or suspicious breaking of glass or wood.
+          </Typography>
+            {/* <div className={this.state.classes.textField}>
               User Alert
             <div>
                 Emergency assistance is not available through this Service Request.
@@ -136,9 +141,12 @@ class NewIssue extends React.Component {
             </ul>
                 Describe the problem.
             </div>
-            </div>
+            </div> */}
             <Grid container spacing={24}>
               <Grid item xs={12}>
+              <Typography variant = "subheading">
+                <br/><b>What is your complain about?</b>
+              </Typography>  
                 <TextField
                   name="heading"
                   className={this.state.classes.textField}
@@ -150,6 +158,9 @@ class NewIssue extends React.Component {
                 />
               </Grid>
               <Grid item xs={12}>
+              <Typography variant = "subheading">
+                <br/><b>Please check the box below if the matter is urgent:</b>
+              </Typography> 
                 <FormControlLabel
                   className={this.state.classes.textField}
                   control={
@@ -161,6 +172,9 @@ class NewIssue extends React.Component {
                 />
               </Grid>
               <Grid item xs={12}>
+              <Typography variant = "subheading">
+                <br/><b>Describe the issue in detail.</b>
+              </Typography> 
                 <TextField
                   name="content"
                   className={this.state.classes.textField}
@@ -172,9 +186,12 @@ class NewIssue extends React.Component {
                 />
               </Grid>
               <Grid item xs={12}>
+              <Typography variant = "subheading">
+                <br/><b>When was the issue observed? (mm/dd/yyyy, hh:mm AM/PM)</b>
+              </Typography> 
                 <TextField
                   id="datetime-local"
-                  label="Date/Time Observed"
+                  //label="Date/Time Observed"
                   type="datetime-local"
                   defaultValue="2017-05-24T10:30"
                   className={this.state.classes.textField}
@@ -187,12 +204,16 @@ class NewIssue extends React.Component {
                 <div className={this.state.classes.textField}>
                   {
                     this.props.history.location.state
-                      ? <div>Location : {this.props.history.location.state.address}</div>
+                      // ? <div>Location : {this.props.history.location.state.address}</div>
+                      ? <Typography variant = "subheading"><b><br/>Location (as selected on map) :</b> {this.props.history.location.state.address}</Typography>
                       : null
                   }
                 </div>
               </Grid>
               <Grid item xs={12}>
+              <Typography variant = "subheading">
+                <br/><b>Select the most appropriate category for the observed issue:</b>
+              </Typography> 
                 <FormControl className={this.state.classes.formControl}>
                   <InputLabel htmlFor="age-helper">Category</InputLabel>
                   <Select
