@@ -58,7 +58,7 @@ const MapWithAMarkerClusterer = compose(
 )(props =>
   <GoogleMap
     defaultZoom={16}
-    center={{ lat: props.currentLocation.lat, lng: props.currentLocation.lng }}
+    center={{ lat: 40.73136253622127 , lng: -73.99699021534423 }}
     onClick={props.onMapClick}
   >
     <MarkerClusterer
@@ -298,12 +298,10 @@ class MyGoogleMap extends React.Component {
   }
 }
 
-MyGoogleMap.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
 
-// export default withRouter(MyGoogleMap);
-export default withStyles(styles)(withRouter(MyGoogleMap));
+
+export default withRouter(MyGoogleMap);
+
 
 
 
