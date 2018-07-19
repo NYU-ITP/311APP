@@ -53,6 +53,13 @@ class NewIssue extends React.Component {
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    // function validate(email, password) {
+    //   // true means invalid, so our conditions got reversed
+    //   return {
+    //     email: email.length === 0,
+    //     password: password.length === 0,
+    //   };
+    // }
   }
 
   handleToggle = () => {
@@ -139,6 +146,7 @@ class NewIssue extends React.Component {
                   multiline={true}
                   value={this.state.heading}
                   onChange={this.handleChange}
+                  required
                 />
               </Grid>
               <Grid item xs={12}>
@@ -160,6 +168,7 @@ class NewIssue extends React.Component {
                   multiline={true}
                   value={this.state.content}
                   onChange={this.handleChange}
+                  required
                 />
               </Grid>
               <Grid item xs={12}>
@@ -190,7 +199,7 @@ class NewIssue extends React.Component {
                     name="category"
                     value={this.state.category}
                     onChange={this.handleChange}
-                    input={<Input name="Category" id="category-helper" />}
+                    input={<Input name="Category" id="category-helper"/>}
                   >
                     <MenuItem value="">
                       <em>None</em>
