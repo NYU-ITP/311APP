@@ -17,7 +17,16 @@ import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
+    // ...theme.typography.subheading,
+    // height: 24,
+    // boxSizing: 'content-box',
+    // width: 'auto',
+    // overflow: 'hidden',
+    // textOverflow: 'ellipsis',
+    // whiteSpace: 'nowrap',
+    // paddingLeft: 16,
+    // paddingRight: 16,
   },
   container: {
     maxWidth: 700,
@@ -233,10 +242,10 @@ class NewIssue extends React.Component {
                 </FormControl>
               </Grid>
               <Grid item xs={12}>
-                {/* <Button variant="contained" size="large" color="primary">
+                <Button variant="contained" size="large" color="primary" type="submit">
                   Submit
-                </Button> */}
-                <input type="submit" value="Submit" />
+                </Button>
+                {/* <input type="submit" value="Submit" /> */}
               </Grid>
             </Grid>
           </div>
