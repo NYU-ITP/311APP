@@ -46,9 +46,12 @@ class NewIssue extends React.Component {
       classes: props.classes,
       heading: '',
       content:'',
+      category: '',
       cityUs: '',
       countyUs: '',
-      stateUs: ''
+      stateUs: '',
+      lat: '',
+      lng: ''
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -72,6 +75,7 @@ class NewIssue extends React.Component {
       time: "2000-01-01",
       heading: this.state.heading,
       category: "Garbage storage",
+      // category: this.state.category,
       content: this.state.content,
       //location: "Washington Square",
       location: this.props.history.location.state.address,
@@ -80,7 +84,9 @@ class NewIssue extends React.Component {
       upvote: 3,
       cityUs: this.props.history.location.state.cityUs,
       countyUs: this.props.history.location.state.countyUs,
-      stateUs: this.props.history.location.state.stateUs
+      stateUs: this.props.history.location.state.stateUs,
+      lat: this.props.history.location.state.lat,
+      lng: this.props.history.location.state.lng
     };
     // On submit of the form, send a POST request with the data to the server.
     fetch('http://localhost:5000/api/newIssue', {
@@ -183,6 +189,8 @@ class NewIssue extends React.Component {
                 <FormControl className={this.state.classes.formControl}>
                   <InputLabel htmlFor="age-helper">Category</InputLabel>
                   <Select
+                    name="category"
+                    value={this.state.category}
                     onChange={this.handleChange}
                     input={<Input name="Category" id="category-helper" />}
                   >
