@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import MyGoogleMap from './MyGoogleMap';
 
 
 
-class HomePage extends Component {
+class HomePage extends React.Component {
 
   // AIzaSyDjFZnvXXlS5OXSbKSpLRSD-c6dFdsplo4
 

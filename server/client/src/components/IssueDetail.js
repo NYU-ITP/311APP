@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
@@ -54,12 +54,17 @@ class IssueDetail extends React.Component {
     this.state = {
       classes: props.classes,
       issueId: props.issueId,
-      issueDetail: [{ "issueId": 1, "time": "2000-01-01T05:00:00.000Z", "heading": "Trash disposal", "category": "Garbage storage", "content": "Property owners must clean and sweep the sidewalks and gutters next to their property, including 18 inches from the curb into the street. Property owners who do not clean the sidewalks and gutters bordering their property may be issued a summons.", "location": "Washington Square", "urgent": 1, "downvote": 1, "upvote": 3 }],
+      issueDetail: [],
+      comments:[],
+      newCommentContent: '',
     }
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
     this.getIssueDetail();
+    this.getCommentsGorIssue();
   }
 
   getIssueDetail = _ => {
@@ -67,6 +72,43 @@ class IssueDetail extends React.Component {
       .then(response => response.json())
       .then(response => this.setState({ issueDetail: response.data }))
       .catch(err => console.log(err))
+  }
+
+  getCommentsGorIssue = _ => {
+    fetch('http://localhost:5000/issueComments/' + this.state.issueId)
+      .then(response => response.json())
+      .then(response => this.setState({ comments: response.data }))
+      .catch(err => console.log(err))
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    let postData = {
+      content: this.state.newCommentContent,
+      issueId: this.state.issueId
+    };
+    // On submit of the form, send a POST request with the data to the server.
+    fetch('http://localhost:5000/api/newComment', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(postData),
+    })
+      .then(response => {
+        console.log(response);
+        return response.json();
+      })
+      .then(data => {
+        console.log(data);
+        this.getCommentsGorIssue();
+        this.setState({newCommentContent: ''});
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
+  handleChange(event) {
+    this.setState({ [event.target.name]: event.target.value });
   }
 
   render() {
@@ -94,7 +136,7 @@ class IssueDetail extends React.Component {
               </Button>
             </Grid>
             <Grid item xs={12}>
-              <Paper className={this.state.classes.paper}>Urgent: {issue.urgent == 1 ? 'Yes' : 'No'}</Paper>
+              <Paper className={this.state.classes.paper}>Urgent: {issue.urgent === 1 ? 'Yes' : 'No'}</Paper>
             </Grid>
             <Grid item xs={12}>
               <Paper className={this.state.classes.paper}>Category: {issue.category}</Paper>
@@ -109,23 +151,24 @@ class IssueDetail extends React.Component {
               <Paper className={this.state.classes.paper}>Location: {issue.location}</Paper>
             </Grid>
             <Grid item xs={12}>
-              <Comments issueId={this.state.issueId} />
+              <Comments commentList={this.state.comments}/>
             </Grid>
-            <TextField
-              id="full-width-textArea"
-              className={this.state.classes.textField}
-              // label="Label"
-              // InputLabelProps={{
-              //   shrink: true,
-              // }}
-              placeholder="Add a comment"
-              fullWidth
-              multiline={true}
-            />
             <Grid item xs={12} className={this.state.classes.center}>
-              <Button variant="contained" size="large" color="primary">
-                Submit Comment
-              </Button>
+              <form onSubmit={this.handleSubmit}>
+                <TextField
+                  className={this.state.classes.textField}
+                  name='newCommentContent'
+                  value={this.state.newCommentContent}
+                  placeholder="Add a comment"
+                  fullWidth
+                  multiline={true}
+                  onChange={this.handleChange}
+                />
+                {/* <Button variant="contained" size="large" color="primary">
+                  Submit Comment
+                </Button> */}
+                <input type="submit" value="Submit Comment" />
+              </form>
             </Grid>
           </Grid>
         </div>

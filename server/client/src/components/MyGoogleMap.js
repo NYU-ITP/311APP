@@ -6,14 +6,10 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
-import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
 import IssueDetail from './IssueDetail';
-const fetch = require("isomorphic-fetch");
 const { compose, withProps, withHandlers } = require("recompose");
 const {
   withScriptjs,
@@ -162,7 +158,7 @@ class MyGoogleMap extends React.Component {
 
     let geocoder = new window.google.maps.Geocoder();
     geocoder.geocode({ 'location': event.latLng }, function (results, status) {
-      if (status == 'OK') {
+      if (status === 'OK') {
         const geoResult = results[0];
         console.log("The address is " + results[0].formatted_address);
         this.setState({ address: results[0].formatted_address });

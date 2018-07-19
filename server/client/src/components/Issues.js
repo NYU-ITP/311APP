@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import { Link } from 'react-router-dom';
 
-class Issues extends Component {
+class Issues extends React.Component {
   style = {
     textDecoration: 'None'
   };

@@ -8,6 +8,7 @@ const SELECT_ALL_ISSUES_QUERY = 'SELECT * from issue';
 const SELECT_SPECIFIC_ISSUE = 'SELECT * from issue WHERE issueId=';
 const SELECT_COMMENTS_FOR_ISSUE = 'SELECT * from comment WHERE issueId=';
 const INSERT_NEW_ISSUE = "INSERT INTO issue SET ?";
+const INSERT_NEW_COMMENT = "INSERT INTO comment SET ?";
 
 const connection = mysql.createConnection({
   host: '34.234.205.122',
@@ -75,6 +76,21 @@ app.get('/issueComments/:issueIdInRouter', (req, res) => {
 app.post('/api/newIssue', jsonParser, (req, res) => {
   let postData = req.body;
   connection.query(INSERT_NEW_ISSUE, postData, (err, results) => {
+    if (err) {
+      return res.send(err)
+    } else {
+      return res.json({
+        data: results
+      })
+    }
+  });
+});
+
+
+// POST /api/newComment gets JSON bodies
+app.post('/api/newComment', jsonParser, (req, res) => {
+  let postData = req.body;
+  connection.query(INSERT_NEW_COMMENT, postData, (err, results) => {
     if (err) {
       return res.send(err)
     } else {
