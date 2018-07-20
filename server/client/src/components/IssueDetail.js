@@ -57,9 +57,13 @@ class IssueDetail extends React.Component {
       issueDetail: [],
       comments:[],
       newCommentContent: '',
+      disabledUpvote: false,
+      disabledDownvote: false
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleUpvoteClicked = this.handleUpvoteClicked.bind(this);
+    this.handleDownvoteClicked = this.handleDownvoteClicked.bind(this);
   }
 
   componentDidMount() {
@@ -107,6 +111,24 @@ class IssueDetail extends React.Component {
       });
   }
 
+  handleUpvoteClicked() {
+    if (!this.state.disabledUpvote) {
+      this.setState({
+        disabledUpvote: true,
+        disabledDownvote: false
+      });
+    }
+  }
+  
+  handleDownvoteClicked() {
+    if (!this.state.disabledDownvote) {
+      this.setState({
+        disabledUpvote: false,
+        disabledDownvote: true
+      });
+    }
+  }
+
   handleChange(event) {
     this.setState({ [event.target.name]: event.target.value });
   }
@@ -120,7 +142,7 @@ class IssueDetail extends React.Component {
               <Paper className={this.state.classes.paperHeading}>{issue.heading}</Paper>
             </Grid>
             <Grid item xs={6} className={this.state.classes.center}>
-              <Button color="primary">
+              <Button color="primary" disabled={this.state.disabledUpvote} onClick={this.handleUpvoteClicked}>
                 <ListItemIcon>
                   <ThumbUpIcon />
                 </ListItemIcon>
@@ -128,7 +150,7 @@ class IssueDetail extends React.Component {
               </Button>
             </Grid>
             <Grid item xs={6} className={this.state.classes.center}>
-              <Button color="primary">
+              <Button color="primary" disabled={this.state.disabledDownvote} onClick={this.handleDownvoteClicked}>
                 <ListItemIcon>
                   <ThumbDownIcon />
                 </ListItemIcon>
