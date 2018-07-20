@@ -105,6 +105,7 @@ class MyGoogleMap extends React.Component {
     super(props)
     this.state = {
       classes: props.classes,
+      issues: [],
       markers: testLoc,
       diaogOpen: false,
       instructionOpen: false,
@@ -178,6 +179,7 @@ class MyGoogleMap extends React.Component {
         }
         console.log("State: " + this.state.stateUs + " County: " + this.state.countyUs +
           " City: " + this.state.cityUs);
+        console.log(" Test geeting issues : " + this.state.issues[7].lat);
       } else {
         console.log('Geocode was not successful for the following reason: ' + status);
       }
@@ -225,8 +227,16 @@ class MyGoogleMap extends React.Component {
 
 
   componentWillMount() {
-    this.getGeoLocation();
+   //  this.getGeoLocation();
+    this.getIssues();
     this.setState({ instructionOpen: true });
+  }
+
+  getIssues = _ => {
+    fetch('http://localhost:5000/issues')
+      .then(response => response.json())
+      .then(response => this.setState({ issues: response.data }))
+      .catch(err => console.log(err))
   }
 
   render() {
