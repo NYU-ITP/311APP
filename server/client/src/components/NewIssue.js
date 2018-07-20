@@ -229,7 +229,7 @@ class NewIssue extends React.Component {
               </Grid>
               <Grid item xs={12}>
               <Typography variant = "subheading">
-                <br/><b>When was the issue observed? (mm/dd/yyyy, hh:mm AM/PM)</b>
+                <br/><b>When was the issue observed? (YYYY-MM-DD)</b>
               </Typography> 
                 {/* <TextField
                   id="datetime-local"
