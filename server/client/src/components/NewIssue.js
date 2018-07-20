@@ -14,6 +14,9 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import { category } from '../globals';
 import Typography from '@material-ui/core/Typography';
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const styles = theme => ({
   root: {
@@ -68,10 +71,21 @@ class NewIssue extends React.Component {
       countyUs: '',
       stateUs: '',
       lat: '',
-      lng: ''
+      lng: '',
+      // time: moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
+      time: moment(this.props.start)
+      // datetime: `${new Date().getFullYear()}-${`${new Date().getMonth() +
+      //   1}`.padStart(2, 0)}-${`${new Date().getDay() + 1}`.padStart(
+      //   2,
+      //   0
+      // )}T${`${new Date().getHours()}`.padStart(
+      //   2,
+      //   0
+      // )}:${`${new Date().getMinutes()}`.padStart(2, 0)}`,
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleDateChange = this.handleDateChange.bind(this);
     // function validate(email, password) {
     //   // true means invalid, so our conditions got reversed
     //   return {
@@ -96,7 +110,8 @@ class NewIssue extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     let postData = {
-      time: "2000-01-01",
+      // time: "2000-01-01",
+      time: this.state.time,
       heading: this.state.heading,
       // category: "Garbage storage",
       category: this.state.category,
@@ -135,6 +150,14 @@ class NewIssue extends React.Component {
 
   handleChange(event) {
     this.setState({[event.target.name]: event.target.value});
+  }
+
+  handleDateChange(date) {
+    const beginDate = moment(date).format('YYYY-MM-DD');
+    this.setState({
+      time: beginDate
+      // time: date
+    });
   }
   
   render() {
@@ -208,16 +231,30 @@ class NewIssue extends React.Component {
               <Typography variant = "subheading">
                 <br/><b>When was the issue observed? (mm/dd/yyyy, hh:mm AM/PM)</b>
               </Typography> 
-                <TextField
+                {/* <TextField
                   id="datetime-local"
                   //label="Date/Time Observed"
+                  // value={this.state.datetime}
+                  onChange={this.handleChange}
                   type="datetime-local"
                   defaultValue="2017-05-24T10:30"
+                  // defaultValue={this.state.datetime}
                   className={this.state.classes.textField}
                   InputLabelProps={{
                     shrink: true,
                   }}
-                />
+                /> */}
+              <DatePicker
+                name="time"
+                // dateFormat="YYYY-MM-DD HH:mm:ss"
+                dateFormat="YYYY-MM-DD"
+                selected={moment(this.state.time)}
+                // selected={moment()}
+                // showTimeSelect
+                // timeFormat="HH:mm"
+                // timeIntervals={15}
+                onChange={this.handleDateChange}
+              />
               </Grid>
               <Grid item xs={12}>
                 <div className={this.state.classes.textField}>
@@ -252,6 +289,9 @@ class NewIssue extends React.Component {
                   <FormHelperText>Required</FormHelperText>
                 </FormControl>
               </Grid>
+              <Typography variant="subheading" gutterBottom>
+                    <em>NOTE: Fields marked with a * are mandatory</em>
+              </Typography>
               <Grid item xs={12}>
                 <Button disabled={!isEnabled} variant="contained" size="large" color="primary" type="submit">
                   Submit
