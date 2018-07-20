@@ -138,6 +138,7 @@ class NewIssue extends React.Component {
   }
   
   render() {
+    const isEnabled = this.state.heading.length > 0 && this.state.content.length > 0 && this.state.category.length > 0;
     return (
       <form onSubmit={this.handleSubmit}>
         <div className={this.state.classes.root}>
@@ -232,12 +233,13 @@ class NewIssue extends React.Component {
               <Typography variant = "subheading">
                 <br/><b>Select the most appropriate category for the observed issue:</b>
               </Typography> 
-                <FormControl className={this.state.classes.formControl}>
+                <FormControl required className={this.state.classes.formControl}>
                   <InputLabel htmlFor="age-helper">Category</InputLabel>
                   <Select
                     name="category"
                     value={this.state.category}
                     onChange={this.handleChange}
+                    // required="required"
                     input={<Input name="Category" id="category-helper"/>}
                   >
                     <MenuItem value="">
@@ -251,7 +253,7 @@ class NewIssue extends React.Component {
                 </FormControl>
               </Grid>
               <Grid item xs={12}>
-                <Button variant="contained" size="large" color="primary" type="submit">
+                <Button disabled={!isEnabled} variant="contained" size="large" color="primary" type="submit">
                   Submit
                 </Button>
                 {/* <input type="submit" value="Submit" /> */}
