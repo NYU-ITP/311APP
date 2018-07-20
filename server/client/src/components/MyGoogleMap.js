@@ -295,7 +295,7 @@ class MyGoogleMap extends React.Component {
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleCancleMarker} color="primary">
-              Cancle
+              Cancel
             </Button>
             <Button onClick={this.handleContinue} color="primary" autoFocus>
               Next

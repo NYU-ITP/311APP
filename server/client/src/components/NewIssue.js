@@ -14,10 +14,24 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import { category } from '../globals';
 import Typography from '@material-ui/core/Typography';
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const styles = theme => ({
   root: {
-    flexGrow: 1
+    display: 'flex',
+    flexGrow: 1,
+    flexWrap: 'wrap',
+    // ...theme.typography.subheading,
+    // height: 24,
+    // boxSizing: 'content-box',
+    // width: 'auto',
+    // overflow: 'hidden',
+    // textOverflow: 'ellipsis',
+    // whiteSpace: 'nowrap',
+    // paddingLeft: 16,
+    // paddingRight: 16,
   },
   container: {
     maxWidth: 700,
@@ -33,6 +47,13 @@ const styles = theme => ({
   },
   center: {
     textAlign: 'center'
+  },
+  formControl: {
+    margin: theme.spacing.unit,
+    minWidth: 120,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing.unit * 2,
   }
 });
 
@@ -50,10 +71,21 @@ class NewIssue extends React.Component {
       countyUs: '',
       stateUs: '',
       lat: '',
-      lng: ''
+      lng: '',
+      // time: moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
+      time: moment(this.props.start)
+      // datetime: `${new Date().getFullYear()}-${`${new Date().getMonth() +
+      //   1}`.padStart(2, 0)}-${`${new Date().getDay() + 1}`.padStart(
+      //   2,
+      //   0
+      // )}T${`${new Date().getHours()}`.padStart(
+      //   2,
+      //   0
+      // )}:${`${new Date().getMinutes()}`.padStart(2, 0)}`,
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleDateChange = this.handleDateChange.bind(this);
     // function validate(email, password) {
     //   // true means invalid, so our conditions got reversed
     //   return {
@@ -78,10 +110,11 @@ class NewIssue extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     let postData = {
-      time: "2000-01-01",
+      // time: "2000-01-01",
+      time: this.state.time,
       heading: this.state.heading,
-      category: "Garbage storage",
-      // category: this.state.category,
+      // category: "Garbage storage",
+      category: this.state.category,
       content: this.state.content,
       //location: "Washington Square",
       location: this.props.history.location.state.address,
@@ -118,8 +151,17 @@ class NewIssue extends React.Component {
   handleChange(event) {
     this.setState({[event.target.name]: event.target.value});
   }
+
+  handleDateChange(date) {
+    const beginDate = moment(date).format('YYYY-MM-DD');
+    this.setState({
+      time: beginDate
+      // time: date
+    });
+  }
   
   render() {
+    const isEnabled = this.state.heading.length > 0 && this.state.content.length > 0 && this.state.category.length > 0;
     return (
       <form onSubmit={this.handleSubmit}>
         <div className={this.state.classes.root}>
@@ -187,18 +229,48 @@ class NewIssue extends React.Component {
               </Grid>
               <Grid item xs={12}>
               <Typography variant = "subheading">
-                <br/><b>When was the issue observed? (mm/dd/yyyy, hh:mm AM/PM)</b>
+                <br/><b>When was the issue observed? (YYYY-MM-DD)</b>
               </Typography> 
-                <TextField
+                {/* <TextField
                   id="datetime-local"
                   //label="Date/Time Observed"
+                  // value={this.state.datetime}
+                  onChange={this.handleChange}
                   type="datetime-local"
                   defaultValue="2017-05-24T10:30"
+                  // defaultValue={this.state.datetime}
                   className={this.state.classes.textField}
                   InputLabelProps={{
                     shrink: true,
                   }}
-                />
+                /> */}
+              <DatePicker
+                name="time"
+                // dateFormat="YYYY-MM-DD HH:mm:ss"
+                dateFormat="YYYY-MM-DD"
+                selected={moment(this.state.time)}
+                // selected={moment()}
+                // showTimeSelect
+                // timeFormat="HH:mm"
+                // timeIntervals={15}
+                minDate={moment().subtract(1, "months")}
+                maxDate={moment()}
+                showDisabledMonthNavigation
+                onChange={this.handleDateChange}
+              />
+
+              {/* <TextField
+                name="time"
+                type="date"
+                // defaultValue={moment().format("YYYY-MM-DD")}
+                className={this.state.classes.textField}
+                value={this.state.time}
+                onChange={this.handleDateChange}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              /> */}
+
               </Grid>
               <Grid item xs={12}>
                 <div className={this.state.classes.textField}>
@@ -214,29 +286,33 @@ class NewIssue extends React.Component {
               <Typography variant = "subheading">
                 <br/><b>Select the most appropriate category for the observed issue:</b>
               </Typography> 
-                <FormControl className={this.state.classes.formControl}>
+                <FormControl required className={this.state.classes.formControl}>
                   <InputLabel htmlFor="age-helper">Category</InputLabel>
                   <Select
                     name="category"
                     value={this.state.category}
                     onChange={this.handleChange}
+                    // required="required"
                     input={<Input name="Category" id="category-helper"/>}
                   >
                     <MenuItem value="">
                       <em>None</em>
                     </MenuItem>
                     {category.map(issueCategory =>
-                      <MenuItem onClick={this.handleClose}>{issueCategory}</MenuItem>
+                      <MenuItem onClick={this.handleClose} value={issueCategory}>{issueCategory}</MenuItem>
                     )}
                   </Select>
                   <FormHelperText>Required</FormHelperText>
                 </FormControl>
               </Grid>
+              <Typography variant="subheading" gutterBottom>
+                    <em>NOTE: Fields marked with a * are mandatory</em>
+              </Typography>
               <Grid item xs={12}>
-                {/* <Button variant="contained" size="large" color="primary">
+                <Button disabled={!isEnabled} variant="contained" size="large" color="primary" type="submit">
                   Submit
-                </Button> */}
-                <input type="submit" value="Submit" />
+                </Button>
+                {/* <input type="submit" value="Submit" /> */}
               </Grid>
             </Grid>
           </div>
