@@ -186,10 +186,11 @@ class IssueDetail extends React.Component {
                   multiline={true}
                   onChange={this.handleChange}
                 />
-                {/* <Button variant="contained" size="large" color="primary">
+                <br/><br/>
+                <Button variant="contained" size="large" color="primary" type="submit">
                   Submit Comment
-                </Button> */}
-                <input type="submit" value="Submit Comment" />
+                </Button>
+                {/* <input type="submit" value="Submit Comment" /> */}
               </form>
             </Grid>
           </Grid>
