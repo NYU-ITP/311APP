@@ -253,8 +253,24 @@ class NewIssue extends React.Component {
                 // showTimeSelect
                 // timeFormat="HH:mm"
                 // timeIntervals={15}
+                minDate={moment().subtract(1, "months")}
+                maxDate={moment()}
+                showDisabledMonthNavigation
                 onChange={this.handleDateChange}
               />
+
+              {/* <TextField
+                name="time"
+                type="date"
+                // defaultValue={moment().format("YYYY-MM-DD")}
+                className={this.state.classes.textField}
+                value={this.state.time}
+                onChange={this.handleDateChange}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              /> */}
+
               </Grid>
               <Grid item xs={12}>
                 <div className={this.state.classes.textField}>
