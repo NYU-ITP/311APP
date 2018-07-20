@@ -115,7 +115,7 @@ class IssueDetail extends React.Component {
     if (!this.state.disabledUpvote) {
       this.setState({
         disabledUpvote: true,
-        disabledDownvote: false
+        disabledDownvote: true
       });
     }
   }
@@ -123,7 +123,7 @@ class IssueDetail extends React.Component {
   handleDownvoteClicked() {
     if (!this.state.disabledDownvote) {
       this.setState({
-        disabledUpvote: false,
+        disabledUpvote: true,
         disabledDownvote: true
       });
     }

@@ -17,7 +17,9 @@ import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
   root: {
+    display: 'flex',
     flexGrow: 1,
+    flexWrap: 'wrap',
     // ...theme.typography.subheading,
     // height: 24,
     // boxSizing: 'content-box',
@@ -42,6 +44,13 @@ const styles = theme => ({
   },
   center: {
     textAlign: 'center'
+  },
+  formControl: {
+    margin: theme.spacing.unit,
+    minWidth: 120,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing.unit * 2,
   }
 });
 
@@ -89,8 +98,8 @@ class NewIssue extends React.Component {
     let postData = {
       time: "2000-01-01",
       heading: this.state.heading,
-      category: "Garbage storage",
-      // category: this.state.category,
+      // category: "Garbage storage",
+      category: this.state.category,
       content: this.state.content,
       //location: "Washington Square",
       location: this.props.history.location.state.address,
@@ -235,7 +244,7 @@ class NewIssue extends React.Component {
                       <em>None</em>
                     </MenuItem>
                     {category.map(issueCategory =>
-                      <MenuItem onClick={this.handleClose}>{issueCategory}</MenuItem>
+                      <MenuItem onClick={this.handleClose} value={issueCategory}>{issueCategory}</MenuItem>
                     )}
                   </Select>
                   <FormHelperText>Required</FormHelperText>
