@@ -54,8 +54,8 @@ class IssueDetail extends React.Component {
     this.state = {
       classes: props.classes,
       issueId: props.issueId,
-      issueDetail: [],
-      comments:[],
+      issueDetail: [{"issueId":1,"time":"2018-06-19T04:00:00.000Z","heading":"Parking disorder","category":"parking and vehicle","content":"Parking disorder in the neighborhood of washington square","location":"Washington Square","urgent":1,"downvote":1,"upvote":6,"cityUs":null,"countyUs":null,"stateUs":null,"lat":null,"lng":null}],
+      comments:[{"commentId":3,"issueId":1,"content":"I can't agree more."}],
       newCommentContent: '',
       disabledUpvote: false,
       disabledDownvote: false,
