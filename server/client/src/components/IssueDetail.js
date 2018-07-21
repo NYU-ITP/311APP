@@ -146,15 +146,37 @@ class IssueDetail extends React.Component {
       });
   }
   
-  handleDownvoteClicked() {
+  handleDownvoteClicked(e) {
     this.state.issueDetail[0].downvote = this.state.issueDetail[0].downvote - 1;
+    this.state.newdownvotes = this.state.issueDetail[0].downvote;
     if (!this.state.disabledDownvote) {
       this.setState({
         disabledUpvote: true,
         disabledDownvote: true
       });
     }
-
+    e.preventDefault();
+    let postData = {
+      upvote: this.state.newupvotes,
+      issueId: this.state.issueDetail[0].issueId
+    };
+    fetch('http://localhost:5000/api/changeDown', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(postData),
+    })
+      .then(response => {
+        console.log(response);
+        return response.json();
+      })
+      .then(data => {
+        console.log(data);
+        // this.getCommentsGorIssue();
+        // this.setState({newCommentContent: ''});
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   handleChange(event) {

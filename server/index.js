@@ -9,8 +9,8 @@ const SELECT_SPECIFIC_ISSUE = 'SELECT * from issue WHERE issueId=';
 const SELECT_COMMENTS_FOR_ISSUE = 'SELECT * from comment WHERE issueId=';
 const INSERT_NEW_ISSUE = "INSERT INTO issue SET ?";
 const INSERT_NEW_COMMENT = "INSERT INTO comment SET ?";
-const UPDATE_UPV = "UPDATE issue SET upvote = "
-const WHERE_UP = " WHERE issueId = "
+const UPDATE_UPV = "UPDATE issue SET upvote = ? WHERE issueId = ?"
+const UPDATE_DOWNV = "UPDATE issue SET downvote = ? WHERE issueId = ?"
 
 const connection = mysql.createConnection({
   host: '34.234.205.122',
@@ -88,7 +88,6 @@ app.post('/api/newIssue', jsonParser, (req, res) => {
   });
 });
 
-
 // POST /api/newComment gets JSON bodies
 app.post('/api/newComment', jsonParser, (req, res) => {
   let postData = req.body;
@@ -106,7 +105,21 @@ app.post('/api/newComment', jsonParser, (req, res) => {
 // POST /api/changeUp
 app.post('/api/changeUp', jsonParser, (req, res) => {
   let postData = req.body;
-  connection.query(UPDATE_UPV + req.params.upvote + WHERE_UP + req.params.issueId, postData, (err, results) => {
+  connection.query(UPDATE_UPV, [req.params.upvote, req.params.issueId], (err, results) => {
+    if (err) {
+      return res.send(err)
+    } else {
+      return res.json({
+        data: results
+      })
+    }
+  });
+});
+
+// POST /api/changeDown
+app.post('/api/changeDown', jsonParser, (req, res) => {
+  let postData = req.body;
+  connection.query(UPDATE_DOWNV, [req.params.downvote, req.params.issueId], (err, results) => {
     if (err) {
       return res.send(err)
     } else {

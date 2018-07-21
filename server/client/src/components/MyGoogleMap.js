@@ -280,7 +280,7 @@ class MyGoogleMap extends React.Component {
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
               The marker indicates the location of your issue to be reported. You can continue to tell us more
-              about what happeed.
+              about what happened.
             </DialogContentText>
           </DialogContent>
           <DialogActions>
