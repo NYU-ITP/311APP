@@ -270,7 +270,7 @@ class MyGoogleMap extends React.Component {
           <DialogTitle id="alert-dialog-title">{"Do you want to make a complaint?"}</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              Please click on map to tell us the location of your issue. Click on marker will take you to the
+              Please click on map to tell us the location of your issue. Clicking on a marker will take you to the
               existing issue.
             </DialogContentText>
           </DialogContent>
@@ -290,7 +290,7 @@ class MyGoogleMap extends React.Component {
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
               The marker indicates the location of your issue to be reported. You can continue to tell us more
-              about what happeed.
+              about what happened.
             </DialogContentText>
           </DialogContent>
           <DialogActions>

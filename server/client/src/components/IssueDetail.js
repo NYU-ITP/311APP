@@ -58,7 +58,9 @@ class IssueDetail extends React.Component {
       comments:[{"commentId":3,"issueId":1,"content":"I can't agree more."}],
       newCommentContent: '',
       disabledUpvote: false,
-      disabledDownvote: false
+      disabledDownvote: false,
+      newupvotes: 0,
+      newdownvotes: 0
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -111,22 +113,70 @@ class IssueDetail extends React.Component {
       });
   }
 
-  handleUpvoteClicked() {
+  handleUpvoteClicked(e) {
+    this.state.issueDetail[0].upvote = this.state.issueDetail[0].upvote + 1;
+    this.state.newupvotes = this.state.issueDetail[0].upvote;
     if (!this.state.disabledUpvote) {
       this.setState({
         disabledUpvote: true,
         disabledDownvote: true
       });
     }
+    e.preventDefault();
+    let postData = {
+      upvote: this.state.newupvotes,
+      issueId: this.state.issueDetail[0].issueId
+    };
+    fetch('http://localhost:5000/api/changeUp', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(postData),
+    })
+      .then(response => {
+        console.log(response);
+        return response.json();
+      })
+      .then(data => {
+        console.log(data);
+        // this.getCommentsGorIssue();
+        // this.setState({newCommentContent: ''});
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
   
-  handleDownvoteClicked() {
+  handleDownvoteClicked(e) {
+    this.state.issueDetail[0].downvote = this.state.issueDetail[0].downvote - 1;
+    this.state.newdownvotes = this.state.issueDetail[0].downvote;
     if (!this.state.disabledDownvote) {
       this.setState({
         disabledUpvote: true,
         disabledDownvote: true
       });
     }
+    e.preventDefault();
+    let postData = {
+      upvote: this.state.newupvotes,
+      issueId: this.state.issueDetail[0].issueId
+    };
+    fetch('http://localhost:5000/api/changeDown', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(postData),
+    })
+      .then(response => {
+        console.log(response);
+        return response.json();
+      })
+      .then(data => {
+        console.log(data);
+        // this.getCommentsGorIssue();
+        // this.setState({newCommentContent: ''});
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   handleChange(event) {
@@ -142,35 +192,37 @@ class IssueDetail extends React.Component {
               <Paper className={this.state.classes.paperHeading}>{issue.heading}</Paper>
             </Grid>
             <Grid item xs={6} className={this.state.classes.center}>
-              <Button color="primary" disabled={this.state.disabledUpvote} onClick={this.handleUpvoteClicked}>
+              <Button variant="contained" disabled={this.state.disabledUpvote} onClick={this.handleUpvoteClicked}>
                 <ListItemIcon>
                   <ThumbUpIcon />
                 </ListItemIcon>
-                {issue.upvote == null ? 0 : issue.upvote}
+                {/* {issue.upvote == null ? 0 : issue.upvote} */}
+                {this.state.issueDetail[0].upvote == null ? 0 : this.state.issueDetail[0].upvote}
               </Button>
             </Grid>
             <Grid item xs={6} className={this.state.classes.center}>
-              <Button color="primary" disabled={this.state.disabledDownvote} onClick={this.handleDownvoteClicked}>
+              <Button variant="contained" disabled={this.state.disabledDownvote} onClick={this.handleDownvoteClicked}>
                 <ListItemIcon>
                   <ThumbDownIcon />
                 </ListItemIcon>
-                {issue.downvote == null ? 0 : issue.downvote}
+                {/* {issue.downvote == null ? 0 : issue.downvote} */}
+                {this.state.issueDetail[0].downvote == null ? 0 : this.state.issueDetail[0].downvote}
               </Button>
             </Grid>
             <Grid item xs={12}>
-              <Paper className={this.state.classes.paper}>Urgent: {issue.urgent === 1 ? 'Yes' : 'No'}</Paper>
+              <Paper className={this.state.classes.paper}><b>Urgent:</b> {issue.urgent === 1 ? 'Yes' : 'No'}</Paper>
             </Grid>
             <Grid item xs={12}>
-              <Paper className={this.state.classes.paper}>Category: {issue.category}</Paper>
+              <Paper className={this.state.classes.paper}><b>Category:</b> {issue.category}</Paper>
             </Grid>
             <Grid item xs={12}>
-              <Paper className={this.state.classes.paper}>Post Time: {issue.time.substring(0, 10)}</Paper>
+              <Paper className={this.state.classes.paper}><b>Date Reported:</b> {issue.time.substring(0, 10)}</Paper>
             </Grid>
             <Grid item xs={12}>
-              <Paper className={this.state.classes.paperLeft}>Content: {issue.content}</Paper>
+              <Paper className={this.state.classes.paperLeft}><b>Details:</b> {issue.content}</Paper>
             </Grid >
             <Grid item xs={12}>
-              <Paper className={this.state.classes.paper}>Location: {issue.location}</Paper>
+              <Paper className={this.state.classes.paper}><b>Location:</b> {issue.location}</Paper>
             </Grid>
             <Grid item xs={12}>
               <Comments commentList={this.state.comments}/>
