@@ -6,8 +6,6 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
 import IssueDetail from './IssueDetail';
 const { compose, withProps, withHandlers } = require("recompose");
@@ -58,7 +56,7 @@ const MapWithAMarkerClusterer = compose(
 )(props =>
   <GoogleMap
     defaultZoom={16}
-    center={{ lat: 40.73136253622127 , lng: -73.99699021534423 }}
+    center={{ lat: props.currentLocation.lat || 40.73136253622127 , lng:props.currentLocation.lng || -73.99699021534423 }}
     onClick={props.onMapClick}
   >
     <MarkerClusterer
@@ -69,8 +67,8 @@ const MapWithAMarkerClusterer = compose(
     >
       {props.markers.map(marker => (
         <Marker
-          position={{ lat: marker.latitude, lng: marker.longitude }}
-          onClick={props.onMarkerClick}
+          position={{ lat: parseFloat(marker.lat), lng: parseFloat(marker.lng) }}
+          onClick={() => props.onMarkerClick(marker.issueId.toString())}
         />
       ))}
     </MarkerClusterer>
@@ -110,6 +108,7 @@ class MyGoogleMap extends React.Component {
       diaogOpen: false,
       instructionOpen: false,
       issueDetailOpen: false,
+      issueDetailPresent: '0',
       scroll: 'paper',
       lat: 0,
       lng: 0,
@@ -153,7 +152,7 @@ class MyGoogleMap extends React.Component {
     });
     this.setState({
 
-      markers: this.state.markers.concat({ latitude: event.latLng.lat(), longitude: event.latLng.lng() })
+      issues: this.state.issues.concat({ lat: event.latLng.lat(), lng: event.latLng.lng() })
     });
     this.setState({ dialogOpen: true });
 
@@ -179,20 +178,17 @@ class MyGoogleMap extends React.Component {
         }
         console.log("State: " + this.state.stateUs + " County: " + this.state.countyUs +
           " City: " + this.state.cityUs);
-        console.log(" Test geeting issues : " + this.state.issues[7].lat);
       } else {
         console.log('Geocode was not successful for the following reason: ' + status);
       }
     }.bind(this));
   }
 
-  handleMarkerClick = () => {
-    console.log("marker clicked");
+  handleMarkerClick = (id) => {
+    console.log("marker clicked is " + id);
     this.setState({ issueDetailOpen: true });
-  };
+    this.setState({ issueDetailPresent: id});
 
-  handleDialogClose = () => {
-    this.setState({ dialogOpen: false });
   };
 
   handleInstructionClose = () => {
@@ -205,9 +201,9 @@ class MyGoogleMap extends React.Component {
 
   handleCancleMarker = () => {
     this.setState({ dialogOpen: false });
-    var newMarkers = [...this.state.markers];
-    newMarkers.splice(this.state.markers.length - 1, 1);
-    this.setState({ markers: newMarkers });
+    var newMarkers = [...this.state.issues];
+    newMarkers.splice(this.state.issues.length - 1, 1);
+    this.setState({ issues: newMarkers });
   };
 
   handleContinue = () => {
@@ -227,7 +223,7 @@ class MyGoogleMap extends React.Component {
 
 
   componentWillMount() {
-   //  this.getGeoLocation();
+    this.getGeoLocation();
     this.getIssues();
     this.setState({ instructionOpen: true });
   }
@@ -243,7 +239,7 @@ class MyGoogleMap extends React.Component {
     return (
       <div>
         <MapWithAMarkerClusterer
-          markers={this.state.markers}
+          markers={this.state.issues}
           currentLocation={this.state.currentLatLng}
           onMapClick={(e) => this.handleMapClick(e)}
           onMarkerClick={this.handleMarkerClick}
@@ -257,7 +253,7 @@ class MyGoogleMap extends React.Component {
           <DialogTitle id="scroll-dialog-title">IssueDetail</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              <IssueDetail issueId='1'/>
+              <IssueDetail issueId= {this.state.issueDetailPresent}/>
             </DialogContentText>
           </DialogContent>
         </Dialog>
@@ -282,7 +278,7 @@ class MyGoogleMap extends React.Component {
         </Dialog>
         <Dialog
           open={this.state.dialogOpen}
-          onClose={this.handleDialogClose}
+          onClose={this.handleCancleMarker}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
