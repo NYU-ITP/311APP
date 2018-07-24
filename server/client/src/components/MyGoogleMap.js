@@ -8,14 +8,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import { withRouter } from 'react-router-dom';
 import IssueDetail from './IssueDetail';
-const { compose, withProps, withHandlers } = require("recompose");
-const {
-  withScriptjs,
-  withGoogleMap,
-  GoogleMap,
-  Marker,
-} = require("react-google-maps");
-const { MarkerClusterer } = require("react-google-maps/lib/components/addons/MarkerClusterer");
+import MapWithAMarkerClusterer from './MapWithAMarkerClusterer';
 
 const testLoc = [
   { latitude: 40.732086575353854, longitude: -73.98798983538211 },
@@ -35,67 +28,6 @@ const testLoc = [
   { latitude: 40.727631197315795, longitude: -74.00380413973392 },
 
 ];
-
-const MapWithAMarkerClusterer = compose(
-  withProps({
-    googleMapURL: "https://maps.googleapis.com/maps/api/js?key=AIzaSyDjFZnvXXlS5OXSbKSpLRSD-c6dFdsplo4&v=3.exp&libraries=geometry,drawing,places",
-    loadingElement: <div style={{ height: `100%` }} />,
-    containerElement: <div style={{ height: `510px` }} />,
-    mapElement: <div style={{ height: `100%` }} />,
-  }),
-  withHandlers({
-    onMarkerClustererClick: () => (markerClusterer) => {
-      const clickedMarkers = markerClusterer.getMarkers()
-      console.log(`Current clicked markers length: ${clickedMarkers.length}`)
-      console.log(clickedMarkers)
-    },
-  }),
-  withScriptjs,
-  withGoogleMap
-)(props =>
-  <GoogleMap
-    defaultZoom={16}
-    center={{ lat: props.currentLocation.lat || 40.73136253622127, lng: props.currentLocation.lng || -73.99699021534423 }}
-    onClick={props.onMapClick}
-  >
-    <MarkerClusterer
-      onClick={props.onMarkerClustererClick}
-      averageCenter
-      enableRetinaIcons
-      gridSize={60}
-    >
-      {props.markers.map(marker => (
-        <Marker
-          position={{ lat: parseFloat(marker.lat), lng: parseFloat(marker.lng) }}
-          onClick={() => props.onMarkerClick(marker.issueId.toString())}
-        />
-      ))}
-    </MarkerClusterer>
-  </GoogleMap>
-);
-
-const styles = theme => ({
-  container: {
-    maxWidth: 700,
-    marginTop: 20,
-    margin: "auto"
-  },
-  center: {
-    textAlign: 'center'
-  },
-  paper: {
-    padding: theme.spacing.unit * 2,
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  },
-  paperHeading: {
-    fontSize: 20,
-    fontWeight: 1000,
-    padding: theme.spacing.unit * 2,
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  }
-});
 
 class MyGoogleMap extends React.Component {
   constructor(props) {
@@ -119,9 +51,21 @@ class MyGoogleMap extends React.Component {
         lat: 0,
         lng: 0
       },
-
       userMarkerShown: false
     }
+  }
+
+  componentWillMount() {
+    this.getGeoLocation();
+    this.getIssues();
+    this.setState({ instructionOpen: true });
+  }
+
+  getIssues = _ => {
+    fetch('http://localhost:5000/issues')
+      .then(response => response.json())
+      .then(response => this.setState({ issues: response.data }))
+      .catch(err => console.log(err))
   }
 
   getGeoLocation = () => {
@@ -143,24 +87,47 @@ class MyGoogleMap extends React.Component {
     }
   }
 
-  handleMapClick = (event) => {
-    console.log("user is setting lat:" + event.latLng.lat() + " lng:" + event.latLng.lng());
-    this.setState({
-      lat: event.latLng.lat(),
-      lng: event.latLng.lng()
-    });
-    this.setState({
-      issues: this.state.issues.concat({ lat: event.latLng.lat(), lng: event.latLng.lng() })
-    });
-    this.setState({ dialogOpen: true });
+  handleMarkerClick = (id) => {
+    console.log("marker clicked is " + id);
+    this.setState({ issueDetailPresent: id });
+    this.setState({ issueDetailOpen: true });
 
+  };
+
+  handleInstructionClose = () => {
+    this.setState({ instructionOpen: false });
+  };
+
+  handleIssueDetailClose = () => {
+    this.setState({ issueDetailOpen: false });
+  };
+
+  handleMapClick = () => {
+    this.setState({ dialogOpen: true });
+  }
+
+  handleCancleMarker = () => {
+    this.setState({ dialogOpen: false });
+    var newMarkers = [...this.state.issues];
+    newMarkers.splice(this.state.issues.length - 1, 1);
+    this.setState({ issues: newMarkers });
+  };
+
+  handleContinueMarker = (event) => {
     let geocoder = new window.google.maps.Geocoder();
     geocoder.geocode({ 'location': event.latLng }, function (results, status) {
       if (status === 'OK') {
-        const geoResult = results[0];
+        console.log("user is setting lat:" + event.latLng.lat() + " lng:" + event.latLng.lng());
         console.log("The address is " + results[0].formatted_address);
-        this.setState({ address: results[0].formatted_address });
-        console.log(geoResult);
+        console.log(results[0]);
+        this.setState({
+          lat: event.latLng.lat(),
+          lng: event.latLng.lng(),
+          issues: this.state.issues.concat({ lat: event.latLng.lat(), lng: event.latLng.lng() }),
+          address: results[0].formatted_address,
+          dialogOpen: false,
+        });
+        
         for (let address of results[0].address_components) {
           for (let level of address.types) {
             if (level === "locality" || level === "sublocality") {
@@ -180,32 +147,7 @@ class MyGoogleMap extends React.Component {
         console.log('Geocode was not successful for the following reason: ' + status);
       }
     }.bind(this));
-  }
 
-  handleMarkerClick = (id) => {
-    console.log("marker clicked is " + id);
-    this.setState({ issueDetailPresent: id });
-    this.setState({ issueDetailOpen: true });
-
-  };
-
-  handleInstructionClose = () => {
-    this.setState({ instructionOpen: false });
-  };
-
-  handleIssueDetailClose = () => {
-    this.setState({ issueDetailOpen: false });
-  };
-
-  handleCancleMarker = () => {
-    this.setState({ dialogOpen: false });
-    var newMarkers = [...this.state.issues];
-    newMarkers.splice(this.state.issues.length - 1, 1);
-    this.setState({ issues: newMarkers });
-  };
-
-  handleContinue = () => {
-    this.setState({ dialogOpen: false });
     this.props.history.push({
       pathname: '/newIssue/',
       state: {
@@ -218,20 +160,6 @@ class MyGoogleMap extends React.Component {
       },
     });
   };
-
-
-  componentWillMount() {
-    this.getGeoLocation();
-    this.getIssues();
-    this.setState({ instructionOpen: true });
-  }
-
-  getIssues = _ => {
-    fetch('http://localhost:5000/issues')
-      .then(response => response.json())
-      .then(response => this.setState({ issues: response.data }))
-      .catch(err => console.log(err))
-  }
 
   render() {
     return (
@@ -291,7 +219,7 @@ class MyGoogleMap extends React.Component {
             <Button onClick={this.handleCancleMarker} color="primary">
               Cancel
             </Button>
-            <Button onClick={this.handleContinue} color="primary" autoFocus>
+            <Button onClick={this.handleContinueMarker} color="primary" autoFocus>
               Next
             </Button>
           </DialogActions>
@@ -301,8 +229,6 @@ class MyGoogleMap extends React.Component {
     );
   }
 }
-
-
 
 export default withRouter(MyGoogleMap);
 
