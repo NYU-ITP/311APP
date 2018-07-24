@@ -187,8 +187,7 @@ class IssueDetail extends React.Component {
                 <ListItemIcon>
                   <ThumbUpIcon />
                 </ListItemIcon>
-                {/* {issue.upvote == null ? 0 : issue.upvote} */}
-                {this.state.issueDetail[0].upvote == null ? 0 : this.state.issueDetail[0].upvote}
+                {issue.upvote == null ? 0 : issue.upvote}
               </Button>
             </Grid>
             <Grid item xs={6} className={this.state.classes.center}>
@@ -196,8 +195,7 @@ class IssueDetail extends React.Component {
                 <ListItemIcon>
                   <ThumbDownIcon />
                 </ListItemIcon>
-                {/* {issue.downvote == null ? 0 : issue.downvote} */}
-                {this.state.issueDetail[0].downvote == null ? 0 : this.state.issueDetail[0].downvote}
+                {issue.downvote == null ? 0 : issue.downvote}
               </Button>
             </Grid>
             <Grid item xs={12}>
