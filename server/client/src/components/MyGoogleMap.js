@@ -10,32 +10,12 @@ import { withRouter } from 'react-router-dom';
 import IssueDetail from './IssueDetail';
 import MapWithAMarkerClusterer from './MapWithAMarkerClusterer';
 
-const testLoc = [
-  { latitude: 40.732086575353854, longitude: -73.98798983538211 },
-  { latitude: 40.73223291482773, longitude: -73.99138014757693 },
-  { latitude: 40.732736970551905, longitude: -74.0021089836365 },
-  { latitude: 40.73181015546955, longitude: -74.00307457888186 },
-  { latitude: 40.72836294045953, longitude: -74.00288145983279 },
-  { latitude: 40.73148495413541, longitude: -73.99487774813235 },
-  { latitude: 40.73211909526478, longitude: -73.99861138308108 },
-  { latitude: 40.725925340669626, longitude: -73.99736166000366 },
-  { latitude: 40.72623273248103, longitude: -73.99440567934573 },
-  { latitude: 40.72844424475662, longitude: -73.99970572435916 },
-  { latitude: 40.730037788925166, longitude: -73.99934094393313 },
-  { latitude: 40.72963127618141, longitude: -74.00217335665286 },
-  { latitude: 40.72849302728718, longitude: -74.00414746248782 },
-  { latitude: 40.727712502506876, longitude: -74.00373976671756 },
-  { latitude: 40.727631197315795, longitude: -74.00380413973392 },
-
-];
-
 class MyGoogleMap extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       classes: props.classes,
       issues: [],
-      markers: testLoc,
       diaogOpen: false,
       instructionOpen: false,
       issueDetailOpen: false,
