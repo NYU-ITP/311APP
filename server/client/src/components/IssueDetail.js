@@ -53,14 +53,11 @@ class IssueDetail extends React.Component {
     // issueId = issueId[issueId.length - 1];
     this.state = {
       classes: props.classes,
-      issueId: props.issueId,
-      issueDetail: [{"issueId":1,"time":"2018-06-19T04:00:00.000Z","heading":"Parking disorder","category":"parking and vehicle","content":"Parking disorder in the neighborhood of washington square","location":"Washington Square","urgent":1,"downvote":1,"upvote":6,"cityUs":null,"countyUs":null,"stateUs":null,"lat":null,"lng":null}],
-      comments:[{"commentId":3,"issueId":1,"content":"I can't agree more."}],
+      issueDetail: [{ "issueId": 1, "time": "2018-06-19T04:00:00.000Z", "heading": "Parking disorder", "category": "parking and vehicle", "content": "Parking disorder in the neighborhood of washington square", "location": "Washington Square", "urgent": 1, "downvote": 1, "upvote": 6, "cityUs": null, "countyUs": null, "stateUs": null, "lat": null, "lng": null }],
+      comments: [{ "commentId": 3, "issueId": 1, "content": "I can't agree more." }],
       newCommentContent: '',
       disabledUpvote: false,
       disabledDownvote: false,
-      newupvotes: 0,
-      newdownvotes: 0
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -74,14 +71,14 @@ class IssueDetail extends React.Component {
   }
 
   getIssueDetail = _ => {
-    fetch('http://localhost:5000/issueDetail/' + this.state.issueId)
+    fetch('http://localhost:5000/issueDetail/' + this.props.issueId)
       .then(response => response.json())
       .then(response => this.setState({ issueDetail: response.data }))
       .catch(err => console.log(err))
   }
 
   getCommentsGorIssue = _ => {
-    fetch('http://localhost:5000/issueComments/' + this.state.issueId)
+    fetch('http://localhost:5000/issueComments/' + this.props.issueId)
       .then(response => response.json())
       .then(response => this.setState({ comments: response.data }))
       .catch(err => console.log(err))
@@ -91,7 +88,7 @@ class IssueDetail extends React.Component {
     e.preventDefault();
     let postData = {
       content: this.state.newCommentContent,
-      issueId: this.state.issueId
+      issueId: this.props.issueId
     };
     // On submit of the form, send a POST request with the data to the server.
     fetch('http://localhost:5000/api/newComment', {
@@ -106,7 +103,7 @@ class IssueDetail extends React.Component {
       .then(data => {
         console.log(data);
         this.getCommentsGorIssue();
-        this.setState({newCommentContent: ''});
+        this.setState({ newCommentContent: '' });
       })
       .catch(err => {
         console.log(err);
@@ -114,18 +111,10 @@ class IssueDetail extends React.Component {
   }
 
   handleUpvoteClicked(e) {
-    this.state.issueDetail[0].upvote = this.state.issueDetail[0].upvote + 1;
-    this.state.newupvotes = this.state.issueDetail[0].upvote;
-    if (!this.state.disabledUpvote) {
-      this.setState({
-        disabledUpvote: true,
-        disabledDownvote: true
-      });
-    }
     e.preventDefault();
     let postData = {
-      upvote: this.state.newupvotes,
-      issueId: this.state.issueDetail[0].issueId
+      upvote: this.state.issueDetail[0].upvote + 1,
+      issueId: this.props.issueId
     };
     fetch('http://localhost:5000/api/changeUp', {
       method: 'POST',
@@ -138,27 +127,24 @@ class IssueDetail extends React.Component {
       })
       .then(data => {
         console.log(data);
-        // this.getCommentsGorIssue();
-        // this.setState({newCommentContent: ''});
+        if (!this.state.disabledUpvote) {
+          this.state.issueDetail[0].upvote = this.state.issueDetail[0].upvote + 1;
+          this.setState({
+            disabledUpvote: true,
+            disabledDownvote: true,
+          })
+        }
       })
       .catch(err => {
         console.log(err);
       });
   }
-  
+
   handleDownvoteClicked(e) {
-    this.state.issueDetail[0].downvote = this.state.issueDetail[0].downvote - 1;
-    this.state.newdownvotes = this.state.issueDetail[0].downvote;
-    if (!this.state.disabledDownvote) {
-      this.setState({
-        disabledUpvote: true,
-        disabledDownvote: true
-      });
-    }
     e.preventDefault();
     let postData = {
-      upvote: this.state.newupvotes,
-      issueId: this.state.issueDetail[0].issueId
+      downvote: this.state.issueDetail[0].downvote + 1,
+      issueId: this.props.issueId
     };
     fetch('http://localhost:5000/api/changeDown', {
       method: 'POST',
@@ -171,8 +157,13 @@ class IssueDetail extends React.Component {
       })
       .then(data => {
         console.log(data);
-        // this.getCommentsGorIssue();
-        // this.setState({newCommentContent: ''});
+        if (!this.state.disabledDownvote) {
+          this.state.issueDetail[0].downvote = this.state.issueDetail[0].downvote + 1;
+          this.setState({
+            disabledUpvote: true,
+            disabledDownvote: true
+          });
+        }
       })
       .catch(err => {
         console.log(err);
@@ -225,7 +216,7 @@ class IssueDetail extends React.Component {
               <Paper className={this.state.classes.paper}><b>Location:</b> {issue.location}</Paper>
             </Grid>
             <Grid item xs={12}>
-              <Comments commentList={this.state.comments}/>
+              <Comments commentList={this.state.comments} />
             </Grid>
             <Grid item xs={12} className={this.state.classes.center}>
               <form onSubmit={this.handleSubmit}>
@@ -238,11 +229,10 @@ class IssueDetail extends React.Component {
                   multiline={true}
                   onChange={this.handleChange}
                 />
-                <br/><br/>
+                <br /><br />
                 <Button variant="contained" size="large" color="primary" type="submit">
                   Submit Comment
                 </Button>
-                {/* <input type="submit" value="Submit Comment" /> */}
               </form>
             </Grid>
           </Grid>

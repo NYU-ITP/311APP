@@ -38,7 +38,6 @@ const testLoc = [
 
 const MapWithAMarkerClusterer = compose(
   withProps({
-
     googleMapURL: "https://maps.googleapis.com/maps/api/js?key=AIzaSyDjFZnvXXlS5OXSbKSpLRSD-c6dFdsplo4&v=3.exp&libraries=geometry,drawing,places",
     loadingElement: <div style={{ height: `100%` }} />,
     containerElement: <div style={{ height: `510px` }} />,
@@ -56,7 +55,7 @@ const MapWithAMarkerClusterer = compose(
 )(props =>
   <GoogleMap
     defaultZoom={16}
-    center={{ lat: props.currentLocation.lat || 40.73136253622127 , lng:props.currentLocation.lng || -73.99699021534423 }}
+    center={{ lat: props.currentLocation.lat || 40.73136253622127, lng: props.currentLocation.lng || -73.99699021534423 }}
     onClick={props.onMapClick}
   >
     <MarkerClusterer
@@ -151,7 +150,6 @@ class MyGoogleMap extends React.Component {
       lng: event.latLng.lng()
     });
     this.setState({
-
       issues: this.state.issues.concat({ lat: event.latLng.lat(), lng: event.latLng.lng() })
     });
     this.setState({ dialogOpen: true });
@@ -186,8 +184,8 @@ class MyGoogleMap extends React.Component {
 
   handleMarkerClick = (id) => {
     console.log("marker clicked is " + id);
+    this.setState({ issueDetailPresent: id });
     this.setState({ issueDetailOpen: true });
-    this.setState({ issueDetailPresent: id});
 
   };
 
@@ -212,11 +210,11 @@ class MyGoogleMap extends React.Component {
       pathname: '/newIssue/',
       state: {
         address: this.state.address,
+        stateUs: this.state.stateUs,
         cityUs: this.state.cityUs,
+        countyUs: this.state.countyUs,
         lat: this.state.lat,
         lng: this.state.lng,
-        countyUs: this.state.countyUs,
-        stateUs: this.state.stateUs
       },
     });
   };
