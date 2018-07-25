@@ -17,6 +17,7 @@ class App extends React.Component {
           <div>
             <Header />
             <Route exact path="/" component={HomePage} />
+            {/* <Route exact path="/" component={Header} /> */}
             <Route exact path="/issues" component={Issues} />
             <Route exact path="/issues/:issueIdInRoute" component={IssueDetail} />
             <Route exact path="/newIssue" component={NewIssue} />

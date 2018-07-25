@@ -24,24 +24,41 @@ const styles = theme => ( {
   },
 });
 
+class Header extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: false,
+      classes: props.classes,
+      disabled: true
+    }
+  this.handleSubmit = this.handleSubmit.bind(this);
+  }
 
-function Header(props) {
-  const { classes } = props;
-  return (
-    <div className={classes.root}>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="title" color="inherit" className={classes.flex}>
-            311
-          </Typography>
-          <Button variant="contained" color="primary" className={classes.button}>Login</Button>
-        </Toolbar>
-      </AppBar>
-    </div>
-  );
+  handleSubmit(e){
+    e.preventDefault();
+    this.props.history.push({
+      pathname: '/govSelect/',
+    });
+  }
+
+  render() {
+    return (
+      <div className={this.state.classes.root}>
+        <AppBar position="static">
+          <Toolbar>
+            <IconButton className={this.state.classes.menuButton} color="inherit" aria-label="Menu">
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="title" color="inherit" className={this.state.classes.flex}>
+              311
+            </Typography>
+            <Button variant="contained" color="primary" className={this.state.classes.button} onClick={this.handleSubmit}>Login</Button>
+          </Toolbar>
+        </AppBar>
+      </div>
+    );
+  }
 }
 
 

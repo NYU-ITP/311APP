@@ -2,8 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -66,44 +64,36 @@ class Gov extends React.Component {
         }
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        // this.getMunDetails = this.getMunDetails(this);
+        this.handleLevelChange = this.handleLevelChange.bind(this);
+        this.getMunDetails = this.getMunDetails.bind(this);
     }
 
-    componentWillMount() {
-        this.getMunDetails();
-    }
+    // componentWillMount() {
+    //     this.getMunDetails();
+    // }
+
+    // getIssueDetail = _ => {
+    //     fetch('http://localhost:5000/issueDetail/' + this.props.issueId)
+    //       .then(response => response.json())
+    //       .then(response => this.setState({ issueDetail: response.data }))
+    //       .catch(err => console.log(err))
+    //   }
 
     getMunDetails = _ => {
-        // fetch('http://localhost:5000/munDetails')
-        // .then(response => response.json())
-        // .then(response => this.setState({ mun_details: response.data }))
-        // .catch(err => console.log(err))
-        let postData = {
-            level: this.state.mun_level
-          };
-          fetch('http://localhost:5000/api/munDetails', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(postData),
-          })
-            .then(response => {
-              console.log(response);
-              response => response.json();
-            })
-            .then(response =>
-                this.setState({mun_details: response.data}))
-            .then(data => {
-              console.log(data);
-            })
-            .catch(err => {
-              console.log(err);
-            });
+        fetch('http://localhost:5000/munDetails/' + this.state.mun_level)
+        .then(response => response.json())
+        .then(response => this.setState({mun_details: response.data}))
+        .catch(err => console.log(err))
+    }
+
+    handleLevelChange(event) {
+        this.setState({[event.target.name]: event.target.value});
+        this.setState({disabled: false});
+        this.getMunDetails();
     }
 
     handleChange(event) {
         this.setState({[event.target.name]: event.target.value});
-        this.setState({disabled: false});
-        this.getMunDetails();
     }
     
     handleClose = event => {
@@ -131,7 +121,7 @@ class Gov extends React.Component {
                             <Select
                                 name="mun_level"
                                 value={this.state.mun_level}
-                                onChange={this.handleChange}
+                                onChange={this.handleLevelChange}
                                 // required="required"
                                 input={<Input name="Municipality Level" id="mun-helper"/>}
                             >
@@ -154,7 +144,7 @@ class Gov extends React.Component {
                             <Select
                                 name="mun_name"
                                 value={this.state.mun_name}
-                                //onChange={this.handleChange}
+                                onChange={this.handleChange}
                                 // required="required"
                                 disabled={this.state.disabled}
                                 input={<Input name="Municipality Name" id="munname-helper"/>}

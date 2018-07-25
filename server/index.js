@@ -51,8 +51,8 @@ app.get('/issues', (req, res) => {
   });
 });
 
-app.post('/munDetails', jsonParser, (req, res) => {
-  connection.query(SELECT_MUN_DETAILS_QUERY, [req.body.level], (err, results) => {
+app.get('/munDetails/:level', (req, res) => {
+  connection.query(SELECT_MUN_DETAILS_QUERY + req.params.level, (err, results) => {
     if (err) {
       return res.send(err)
     } else {
