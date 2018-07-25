@@ -77,8 +77,8 @@ class MyGoogleMap extends React.Component {
         console.log(issue);
         this.setState({
           currentLatLng: {
-            lat: issue.lat,
-            lng: issue.lng
+            lat: parseFloat(issue.lat),
+            lng: parseFloat(issue.lng)
           }
         })
       }
@@ -158,10 +158,6 @@ class MyGoogleMap extends React.Component {
     });
   };
 
-  handleCenterChanged = () => {
-  const center = this.refs.map.getCenter();
-  console.log(center);
-  }
 
   render() {
     return (
@@ -171,7 +167,6 @@ class MyGoogleMap extends React.Component {
           currentLocation={this.state.currentLatLng}
           onMapClick={(e) => this.handleMapClick(e)}
           onMarkerClick={this.handleMarkerClick}
-          handleCenterChanged= {this.handleCenterChanged}
         />
         <Dialog
           open={this.state.issueDetailOpen}
