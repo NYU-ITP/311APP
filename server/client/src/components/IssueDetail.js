@@ -78,6 +78,7 @@ class IssueDetail extends React.Component {
       .then(response => response.json())
       .then(response => this.setState({ issueDetail: response.data }))
       .catch(err => console.log(err))
+      this.setState({newupvotes: this.state.issueDetail.upvote})
   }
 
   getCommentsGorIssue = _ => {
@@ -114,8 +115,8 @@ class IssueDetail extends React.Component {
   }
 
   handleUpvoteClicked(e) {
-    this.state.issueDetail[0].upvote = this.state.issueDetail[0].upvote + 1;
-    this.state.newupvotes = this.state.issueDetail[0].upvote;
+    this.setState({newupvotes: this.state.issueDetail[0].upvote + 1});
+    // this.setState({issueDetail[0].upvote: this.state.newupvotes});
     if (!this.state.disabledUpvote) {
       this.setState({
         disabledUpvote: true,
@@ -125,7 +126,7 @@ class IssueDetail extends React.Component {
     e.preventDefault();
     let postData = {
       upvote: this.state.newupvotes,
-      issueId: this.state.issueDetail[0].issueId
+      issueId: this.state.issueId
     };
     fetch('http://localhost:5000/api/changeUp', {
       method: 'POST',
@@ -147,8 +148,7 @@ class IssueDetail extends React.Component {
   }
   
   handleDownvoteClicked(e) {
-    this.state.issueDetail[0].downvote = this.state.issueDetail[0].downvote - 1;
-    this.state.newdownvotes = this.state.issueDetail[0].downvote;
+    this.setState({newdownvotes: this.state.issueDetail[0].downvote + 1});
     if (!this.state.disabledDownvote) {
       this.setState({
         disabledUpvote: true,
@@ -157,8 +157,8 @@ class IssueDetail extends React.Component {
     }
     e.preventDefault();
     let postData = {
-      upvote: this.state.newupvotes,
-      issueId: this.state.issueDetail[0].issueId
+      downvote: this.state.newdownvotes,
+      issueId: this.state.issueId
     };
     fetch('http://localhost:5000/api/changeDown', {
       method: 'POST',

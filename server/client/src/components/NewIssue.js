@@ -72,16 +72,7 @@ class NewIssue extends React.Component {
       stateUs: '',
       lat: '',
       lng: '',
-      // time: moment(new Date()).format("YYYY-MM-DD HH:mm:ss")
       time: moment(this.props.start)
-      // datetime: `${new Date().getFullYear()}-${`${new Date().getMonth() +
-      //   1}`.padStart(2, 0)}-${`${new Date().getDay() + 1}`.padStart(
-      //   2,
-      //   0
-      // )}T${`${new Date().getHours()}`.padStart(
-      //   2,
-      //   0
-      // )}:${`${new Date().getMinutes()}`.padStart(2, 0)}`,
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -119,8 +110,8 @@ class NewIssue extends React.Component {
       //location: "Washington Square",
       location: this.props.history.location.state.address,
       urgent: 1,
-      downvote: 1,
-      upvote: 3,
+      downvote: 0,
+      upvote: 0,
       cityUs: this.props.history.location.state.cityUs,
       countyUs: this.props.history.location.state.countyUs,
       stateUs: this.props.history.location.state.stateUs,
