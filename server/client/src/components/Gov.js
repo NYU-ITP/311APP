@@ -57,7 +57,7 @@ class Gov extends React.Component {
         this.state = {
             open: false,
             classes: props.classes,
-            mun_level: '',
+            mun_level: 'City',
             mun_name: '',
             mun_details: [],
             disabled: true
@@ -80,14 +80,15 @@ class Gov extends React.Component {
     //   }
 
     getMunDetails = _ => {
-        fetch('http://localhost:5000/munDetails/' + this.state.mun_level)
+        // console.log(this.state.mun_level);
+        fetch("http://localhost:5000/munDetails/" + this.state.mun_level)
         .then(response => response.json())
         .then(response => this.setState({mun_details: response.data}))
         .catch(err => console.log(err))
     }
 
     handleLevelChange(event) {
-        this.setState({[event.target.name]: event.target.value});
+        this.setState({mun_level: event.target.value});
         this.setState({disabled: false});
         this.getMunDetails();
     }
