@@ -5,6 +5,7 @@ import HomePage from './HomePage';
 import Issues from './Issues';
 import IssueDetail from './IssueDetail';
 import NewIssue from './NewIssue';
+import Gov from './Gov';
 
 
 
@@ -19,6 +20,7 @@ class App extends React.Component {
             <Route exact path="/issues" component={Issues} />
             <Route exact path="/issues/:issueIdInRoute" component={IssueDetail} />
             <Route exact path="/newIssue" component={NewIssue} />
+            <Route exact path="/govSelect" component={Gov} />
           </div>
           </HashRouter>
       </div>

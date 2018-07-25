@@ -9,6 +9,7 @@ import Button from '@material-ui/core/Button';
 import { withRouter } from 'react-router-dom';
 import IssueDetail from './IssueDetail';
 import MapWithAMarkerClusterer from './MapWithAMarkerClusterer';
+import { withStyles } from '@material-ui/core/styles';
 
 class MyGoogleMap extends React.Component {
   constructor(props) {
@@ -141,6 +142,12 @@ class MyGoogleMap extends React.Component {
     });
   };
 
+  handleGovClick = (event) => {
+    this.props.history.push({
+      pathname: '/govSelect/',
+    });
+  };
+
   render() {
     return (
       <div>
@@ -204,8 +211,12 @@ class MyGoogleMap extends React.Component {
             </Button>
           </DialogActions>
         </Dialog>
+        <div position="absolute" bottom="0" left="0">
+          <Button variant="contained" size="large" color="primary" onClick={this.handleGovClick}>
+            Municipality
+          </Button>
+        </div>
       </div>
-
     );
   }
 }
