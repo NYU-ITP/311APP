@@ -101,13 +101,10 @@ class NewIssue extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     let postData = {
-      // time: "2000-01-01",
-      time: this.state.time,
+      time: moment(this.state.time).format('YYYY-MM-DD'),
       heading: this.state.heading,
-      // category: "Garbage storage",
       category: this.state.category,
       content: this.state.content,
-      //location: "Washington Square",
       location: this.props.history.location.state.address,
       urgent: 1,
       downvote: 0,
@@ -130,12 +127,12 @@ class NewIssue extends React.Component {
       })
       .then(data => {
         console.log(data);
+        this.props.history.push({
+          pathname: '/',
+        });
       })
       .catch(err => {
         console.log(err);
-      });
-      this.props.history.push({
-        pathname: '/',
       });
   }
 
@@ -161,20 +158,6 @@ class NewIssue extends React.Component {
             <b>DISCLAIMER:</b> Emergency assistance is not available through this Service Request. 
             <br/>Call 911 to report a crime or medical emergency; fighting, screaming, gunshots, explosions, or suspicious breaking of glass or wood.
           </Typography>
-            {/* <div className={this.state.classes.textField}>
-              User Alert
-            <div>
-                Emergency assistance is not available through this Service Request.
-                Call 911 to report:
-            <ul>
-                  A crime or medical emergency
-            </ul>
-                <ul>
-                  Fighting, screaming, gunshots, explosions, or suspicious breaking of glass or wood
-            </ul>
-                Describe the problem.
-            </div>
-            </div> */}
             <Grid container spacing={24}>
               <Grid item xs={12}>
               <Typography variant = "subheading">
@@ -222,19 +205,6 @@ class NewIssue extends React.Component {
               <Typography variant = "subheading">
                 <br/><b>When was the issue observed? (YYYY-MM-DD)</b>
               </Typography> 
-                {/* <TextField
-                  id="datetime-local"
-                  //label="Date/Time Observed"
-                  // value={this.state.datetime}
-                  onChange={this.handleChange}
-                  type="datetime-local"
-                  defaultValue="2017-05-24T10:30"
-                  // defaultValue={this.state.datetime}
-                  className={this.state.classes.textField}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                /> */}
               <DatePicker
                 name="time"
                 // dateFormat="YYYY-MM-DD HH:mm:ss"
@@ -249,25 +219,11 @@ class NewIssue extends React.Component {
                 showDisabledMonthNavigation
                 onChange={this.handleDateChange}
               />
-
-              {/* <TextField
-                name="time"
-                type="date"
-                // defaultValue={moment().format("YYYY-MM-DD")}
-                className={this.state.classes.textField}
-                value={this.state.time}
-                onChange={this.handleDateChange}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              /> */}
-
               </Grid>
               <Grid item xs={12}>
                 <div className={this.state.classes.textField}>
                   {
                     this.props.history.location.state
-                      // ? <div>Location : {this.props.history.location.state.address}</div>
                       ? <Typography variant = "subheading"><b><br/>Location (as selected on map) :</b> {this.props.history.location.state.address}</Typography>
                       : null
                   }

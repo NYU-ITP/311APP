@@ -105,7 +105,7 @@ app.post('/api/newComment', jsonParser, (req, res) => {
 // POST /api/changeUp
 app.post('/api/changeUp', jsonParser, (req, res) => {
   let postData = req.body;
-  connection.query(UPDATE_UPV, [req.params.upvote, req.params.issueId], (err, results) => {
+  connection.query(UPDATE_UPV, [postData.upvote, postData.issueId], (err, results) => {
     if (err) {
       return res.send(err)
     } else {
@@ -119,7 +119,7 @@ app.post('/api/changeUp', jsonParser, (req, res) => {
 // POST /api/changeDown
 app.post('/api/changeDown', jsonParser, (req, res) => {
   let postData = req.body;
-  connection.query(UPDATE_DOWNV, [req.params.downvote, req.params.issueId], (err, results) => {
+  connection.query(UPDATE_DOWNV, [postData.downvote, postData.issueId], (err, results) => {
     if (err) {
       return res.send(err)
     } else {
