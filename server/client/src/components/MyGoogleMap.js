@@ -72,7 +72,17 @@ class MyGoogleMap extends React.Component {
     console.log("marker clicked is " + id);
     this.setState({ issueDetailPresent: id });
     this.setState({ issueDetailOpen: true });
-
+    for (let issue of this.state.issues) {
+      if (issue.issueId.toString() === id) {
+        console.log(issue);
+        this.setState({
+          currentLatLng: {
+            lat: issue.lat,
+            lng: issue.lng
+          }
+        })
+      }
+    }
   };
 
   handleInstructionClose = () => {
@@ -148,6 +158,11 @@ class MyGoogleMap extends React.Component {
     });
   };
 
+  handleCenterChanged = () => {
+  const center = this.refs.map.getCenter();
+  console.log(center);
+  }
+
   render() {
     return (
       <div>
@@ -156,6 +171,7 @@ class MyGoogleMap extends React.Component {
           currentLocation={this.state.currentLatLng}
           onMapClick={(e) => this.handleMapClick(e)}
           onMarkerClick={this.handleMarkerClick}
+          handleCenterChanged= {this.handleCenterChanged}
         />
         <Dialog
           open={this.state.issueDetailOpen}
