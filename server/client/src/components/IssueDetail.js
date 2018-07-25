@@ -75,7 +75,6 @@ class IssueDetail extends React.Component {
       .then(response => response.json())
       .then(response => this.setState({ issueDetail: response.data }))
       .catch(err => console.log(err))
-      this.setState({newupvotes: this.state.issueDetail.upvote})
   }
 
   getCommentsGorIssue = _ => {

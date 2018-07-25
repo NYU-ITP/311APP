@@ -55,15 +55,29 @@ class Gov extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            classes: props.classes
+            classes: props.classes,
+            mun_level: '',
+            mun_name: '',
+            mun_details: []
         }
         this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    componentWillMount() {
+        this.getMunDetails();
+    }
+
+    getMunDetails = _ => {
+        fetch('http://localhost:5000/munDetails')
+        .then(response => response.json())
+        .then(response => this.setState({ mun_details: response.data }))
+        .catch(err => console.log(err))
     }
 
     handleSubmit(e) {
         e.preventDefault();
     }
-    
+
     render() {
         return(
             <form onSubmit={this.handleSubmit}>
