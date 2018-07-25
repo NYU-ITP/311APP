@@ -11,7 +11,7 @@ const INSERT_NEW_ISSUE = "INSERT INTO issue SET ?";
 const INSERT_NEW_COMMENT = "INSERT INTO comment SET ?";
 const UPDATE_UPV = "UPDATE issue SET upvote = ? WHERE issueId = ?";
 const UPDATE_DOWNV = "UPDATE issue SET downvote = ? WHERE issueId = ?";
-const SELECT_MUN_DETAILS_QUERY = "SELECT mun_name, mun_level FROM municipality";
+const SELECT_MUN_DETAILS_QUERY = "SELECT mun_name FROM municipality WHERE mun_level = ?";
 
 const connection = mysql.createConnection({
   host: '34.234.205.122',
@@ -51,8 +51,8 @@ app.get('/issues', (req, res) => {
   });
 });
 
-app.get('/munDetails', (req, res) => {
-  connection.query(SELECT_MUN_DETAILS_QUERY, (err, results) => {
+app.post('/munDetails', jsonParser, (req, res) => {
+  connection.query(SELECT_MUN_DETAILS_QUERY, [req.body.level], (err, results) => {
     if (err) {
       return res.send(err)
     } else {

@@ -11,6 +11,8 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { renderComponent } from 'recompose';
+import { levels } from '../globals';
+import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
     root: {
@@ -29,7 +31,7 @@ const styles = theme => ({
     },
     container: {
       maxWidth: 700,
-      marginTop: 20,
+      marginTop: 30,
       margin: "auto"
     },
     popperClose: {
@@ -55,12 +57,16 @@ class Gov extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            open: false,
             classes: props.classes,
             mun_level: '',
             mun_name: '',
-            mun_details: []
+            mun_details: [],
+            disabled: true
         }
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        // this.getMunDetails = this.getMunDetails(this);
     }
 
     componentWillMount() {
@@ -68,11 +74,44 @@ class Gov extends React.Component {
     }
 
     getMunDetails = _ => {
-        fetch('http://localhost:5000/munDetails')
-        .then(response => response.json())
-        .then(response => this.setState({ mun_details: response.data }))
-        .catch(err => console.log(err))
+        // fetch('http://localhost:5000/munDetails')
+        // .then(response => response.json())
+        // .then(response => this.setState({ mun_details: response.data }))
+        // .catch(err => console.log(err))
+        let postData = {
+            level: this.state.mun_level
+          };
+          fetch('http://localhost:5000/api/munDetails', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(postData),
+          })
+            .then(response => {
+              console.log(response);
+              response => response.json();
+            })
+            .then(response =>
+                this.setState({mun_details: response.data}))
+            .then(data => {
+              console.log(data);
+            })
+            .catch(err => {
+              console.log(err);
+            });
     }
+
+    handleChange(event) {
+        this.setState({[event.target.name]: event.target.value});
+        this.setState({disabled: false});
+        this.getMunDetails();
+    }
+    
+    handleClose = event => {
+        if (this.target1.contains(event.target)) {
+            return;
+        }
+        this.setState({ open: false });
+    };
 
     handleSubmit(e) {
         e.preventDefault();
@@ -82,7 +121,54 @@ class Gov extends React.Component {
         return(
             <form onSubmit={this.handleSubmit}>
                 <div className={this.state.classes.root}>
-                    <div className={this.state.classes.container}> HELLO
+                    <div className={this.state.classes.container}>
+                        <Grid item xs={12}>
+                            <FormControl required className={this.state.classes.formControl}>
+                            <Typography variant = "subheading">
+                                <br/><b>Select the appropriate municipality level:</b>
+                            </Typography>
+                            {/* <InputLabel htmlFor="mun-helper">Levels</InputLabel> */}
+                            <Select
+                                name="mun_level"
+                                value={this.state.mun_level}
+                                onChange={this.handleChange}
+                                // required="required"
+                                input={<Input name="Municipality Level" id="mun-helper"/>}
+                            >
+                                <MenuItem value="">
+                                <em>None</em>
+                                </MenuItem>
+                                {levels.map(lev =>
+                                <MenuItem onClick={this.handleClose} value={lev}>{lev}</MenuItem>
+                                )}
+                            </Select>
+                            <FormHelperText>Required</FormHelperText>
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <FormControl required className={this.state.classes.formControl}>
+                            <Typography variant = "subheading">
+                                <br/><b>Select the name of your municipality:</b>
+                            </Typography>
+                            {/* <InputLabel htmlFor="mun-helper">Levels</InputLabel> */}
+                            <Select
+                                name="mun_name"
+                                value={this.state.mun_name}
+                                //onChange={this.handleChange}
+                                // required="required"
+                                disabled={this.state.disabled}
+                                input={<Input name="Municipality Name" id="munname-helper"/>}
+                            >
+                                <MenuItem value="">
+                                <em>None</em>
+                                </MenuItem>
+                                {this.state.mun_details.map(nms =>
+                                <MenuItem onClick={this.handleClose} value={nms}>{nms}</MenuItem>
+                                )}
+                            </Select>
+                            <FormHelperText>Required</FormHelperText>
+                            </FormControl>
+                        </Grid>
                     </div>
                 </div>
             </form>

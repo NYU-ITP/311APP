@@ -6,3 +6,9 @@ export const category = [
   'Streets & Sidewalks',
   'Public Health/Safety',
 ];
+
+export const levels = [
+  'City',
+  'County',
+  'State'
+];
