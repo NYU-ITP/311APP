@@ -11,7 +11,7 @@ const INSERT_NEW_ISSUE = "INSERT INTO issue SET ?";
 const INSERT_NEW_COMMENT = "INSERT INTO comment SET ?";
 const UPDATE_UPV = "UPDATE issue SET upvote = ? WHERE issueId = ?";
 const UPDATE_DOWNV = "UPDATE issue SET downvote = ? WHERE issueId = ?";
-const SELECT_MUN_DETAILS_QUERY = "SELECT mun_name FROM municipality WHERE mun_level = \"";
+const SELECT_MUN_DETAILS_QUERY = "SELECT * FROM municipality WHERE mun_level = \"";
 
 const connection = mysql.createConnection({
   host: '34.234.205.122',

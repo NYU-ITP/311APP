@@ -158,7 +158,7 @@ class Gov extends React.Component {
                                 <em>None</em>
                                 </MenuItem>
                                 {this.state.mun_details.map(nms =>
-                                <MenuItem onClick={this.handleClose} value={nms}>{nms}</MenuItem>
+                                <MenuItem onClick={this.handleClose} value={nms.mun_name}>{nms.mun_name}</MenuItem>
                                 )}
                             </Select>
                             <FormHelperText>Required</FormHelperText>
