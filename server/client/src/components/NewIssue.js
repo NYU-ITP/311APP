@@ -144,7 +144,6 @@ class NewIssue extends React.Component {
     const beginDate = moment(date).format('YYYY-MM-DD');
     this.setState({
       time: beginDate
-      // time: date
     });
   }
   
