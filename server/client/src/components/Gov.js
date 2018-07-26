@@ -88,9 +88,7 @@ class Gov extends React.Component {
     }
 
     handleLevelChange(event) {
-        console.log(event.target.value);
         this.setState({mun_level: event.target.value});
-        console.log(" this is " + this.state.mun_level);
         this.setState({disabled: false});
         this.getMunDetails();
     }

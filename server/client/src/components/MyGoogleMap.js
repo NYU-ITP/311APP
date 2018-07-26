@@ -72,7 +72,17 @@ class MyGoogleMap extends React.Component {
     console.log("marker clicked is " + id);
     this.setState({ issueDetailPresent: id });
     this.setState({ issueDetailOpen: true });
-
+    for (let issue of this.state.issues) {
+      if (issue.issueId.toString() === id) {
+        console.log(issue);
+        this.setState({
+          currentLatLng: {
+            lat: parseFloat(issue.lat),
+            lng: parseFloat(issue.lng)
+          }
+        })
+      }
+    }
   };
 
   handleInstructionClose = () => {
@@ -147,6 +157,7 @@ class MyGoogleMap extends React.Component {
       pathname: '/govSelect/',
     });
   };
+
 
   render() {
     return (
