@@ -8,7 +8,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import { renderComponent } from 'recompose';
 import { levels } from '../globals';
 import Typography from '@material-ui/core/Typography';
 
@@ -57,13 +56,14 @@ class Gov extends React.Component {
         this.state = {
             open: false,
             classes: props.classes,
-            mun_level: 'City',
+            mun_level: '',
             mun_name: '',
             mun_details: [],
-            disabled: true
+            disabled: true,
+            subEnabled: false
         }
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleChange = this.handleChange.bind(this);
+        this.handleNameChange = this.handleNameChange.bind(this);
         this.handleLevelChange = this.handleLevelChange.bind(this);
         this.getMunDetails = this.getMunDetails.bind(this);
     }
@@ -96,9 +96,12 @@ class Gov extends React.Component {
         this.getMunDetails();
     }
 
-    handleChange(event) {
-        // console.log(event.target.name + " " + event.target.value);
-        this.setState({[event.target.name]: event.target.value});
+    handleNameChange(event) {
+        // console.log(event.target.name + " is name, value is " + event.target.value);
+        // this.setState({[event.target.name]: event.target.value});
+        this.state.mun_name = event.target.value;
+        console.log(this.state.mun_name + " mun_name");
+        this.setState({subEnabled: true});
     }
     
     handleClose = event => {
@@ -110,6 +113,13 @@ class Gov extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
+        this.props.history.push({
+            pathname: '/govDetails/',
+            state: {
+                mun_level:this.state.mun_level,
+                mun_name: this.state.mun_name
+            },
+          });
     }
 
     render() {
@@ -149,7 +159,7 @@ class Gov extends React.Component {
                             <Select
                                 name="mun_name"
                                 value={this.state.mun_name}
-                                onChange={this.handleChange}
+                                onChange={this.handleNameChange}
                                 // required="required"
                                 disabled={this.state.disabled}
                                 input={<Input name="Municipality Name" id="munname-helper"/>}
@@ -163,6 +173,11 @@ class Gov extends React.Component {
                             </Select>
                             <FormHelperText>Required</FormHelperText>
                             </FormControl>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Button disabled={!this.state.subEnabled} variant="contained" size="large" color="primary" type="submit">
+                            Submit
+                            </Button>
                         </Grid>
                     </div>
                 </div>
