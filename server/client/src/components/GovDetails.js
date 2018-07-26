@@ -58,9 +58,18 @@ class GovDetails extends React.Component {
         this.state = {
             open: false,
             classes: props.classes,
-            // mun_level: this.props.history.location.state.mun_level,
-            // mun_name: this.props.history.location.state.mun_name
+            mun_level: '',
+            mun_name: ''
         }
+    }
+
+    get_vals = _ => {
+        this.state.mun_level = this.props.history.location.state.mun_level;
+        this.state.mun_name = this.props.history.location.state.mun_name;
+    }
+
+    componentWillMount() {
+        this.get_vals();
     }
 
     render() {
