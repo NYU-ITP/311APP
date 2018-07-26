@@ -114,7 +114,7 @@ class Gov extends React.Component {
     handleSubmit(e) {
         e.preventDefault();
         this.props.history.push({
-            pathname: '/govDetails/',
+            pathname: '/govSelect/govDetails/',
             state: {
                 mun_level:this.state.mun_level,
                 mun_name: this.state.mun_name

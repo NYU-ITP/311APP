@@ -58,7 +58,8 @@ class GovDetails extends React.Component {
         this.state = {
             open: false,
             classes: props.classes,
-
+            // mun_level: this.props.history.location.state.mun_level,
+            // mun_name: this.props.history.location.state.mun_name
         }
     }
 
@@ -67,7 +68,7 @@ class GovDetails extends React.Component {
             <div>
                 <List>
                     <ListItem>
-                        Test
+                        TEST
                     </ListItem>
                 </List>
             </div>
