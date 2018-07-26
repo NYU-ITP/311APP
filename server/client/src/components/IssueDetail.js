@@ -178,6 +178,7 @@ class IssueDetail extends React.Component {
     return (
       <div className={this.state.classes.root}>{this.state.issueDetail.map(issue =>
         <div className={this.state.classes.container}>
+        {/* {this.state.issueDetail} */}
           <Grid container spacing={24}>
             <Grid item xs={12}>
               <Paper className={this.state.classes.paperHeading}>{issue.heading}</Paper>

@@ -88,12 +88,16 @@ class Gov extends React.Component {
     }
 
     handleLevelChange(event) {
-        this.setState({mun_level: event.target.value});
+        console.log("event.target.value " + event.target.value);
+        // this.setState({mun_level: event.target.value});
+        this.state.mun_level = event.target.value;
+        console.log(" this.state.mun_level " + this.state.mun_level);
         this.setState({disabled: false});
         this.getMunDetails();
     }
 
     handleChange(event) {
+        // console.log(event.target.name + " " + event.target.value);
         this.setState({[event.target.name]: event.target.value});
     }
     
@@ -141,7 +145,7 @@ class Gov extends React.Component {
                             <Typography variant = "subheading">
                                 <br/><b>Select the name of your municipality:</b>
                             </Typography>
-                            {/* <InputLabel htmlFor="mun-helper">Levels</InputLabel> */}
+                            {/* {this.state.mun_details.toString()} */}
                             <Select
                                 name="mun_name"
                                 value={this.state.mun_name}
