@@ -23,9 +23,9 @@ class MyGoogleMap extends React.Component {
       lat: 0,
       lng: 0,
       address: "",
-      cityUs: "",
-      countyUs: "",
-      stateUs: "",
+      City: "",
+      County: "",
+      State: "",
       currentLatLng: {
         lat: 0,
         lng: 0
@@ -110,18 +110,18 @@ class MyGoogleMap extends React.Component {
         for (let address of results[0].address_components) {
           for (let level of address.types) {
             if (level === "locality" || level === "sublocality") {
-              this.setState({ cityUs: address.long_name });
+              this.setState({ City: address.long_name });
             }
             if (level === "administrative_area_level_2") {
-              this.setState({ countyUs: address.long_name });
+              this.setState({ County: address.long_name });
             }
             if (level === "administrative_area_level_1") {
-              this.setState({ stateUs: address.long_name });
+              this.setState({ State: address.long_name });
             }
           }
         }
-        console.log("State: " + this.state.stateUs + " County: " + this.state.countyUs +
-          " City: " + this.state.cityUs);
+        console.log("State: " + this.state.State + " County: " + this.state.County +
+          " City: " + this.state.City);
       } else {
         console.log('Geocode was not successful for the following reason: ' + status);
       }
@@ -140,9 +140,9 @@ class MyGoogleMap extends React.Component {
       pathname: '/newIssue/',
       state: {
         address: this.state.address,
-        stateUs: this.state.stateUs,
-        cityUs: this.state.cityUs,
-        countyUs: this.state.countyUs,
+        State: this.state.State,
+        City: this.state.City,
+        County: this.state.County,
         lat: this.state.lat,
         lng: this.state.lng,
       },

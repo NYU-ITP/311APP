@@ -67,9 +67,9 @@ class NewIssue extends React.Component {
       heading: '',
       content:'',
       category: '',
-      cityUs: '',
-      countyUs: '',
-      stateUs: '',
+      City: '',
+      County: '',
+      State: '',
       lat: '',
       lng: '',
       time: moment(this.props.start)
@@ -109,9 +109,9 @@ class NewIssue extends React.Component {
       urgent: 1,
       downvote: 0,
       upvote: 0,
-      cityUs: this.props.history.location.state.cityUs,
-      countyUs: this.props.history.location.state.countyUs,
-      stateUs: this.props.history.location.state.stateUs,
+      City: this.props.history.location.state.City,
+      County: this.props.history.location.state.County,
+      State: this.props.history.location.state.State,
       lat: this.props.history.location.state.lat,
       lng: this.props.history.location.state.lng
     };

@@ -60,28 +60,26 @@ class GovDetails extends React.Component {
             classes: props.classes,
             mun_level: this.props.history.location.state.mun_level,
             mun_name: this.props.history.location.state.mun_name,
+            muns_list: [],
             issues_list: [],
             keys: [],
-            level: '',
-            cat: '',
         }
-        this.get_issues = this.get_issues.bind(this);
+        // this.get_issues = this.get_issues.bind(this);
     }
 
     get_category_mun = _ => {
         fetch('http://localhost:5000/munDetails/' + this.state.mun_level + '/' + this.state.mun_name)
         .then(response => response.json())
-        .then(response => this.setState({ issues_list: response.data }))
+        .then(response => this.setState({ muns_list: response.data }))
         .catch(err => console.log(err))
     }
 
-    get_issues = _ => {
-
-        fetch('http://localhost:5000/munDetailsIssues/' + level + '/' + this.state.mun_name + '/' + cat)
-        .then(response => response.json())
-        .then(response => this.setState({ issues_list: response.data }))
-        .catch(err => console.log(err))
-    }
+    // get_issues = _ => {
+    //     fetch('http://localhost:5000/munDetailsIssues/' + this.state.mun_level + '/' + this.state.mun_name)
+    //     .then(response => response.json())
+    //     .then(response => this.setState({ issues_list: response.data }))
+    //     .catch(err => console.log(err))
+    // }
 
     componentWillMount() {
         this.get_category_mun();
@@ -91,13 +89,13 @@ class GovDetails extends React.Component {
         return(
             <div>
                 {/* {this.state.issues_list[1].id} */}
+                {/* {this.get_issues()} */}
                 <List>
-                    {this.state.issues_list.map(issue => 
+                    {this.state.muns_list.map(issue => 
                     <ListItem> 
                         <ListItemText key={issue.id} primary={issue.id} secondary={issue.category} />
                     </ListItem>
                     )}
-                    
                 </List>
                 {/* {this.state.issues_list.map(issue =>
                     if(this.state.mun_level == "City") {
