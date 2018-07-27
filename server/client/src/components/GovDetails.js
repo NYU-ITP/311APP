@@ -62,7 +62,7 @@ class GovDetails extends React.Component {
             mun_name: this.props.history.location.state.mun_name,
             muns_list: [],
             issues_list: [],
-            keys: [],
+            keys: []
         }
         // this.get_issues = this.get_issues.bind(this);
     }
