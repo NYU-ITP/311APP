@@ -60,9 +60,11 @@ app.get('/', (req, res) => {
 app.get('/issues', (req, res) => {
   getConnection((err, connection) => {
     if (err) {
+      connection.release();
       return err;
     }
     connection.query(SELECT_ALL_ISSUES_QUERY, (err, results) => {
+      connection.release();
       if (err) {
         return res.send(err)
       } else {
@@ -77,9 +79,11 @@ app.get('/issues', (req, res) => {
 app.get('/munDetails/:level', (req, res) => {
   getConnection((err, connection) => {
     if (err) {
+      connection.release();
       return err;
     }
     connection.query(SELECT_MUN_DETAILS_QUERY + req.params.level + "\"", (err, results) => {
+      connection.release();
       if (err) {
         return res.send(err)
       } else {
@@ -94,9 +98,11 @@ app.get('/munDetails/:level', (req, res) => {
 app.get('/issueDetail/:issueIdInRouter', (req, res) => {
   getConnection((err, connection) => {
     if (err) {
+      connection.release();
       return err;
     }
     connection.query(SELECT_SPECIFIC_ISSUE + req.params.issueIdInRouter, (err, results) => {
+      connection.release();
       if (err) {
         return res.send(err)
       } else {
@@ -111,9 +117,11 @@ app.get('/issueDetail/:issueIdInRouter', (req, res) => {
 app.get('/issueComments/:issueIdInRouter', (req, res) => {
   getConnection((err, connection) => {
     if (err) {
+      connection.release();
       return err;
     }
     connection.query(SELECT_COMMENTS_FOR_ISSUE + req.params.issueIdInRouter, (err, results) => {
+      connection.release();
       if (err) {
         return res.send(err)
       } else {
@@ -142,9 +150,11 @@ app.post('/api/newIssue', jsonParser, (req, res) => {
   let postData = req.body;
   getConnection((err, connection) => {
     if (err) {
+      connection.release();
       return err;
     }
     connection.query(INSERT_NEW_ISSUE, postData, (err, results) => {
+      connection.release();
       if (err) {
         return res.send(err)
       } else {
@@ -161,9 +171,11 @@ app.post('/api/newComment', jsonParser, (req, res) => {
   let postData = req.body;
   getConnection((err, connection) => {
     if (err) {
+      connection.release();
       return err;
     }
     connection.query(INSERT_NEW_COMMENT, postData, (err, results) => {
+      connection.release();
       if (err) {
         return res.send(err)
       } else {
@@ -180,9 +192,11 @@ app.post('/api/changeUp', jsonParser, (req, res) => {
   let postData = req.body;
   getConnection((err, connection) => {
     if (err) {
+      connection.release();
       return err;
     }
     connection.query(UPDATE_UPV, [postData.upvote, postData.issueId], (err, results) => {
+      connection.release();
       if (err) {
         return res.send(err)
       } else {
@@ -199,9 +213,11 @@ app.post('/api/changeDown', jsonParser, (req, res) => {
   let postData = req.body;
   getConnection((err, connection) => {
     if (err) {
+      connection.release();
       return err;
     }
     connection.query(UPDATE_DOWNV, [postData.downvote, postData.issueId], (err, results) => {
+      connection.release();
       if (err) {
         return res.send(err)
       } else {
@@ -218,9 +234,11 @@ app.post('/api/issuesMun', jsonParser, (req, res) => {
   let postData = req.body;
   getConnection((err, connection) => {
     if (err) {
+      connection.release();
       return err;
     }
     connection.query(SELECT_ISSUES_MUN_POST, [postData.mun_level, postData.mun_name], (err, results) => {
+      connection.release();
       if (err) {
         return res.send(err)
       } else {
