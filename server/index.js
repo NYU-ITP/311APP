@@ -16,7 +16,14 @@ const SELECT_ISSUES_FOR_MUN = "SELECT municipality.mun_id AS id, mun_category.is
 const SELECT_ISSUES_FOR_MUN2 = "\" AND municipality.mun_name = \"";
 const SELECT_ISSUES_MUN_POST = "SELECT municipality.mun_id AS id, mun_category.issue_category AS category FROM municipality INNER JOIN mun_category ON municipality.mun_id = mun_category.mun_id WHERE municipality.mun_level = ? AND municipality.mun_name = ?"
 // const SELECT_ISSUES_MUN_POST = "SELECT * FROM municipality INNER JOIN mun_category ON municipality.mun_id = mun_category.mun_id WHERE municipality.mun_level = ? AND municipality.mun_name = ?"
-
+const SELECT_ISSUES_PART1 = "SELECT * FROM issue WHERE ";
+const SELECT_ISSUES_PART2 = " = \"";
+const SELECT_ISSUES_PART3 = "\" AND category = \"";
+const SELECT1 = "SELECT * FROM issue WHERE ";
+const SELECT2 = " = \"";
+const SELECT3 = "\" AND category IN (SELECT mun_category.issue_category FROM municipality INNER JOIN mun_category ON municipality.mun_id = mun_category.mun_id WHERE municipality.mun_name = \"";
+const SELECT4 = "\" AND municipality.mun_level = \"";
+const SELECT5 = "\"";
 
 /*const connection = mysql.createConnection({
   host: '34.234.205.122',
@@ -133,17 +140,34 @@ app.get('/issueComments/:issueIdInRouter', (req, res) => {
   });
 });
 
-// app.get('/munDetails/:mlevel/:mname', (req, res) => {
-//   connection.query(SELECT_ISSUES_FOR_MUN + req.params.mlevel + SELECT_ISSUES_FOR_MUN2 + req.params.mname + "\"", (err, results) => {
-//     if (err) {
-//       return res.send(err)
-//     } else {
-//       return res.json({
-//         data: results
-//       })
-//     }
-//   });
-// });
+app.get('/munDetails/:mlevel/:mname', (req, res) => {
+  // console.log(req.params.mun_name + " name");
+  connection.query(SELECT_ISSUES_FOR_MUN + req.params.mlevel + SELECT_ISSUES_FOR_MUN2 + req.params.mname + "\"", (err, results) => {
+    if (err) {
+      return res.send(err)
+    } else {
+      return res.json({
+        data: results
+      })
+    }
+  });
+});
+
+// app.get('/munDetailsIssues/:mlevel/:mname/:cat', (req, res) => {
+app.get('/munDetailsIssues/:mlevel/:mname', (req, res) => {
+  // console.log(req.params.mname + " name");
+  // connection.query(SELECT_ISSUES_PART1 + req.params.mlevel + SELECT_ISSUES_PART2 + req.params.mname + SELECT_ISSUES_PART3 + "\"", (err, results) => {
+  connection.query(SELECT1 + req.params.mlevel + SELECT2 + req.params.mname + SELECT3 + req.params.mname + SELECT4 + req.params.mlevel + SELECT5, (err, results) => {
+    if (err) {
+      return res.send(err)
+    } else {
+      return res.json({
+        data: results
+      })
+    }
+  });
+});
+
 
 // POST /api/newIssue gets JSON bodies
 app.post('/api/newIssue', jsonParser, (req, res) => {
@@ -234,6 +258,16 @@ app.post('/api/issuesMun', jsonParser, (req, res) => {
   let postData = req.body;
   getConnection((err, connection) => {
     if (err) {
+      return res.send(err)
+    } else {
+      // console.log(results[0].id + " from index.js");
+      // Object.keys(results).forEach(function(key) {
+      //   var row = results[key];
+      //   console.log(row.id)
+      // });
+      return res.json({
+        data: results
+      })
       connection.release();
       return err;
     }
@@ -254,6 +288,19 @@ app.post('/api/issuesMun', jsonParser, (req, res) => {
     });
   });
 });
+
+if (process.env.NODE_ENV == 'production') {
+  // Express will serve up production assets
+  // like our main.js file, or main.css file
+  app.use(express.static(client/build));
+
+  // Express will serve up index.html file
+  // if it doesn't recognize the route
+  const path = require('path');
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', index.html));
+  });
+}
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
