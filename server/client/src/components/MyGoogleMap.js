@@ -155,9 +155,7 @@ class MyGoogleMap extends React.Component {
     });
   };
 
-  handleSearchBox = (e) => {
-    console.log(e.value);
-  }
+  
 
   render() {
     return (
@@ -167,7 +165,7 @@ class MyGoogleMap extends React.Component {
           currentLocation={this.state.currentLatLng}
           onMapClick={(e) => this.handleMapClick(e)}
           onMarkerClick={this.handleMarkerClick}
-          onPlacesChanged={(e) => this.handleSearchBox(e)}
+
         />
         <Dialog
           open={this.state.issueDetailOpen}
