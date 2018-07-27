@@ -16,6 +16,9 @@ const SELECT_ISSUES_FOR_MUN = "SELECT municipality.mun_id AS id, mun_category.is
 const SELECT_ISSUES_FOR_MUN2 = "\" AND municipality.mun_name = \"";
 const SELECT_ISSUES_MUN_POST = "SELECT municipality.mun_id AS id, mun_category.issue_category AS category FROM municipality INNER JOIN mun_category ON municipality.mun_id = mun_category.mun_id WHERE municipality.mun_level = ? AND municipality.mun_name = ?"
 // const SELECT_ISSUES_MUN_POST = "SELECT * FROM municipality INNER JOIN mun_category ON municipality.mun_id = mun_category.mun_id WHERE municipality.mun_level = ? AND municipality.mun_name = ?"
+const SELECT_ISSUES_PART1 = "SELECT * FROM issue WHERE ";
+const SELECT_ISSUES_PART2 = " = \"";
+const SELECT_ISSUES_PART3 = "\" AND category = \"";
 
 
 const connection = mysql.createConnection({
@@ -92,17 +95,32 @@ app.get('/issueComments/:issueIdInRouter', (req, res) => {
   });
 });
 
-// app.get('/munDetails/:mlevel/:mname', (req, res) => {
-//   connection.query(SELECT_ISSUES_FOR_MUN + req.params.mlevel + SELECT_ISSUES_FOR_MUN2 + req.params.mname + "\"", (err, results) => {
-//     if (err) {
-//       return res.send(err)
-//     } else {
-//       return res.json({
-//         data: results
-//       })
-//     }
-//   });
-// });
+app.get('/munDetails/:mlevel/:mname', (req, res) => {
+  // console.log(req.params.mun_name + " name");
+  connection.query(SELECT_ISSUES_FOR_MUN + req.params.mlevel + SELECT_ISSUES_FOR_MUN2 + req.params.mname + "\"", (err, results) => {
+    if (err) {
+      return res.send(err)
+    } else {
+      return res.json({
+        data: results
+      })
+    }
+  });
+});
+
+app.get('/munDetailsIssues/:mlevel/:mname/:cat', (req, res) => {
+  console.log(req.params.mun_name + " name");
+  connection.query(SELECT_ISSUES_PART1 + req.params.mlevel + SELECT_ISSUES_PART2 + req.params.mname + SELECT_ISSUES_PART3 + "\"", (err, results) => {
+    if (err) {
+      return res.send(err)
+    } else {
+      return res.json({
+        data: results
+      })
+    }
+  });
+});
+
 
 // POST /api/newIssue gets JSON bodies
 app.post('/api/newIssue', jsonParser, (req, res) => {
@@ -168,10 +186,10 @@ app.post('/api/issuesMun', jsonParser, (req, res) => {
       return res.send(err)
     } else {
       // console.log(results[0].id + " from index.js");
-      Object.keys(results).forEach(function(key) {
-        var row = results[key];
-        console.log(row.id)
-      });
+      // Object.keys(results).forEach(function(key) {
+      //   var row = results[key];
+      //   console.log(row.id)
+      // });
       return res.json({
         data: results
       })

@@ -58,76 +58,52 @@ class GovDetails extends React.Component {
         this.state = {
             open: false,
             classes: props.classes,
-            mun_level: '',
-            mun_name: '',
+            mun_level: this.props.history.location.state.mun_level,
+            mun_name: this.props.history.location.state.mun_name,
             issues_list: [],
             keys: [],
+            level: '',
+            cat: '',
         }
+        this.get_issues = this.get_issues.bind(this);
     }
 
-    get_vals = _ => {
-        this.state.mun_level = this.props.history.location.state.mun_level;
-        this.state.mun_name = this.props.history.location.state.mun_name;
+    get_category_mun = _ => {
+        fetch('http://localhost:5000/munDetails/' + this.state.mun_level + '/' + this.state.mun_name)
+        .then(response => response.json())
+        .then(response => this.setState({ issues_list: response.data }))
+        .catch(err => console.log(err))
     }
 
-    get_issues_mun = _ => {
-        let postData = {
-            mun_level: this.state.mun_level,
-            mun_name: this.state.mun_name
-        };
-        fetch('http://localhost:5000/api/issuesMun', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(postData),
-        })
-        .then(response => {
-            console.log(response);
-            return response.json();
-        })
-        .then(data => {
-            console.log(data);
-            // this.setState({issues_list: data});
-            // this.state.issues_list = Object.entries(data);
-            this.state.issues_list = data;
-            // console.log(this.state.issues_list[1]);
-            for (var i in this.state.issues_list) {
-                if (!this.state.issues_list.hasOwnProperty(i)) {
-                    continue;
-                }
-                console.log(i);
-                console.log(this.state.issues_list[i]); 
-            }
-        })
-        .catch(err => {
-            console.log(err);
-        });
-        // fetch('http://localhost:5000/munDetails/' + this.state.mun_level + '/' + this.state.mun_name.replace(/\s/g,''))
-        // .then(response => response.json())
-        // .then(response => this.setState({ issues_list: response.data }))
-        // .then(response => console.log(response.data))
-        // .catch(err => console.log(err))
+    get_issues = _ => {
+
+        fetch('http://localhost:5000/munDetailsIssues/' + level + '/' + this.state.mun_name + '/' + cat)
+        .then(response => response.json())
+        .then(response => this.setState({ issues_list: response.data }))
+        .catch(err => console.log(err))
     }
 
     componentWillMount() {
-        this.get_vals();
-        this.get_issues_mun();
+        this.get_category_mun();
     }
 
     render() {
         return(
             <div>
-                {this.state.issues_list["data"]}
+                {/* {this.state.issues_list[1].id} */}
                 <List>
-                <ListItem> HI
-                    </ListItem>
                     {this.state.issues_list.map(issue => 
                     <ListItem> 
-                        {issue}
-                        HI
+                        <ListItemText key={issue.id} primary={issue.id} secondary={issue.category} />
                     </ListItem>
                     )}
                     
                 </List>
+                {/* {this.state.issues_list.map(issue =>
+                    if(this.state.mun_level == "City") {
+                        this.setState({})
+                    }
+                )} */}
             </div>
         );
     }
