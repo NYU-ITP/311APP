@@ -8,7 +8,6 @@ import Button from '@material-ui/core/Button';
 import { withRouter } from 'react-router-dom';
 import IssueDetail from './IssueDetail';
 import MapWithAMarkerClusterer from './MapWithAMarkerClusterer';
-import { withStyles } from '@material-ui/core/styles';
 
 class MyGoogleMap extends React.Component {
   constructor(props) {
@@ -94,19 +93,8 @@ class MyGoogleMap extends React.Component {
 
   handleMapClick = (event) => {
     this.setState({ 
-      dialogOpen: true,
       issues: this.state.issues.concat({ lat: event.latLng.lat(), lng: event.latLng.lng() }),
-    });
-  }
-
-  handleCancleMarker = () => {
-    this.setState({ dialogOpen: false });
-    var newMarkers = [...this.state.issues];
-    newMarkers.splice(this.state.issues.length - 1, 1);
-    this.setState({ issues: newMarkers });
-  };
-
-  handleContinueMarker = (event) => {
+      dialogOpen: true });
     let geocoder = new window.google.maps.Geocoder();
     geocoder.geocode({ 'location': event.latLng }, function (results, status) {
       if (status === 'OK') {
@@ -117,7 +105,6 @@ class MyGoogleMap extends React.Component {
           lat: event.latLng.lat(),
           lng: event.latLng.lng(),
           address: results[0].formatted_address,
-          dialogOpen: false,
         });
         
         for (let address of results[0].address_components) {
@@ -139,7 +126,16 @@ class MyGoogleMap extends React.Component {
         console.log('Geocode was not successful for the following reason: ' + status);
       }
     }.bind(this));
+  }
 
+  handleCancleMarker = () => {
+    this.setState({ dialogOpen: false });
+    var newMarkers = [...this.state.issues];
+    newMarkers.splice(this.state.issues.length - 1, 1);
+    this.setState({ issues: newMarkers });
+  };
+
+  handleContinueMarker = (event) => {
     this.props.history.push({
       pathname: '/newIssue/',
       state: {
