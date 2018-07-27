@@ -59,7 +59,9 @@ class GovDetails extends React.Component {
             open: false,
             classes: props.classes,
             mun_level: '',
-            mun_name: ''
+            mun_name: '',
+            issues_list: [],
+            keys: [],
         }
     }
 
@@ -68,17 +70,63 @@ class GovDetails extends React.Component {
         this.state.mun_name = this.props.history.location.state.mun_name;
     }
 
+    get_issues_mun = _ => {
+        let postData = {
+            mun_level: this.state.mun_level,
+            mun_name: this.state.mun_name
+        };
+        fetch('http://localhost:5000/api/issuesMun', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(postData),
+        })
+        .then(response => {
+            console.log(response);
+            return response.json();
+        })
+        .then(data => {
+            console.log(data);
+            // this.setState({issues_list: data});
+            // this.state.issues_list = Object.entries(data);
+            this.state.issues_list = data;
+            // console.log(this.state.issues_list[1]);
+            for (var i in this.state.issues_list) {
+                if (!this.state.issues_list.hasOwnProperty(i)) {
+                    continue;
+                }
+                console.log(i);
+                console.log(this.state.issues_list[i]); 
+            }
+        })
+        .catch(err => {
+            console.log(err);
+        });
+        // fetch('http://localhost:5000/munDetails/' + this.state.mun_level + '/' + this.state.mun_name.replace(/\s/g,''))
+        // .then(response => response.json())
+        // .then(response => this.setState({ issues_list: response.data }))
+        // .then(response => console.log(response.data))
+        // .catch(err => console.log(err))
+    }
+
     componentWillMount() {
         this.get_vals();
+        this.get_issues_mun();
     }
 
     render() {
         return(
             <div>
+                {this.state.issues_list["data"]}
                 <List>
-                    <ListItem>
-                        TEST
+                <ListItem> HI
                     </ListItem>
+                    {this.state.issues_list.map(issue => 
+                    <ListItem> 
+                        {issue}
+                        HI
+                    </ListItem>
+                    )}
+                    
                 </List>
             </div>
         );

@@ -92,8 +92,11 @@ class MyGoogleMap extends React.Component {
     this.setState({ issueDetailOpen: false });
   };
 
-  handleMapClick = () => {
-    this.setState({ dialogOpen: true });
+  handleMapClick = (event) => {
+    this.setState({ 
+      dialogOpen: true,
+      issues: this.state.issues.concat({ lat: event.latLng.lat(), lng: event.latLng.lng() }),
+    });
   }
 
   handleCancleMarker = () => {
@@ -113,7 +116,6 @@ class MyGoogleMap extends React.Component {
         this.setState({
           lat: event.latLng.lat(),
           lng: event.latLng.lng(),
-          issues: this.state.issues.concat({ lat: event.latLng.lat(), lng: event.latLng.lng() }),
           address: results[0].formatted_address,
           dialogOpen: false,
         });
