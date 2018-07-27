@@ -16,7 +16,6 @@ import { category } from '../globals';
 import Typography from '@material-ui/core/Typography';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
-import 'react-datepicker/dist/react-datepicker.css';
 
 const styles = theme => ({
   root: {
