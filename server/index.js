@@ -18,7 +18,14 @@ const SELECT_ISSUES_MUN_POST = "SELECT municipality.mun_id AS id, mun_category.i
 // const SELECT_ISSUES_MUN_POST = "SELECT * FROM municipality INNER JOIN mun_category ON municipality.mun_id = mun_category.mun_id WHERE municipality.mun_level = ? AND municipality.mun_name = ?"
 
 
-const connection = mysql.createConnection({
+/*const connection = mysql.createConnection({
+  host: '34.234.205.122',
+  user: 'root',
+  password: 'DWDStudent2017',
+  database: '311app',
+  port: 3306
+});*/
+const pool = mysql.createPool({
   host: '34.234.205.122',
   user: 'root',
   password: 'DWDStudent2017',
@@ -26,13 +33,19 @@ const connection = mysql.createConnection({
   port: 3306
 });
 
-connection.connect(err => {
+const getConnection = (callback) => {
+  pool.getConnection((err, connection) => {
+    callback(err, connection);
+  });
+}
+
+/*connection.connect(err => {
   if (err) {
     return err;
   } else {
     console.log("Connect Mysql Success");
   }
-});
+});*/
 
 app.use(cors());
 // create application/json parser
@@ -45,50 +58,70 @@ app.get('/', (req, res) => {
 });
 
 app.get('/issues', (req, res) => {
-  connection.query(SELECT_ALL_ISSUES_QUERY, (err, results) => {
+  getConnection((err, connection) => {
     if (err) {
-      return res.send(err)
-    } else {
-      return res.json({
-        data: results
-      })
+      return err;
     }
+    connection.query(SELECT_ALL_ISSUES_QUERY, (err, results) => {
+      if (err) {
+        return res.send(err)
+      } else {
+        return res.json({
+          data: results
+        })
+      }
+    })
   });
 });
 
 app.get('/munDetails/:level', (req, res) => {
-  connection.query(SELECT_MUN_DETAILS_QUERY + req.params.level + "\"", (err, results) => {
+  getConnection((err, connection) => {
     if (err) {
-      return res.send(err)
-    } else {
-      return res.json({
-        data: results
-      })
+      return err;
     }
+    connection.query(SELECT_MUN_DETAILS_QUERY + req.params.level + "\"", (err, results) => {
+      if (err) {
+        return res.send(err)
+      } else {
+        return res.json({
+          data: results
+        })
+      }
+    });
   });
 });
 
 app.get('/issueDetail/:issueIdInRouter', (req, res) => {
-  connection.query(SELECT_SPECIFIC_ISSUE + req.params.issueIdInRouter, (err, results) => {
+  getConnection((err, connection) => {
     if (err) {
-      return res.send(err)
-    } else {
-      return res.json({
-        data: results
-      })
+      return err;
     }
+    connection.query(SELECT_SPECIFIC_ISSUE + req.params.issueIdInRouter, (err, results) => {
+      if (err) {
+        return res.send(err)
+      } else {
+        return res.json({
+          data: results
+        })
+      }
+    });
   });
 });
 
 app.get('/issueComments/:issueIdInRouter', (req, res) => {
-  connection.query(SELECT_COMMENTS_FOR_ISSUE + req.params.issueIdInRouter, (err, results) => {
+  getConnection((err, connection) => {
     if (err) {
-      return res.send(err)
-    } else {
-      return res.json({
-        data: results
-      })
+      return err;
     }
+    connection.query(SELECT_COMMENTS_FOR_ISSUE + req.params.issueIdInRouter, (err, results) => {
+      if (err) {
+        return res.send(err)
+      } else {
+        return res.json({
+          data: results
+        })
+      }
+    });
   });
 });
 
@@ -107,75 +140,100 @@ app.get('/issueComments/:issueIdInRouter', (req, res) => {
 // POST /api/newIssue gets JSON bodies
 app.post('/api/newIssue', jsonParser, (req, res) => {
   let postData = req.body;
-  connection.query(INSERT_NEW_ISSUE, postData, (err, results) => {
+  getConnection((err, connection) => {
     if (err) {
-      return res.send(err)
-    } else {
-      return res.json({
-        data: results
-      })
+      return err;
     }
+    connection.query(INSERT_NEW_ISSUE, postData, (err, results) => {
+      if (err) {
+        return res.send(err)
+      } else {
+        return res.json({
+          data: results
+        })
+      }
+    });
   });
 });
 
 // POST /api/newComment gets JSON bodies
 app.post('/api/newComment', jsonParser, (req, res) => {
   let postData = req.body;
-  connection.query(INSERT_NEW_COMMENT, postData, (err, results) => {
+  getConnection((err, connection) => {
     if (err) {
-      return res.send(err)
-    } else {
-      return res.json({
-        data: results
-      })
+      return err;
     }
+    connection.query(INSERT_NEW_COMMENT, postData, (err, results) => {
+      if (err) {
+        return res.send(err)
+      } else {
+        return res.json({
+          data: results
+        })
+      }
+    });
   });
 });
 
 // POST /api/changeUp
 app.post('/api/changeUp', jsonParser, (req, res) => {
   let postData = req.body;
-  connection.query(UPDATE_UPV, [postData.upvote, postData.issueId], (err, results) => {
+  getConnection((err, connection) => {
     if (err) {
-      return res.send(err)
-    } else {
-      return res.json({
-        data: results
-      })
+      return err;
     }
+    connection.query(UPDATE_UPV, [postData.upvote, postData.issueId], (err, results) => {
+      if (err) {
+        return res.send(err)
+      } else {
+        return res.json({
+          data: results
+        })
+      }
+    });
   });
 });
 
 // POST /api/changeDown
 app.post('/api/changeDown', jsonParser, (req, res) => {
   let postData = req.body;
-  connection.query(UPDATE_DOWNV, [postData.downvote, postData.issueId], (err, results) => {
+  getConnection((err, connection) => {
     if (err) {
-      return res.send(err)
-    } else {
-      return res.json({
-        data: results
-      })
+      return err;
     }
+    connection.query(UPDATE_DOWNV, [postData.downvote, postData.issueId], (err, results) => {
+      if (err) {
+        return res.send(err)
+      } else {
+        return res.json({
+          data: results
+        })
+      }
+    });
   });
 });
 
 // POST /api/issuesMun
 app.post('/api/issuesMun', jsonParser, (req, res) => {
   let postData = req.body;
-  connection.query(SELECT_ISSUES_MUN_POST, [postData.mun_level, postData.mun_name], (err, results) => {
+  getConnection((err, connection) => {
     if (err) {
-      return res.send(err)
-    } else {
-      // console.log(results[0].id + " from index.js");
-      Object.keys(results).forEach(function(key) {
-        var row = results[key];
-        console.log(row.id)
-      });
-      return res.json({
-        data: results
-      })
+      return err;
     }
+    connection.query(SELECT_ISSUES_MUN_POST, [postData.mun_level, postData.mun_name], (err, results) => {
+      if (err) {
+        return res.send(err)
+      } else {
+        // console.log(results[0].id + " from index.js");
+        Object.keys(results).forEach(function(key) {
+          var row = results[key];
+          console.log(row.id)
+        });
+        return res.json({
+          data: results
+        })
+      }
+    });
   });
 });
 
