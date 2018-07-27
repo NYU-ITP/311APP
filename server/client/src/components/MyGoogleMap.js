@@ -149,12 +149,15 @@ class MyGoogleMap extends React.Component {
     });
   };
 
-  handleGovClick = (event) => {
+  handleGovClick = () => {
     this.props.history.push({
       pathname: '/govSelect/',
     });
   };
 
+  handleSearchBox = (e) => {
+    console.log(e.value);
+  }
 
   render() {
     return (
@@ -164,6 +167,7 @@ class MyGoogleMap extends React.Component {
           currentLocation={this.state.currentLatLng}
           onMapClick={(e) => this.handleMapClick(e)}
           onMarkerClick={this.handleMarkerClick}
+          onPlacesChanged={(e) => this.handleSearchBox(e)}
         />
         <Dialog
           open={this.state.issueDetailOpen}
