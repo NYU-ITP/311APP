@@ -1,5 +1,6 @@
 import React from 'react';
-const { compose, withProps, withHandlers } = require("recompose");
+const _ = require("lodash");
+const { compose, withProps, withHandlers , lifecycle} = require("recompose");
 const {
   withScriptjs,
   withGoogleMap,
@@ -7,6 +8,7 @@ const {
   Marker,
 } = require("react-google-maps");
 const { MarkerClusterer } = require("react-google-maps/lib/components/addons/MarkerClusterer");
+const { SearchBox } = require("react-google-maps/lib/components/places/SearchBox");
 
 const MapWithAMarkerClusterer = compose(
   withProps({
@@ -22,6 +24,7 @@ const MapWithAMarkerClusterer = compose(
       console.log(clickedMarkers)
     },
   }),
+  
   withScriptjs,
   withGoogleMap
 )(props =>
