@@ -12,6 +12,11 @@ import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import { Link } from 'react-router-dom';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import Collapse from '@material-ui/core/Collapse';
+
 
 const styles = theme => ({
     root: {
@@ -49,7 +54,10 @@ const styles = theme => ({
     },
     selectEmpty: {
       marginTop: theme.spacing.unit * 2,
-    }
+    },
+    nested: {
+        paddingLeft: theme.spacing.unit * 4,
+    },
 });
 
 class GovDetails extends React.Component {
@@ -61,40 +69,66 @@ class GovDetails extends React.Component {
             mun_level: this.props.history.location.state.mun_level,
             mun_name: this.props.history.location.state.mun_name,
             muns_list: [],
-            issues_list: [],
-            keys: []
+            issues_list: []
         }
-        // this.get_issues = this.get_issues.bind(this);
+        this.get_issues = this.get_issues.bind(this);
+        this.handleClick = this.handleClick.bind(this);
     }
 
-    get_category_mun = _ => {
-        fetch('http://localhost:5000/munDetails/' + this.state.mun_level + '/' + this.state.mun_name)
-        .then(response => response.json())
-        .then(response => this.setState({ muns_list: response.data }))
-        .catch(err => console.log(err))
-    }
-
-    // get_issues = _ => {
-    //     fetch('http://localhost:5000/munDetailsIssues/' + this.state.mun_level + '/' + this.state.mun_name)
+    // get_category_mun = _ => {
+    //     fetch('http://localhost:5000/munDetails/' + this.state.mun_level + '/' + this.state.mun_name)
     //     .then(response => response.json())
-    //     .then(response => this.setState({ issues_list: response.data }))
+    //     .then(response => this.setState({ muns_list: response.data }))
     //     .catch(err => console.log(err))
     // }
 
-    componentWillMount() {
-        this.get_category_mun();
+    get_issues = _ => {
+        fetch('http://localhost:5000/munDetailsIssues/' + this.state.mun_level + '/' + this.state.mun_name)
+        .then(response => response.json())
+        .then(response => this.setState({ issues_list: response.data }))
+        .catch(err => console.log(err))
     }
 
+    handleClick() {
+        this.setState(state => ({ open: !state.open }));
+    }
+
+    // componentWillMount() {
+    //     this.get_category_mun();
+    // }
+
     render() {
+        const { classes } = this.props;
         return(
             <div>
                 {/* {this.state.issues_list[1].id} */}
-                {/* {this.get_issues()} */}
-                <List>
+                {this.get_issues()}
+                {/* <List>
                     {this.state.muns_list.map(issue => 
                     <ListItem> 
                         <ListItemText key={issue.id} primary={issue.id} secondary={issue.category} />
                     </ListItem>
+                    )}
+                </List> */}
+                <List>
+                    {this.state.issues_list.map(issue => 
+                    <Link
+                    key={issue.issueId}
+                    style={this.style}
+                    to={{ pathname: '/govSelect/govDetails/' + issue.issueId }}
+                    >
+                    <ListItem button onClick={this.handleClick}> 
+                        <ListItemText inset primary={issue.heading} />
+                        {this.state.open ? <ExpandLess /> : <ExpandMore />}
+                    </ListItem>
+                    <Collapse in={this.state.open} timeout="auto" unmountOnExit>
+                        <List component="div" disablePadding>
+                        <ListItem button className={classes.nested}>
+                            <ListItemText inset primary={issue.content} />
+                        </ListItem>
+                        </List>
+                    </Collapse>
+                    </Link>
                     )}
                 </List>
                 {/* {this.state.issues_list.map(issue =>
@@ -109,6 +143,6 @@ class GovDetails extends React.Component {
 
 GovDetails.propTypes = {
     classes: PropTypes.object.isRequired,
-  };
+};
   
 export default withStyles(styles)(GovDetails);

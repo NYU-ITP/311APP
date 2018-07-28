@@ -20,10 +20,10 @@ const SELECT_ISSUES_PART1 = "SELECT * FROM issue WHERE ";
 const SELECT_ISSUES_PART2 = " = \"";
 const SELECT_ISSUES_PART3 = "\" AND category = \"";
 const SELECT1 = "SELECT * FROM issue WHERE ";
-const SELECT2 = " = \"";
-const SELECT3 = "\" AND category IN (SELECT mun_category.issue_category FROM municipality INNER JOIN mun_category ON municipality.mun_id = mun_category.mun_id WHERE municipality.mun_name = \"";
-const SELECT4 = "\" AND municipality.mun_level = \"";
-const SELECT5 = "\"";
+const SELECT2 = " = '";
+const SELECT3 = "' AND category IN (SELECT mun_category.issue_category FROM municipality INNER JOIN mun_category ON municipality.mun_id = mun_category.mun_id WHERE municipality.mun_name = '";
+const SELECT4 = "' AND municipality.mun_level = '";
+const SELECT5 = "')";
 
 /*const connection = mysql.createConnection({
   host: '34.234.205.122',
