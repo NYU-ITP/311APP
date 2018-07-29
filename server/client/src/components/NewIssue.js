@@ -16,6 +16,7 @@ import { category } from '../globals';
 import Typography from '@material-ui/core/Typography';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
+import { url } from '../globals';
 
 const styles = theme => ({
   root: {
@@ -115,7 +116,7 @@ class NewIssue extends React.Component {
       lng: this.props.history.location.state.lng
     };
     // On submit of the form, send a POST request with the data to the server.
-    fetch('http://localhost:5000/api/newIssue', {
+    fetch(url + '/api/newIssue', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(postData),

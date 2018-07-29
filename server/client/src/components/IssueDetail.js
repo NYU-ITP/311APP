@@ -9,6 +9,7 @@ import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import { withStyles } from '@material-ui/core/styles';
 import Comments from './Comments';
+import { url } from '../globals';
 
 const styles = theme => ({
   root: {
@@ -71,14 +72,14 @@ class IssueDetail extends React.Component {
   }
 
   getIssueDetail = _ => {
-    fetch('http://localhost:5000/issueDetail/' + this.props.issueId)
+    fetch(url + '/issueDetail/' + this.props.issueId)
       .then(response => response.json())
       .then(response => this.setState({ issueDetail: response.data }))
       .catch(err => console.log(err))
   }
 
   getCommentsGorIssue = _ => {
-    fetch('http://localhost:5000/issueComments/' + this.props.issueId)
+    fetch(url + '/issueComments/' + this.props.issueId)
       .then(response => response.json())
       .then(response => this.setState({ comments: response.data }))
       .catch(err => console.log(err))
@@ -91,7 +92,7 @@ class IssueDetail extends React.Component {
       issueId: this.props.issueId
     };
     // On submit of the form, send a POST request with the data to the server.
-    fetch('http://localhost:5000/api/newComment', {
+    fetch(url + '/api/newComment', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(postData),
@@ -116,7 +117,7 @@ class IssueDetail extends React.Component {
       upvote: this.state.issueDetail[0].upvote + 1,
       issueId: this.props.issueId
     };
-    fetch('http://localhost:5000/api/changeUp', {
+    fetch(url + '/api/changeUp', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(postData),
@@ -146,7 +147,7 @@ class IssueDetail extends React.Component {
       downvote: this.state.issueDetail[0].downvote + 1,
       issueId: this.props.issueId
     };
-    fetch('http://localhost:5000/api/changeDown', {
+    fetch(url + '/api/changeDown', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(postData),

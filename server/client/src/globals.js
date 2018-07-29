@@ -12,3 +12,7 @@ export const levels = [
   'County',
   'State'
 ];
+
+export const url = 'https://morning-brook-45397.herokuapp.com';
+
+// export const url = 'http://localhost:5000';

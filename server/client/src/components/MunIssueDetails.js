@@ -9,6 +9,7 @@ import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import { withStyles } from '@material-ui/core/styles';
 import Comments from './Comments';
+import { url } from '../globals';
 
 const styles = theme => ({
   root: {
@@ -71,7 +72,7 @@ class IssueDetail extends React.Component {
   }
 
   getIssueDetail = _ => {
-    fetch('http://localhost:5000/issueDetail/' + this.props.issueId)
+    fetch(url + '/issueDetail/' + this.props.issueId)
       .then(response => response.json())
       .then(response => console.log(response))
       .then(response => this.setState({ issueDetail: response.data }))
@@ -79,7 +80,7 @@ class IssueDetail extends React.Component {
   }
 
   getCommentsGorIssue = _ => {
-    fetch('http://localhost:5000/issueComments/' + this.props.issueId)
+    fetch(url + '/issueComments/' + this.props.issueId)
       .then(response => response.json())
       .then(response => this.setState({ comments: response.data }))
       .catch(err => console.log(err))
@@ -92,7 +93,7 @@ class IssueDetail extends React.Component {
 //       issueId: this.props.issueId
 //     };
 //     // On submit of the form, send a POST request with the data to the server.
-//     fetch('http://localhost:5000/api/newComment', {
+//     fetch(url + '/api/newComment', {
 //       method: 'POST',
 //       headers: { 'Content-Type': 'application/json' },
 //       body: JSON.stringify(postData),

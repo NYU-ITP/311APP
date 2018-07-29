@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button';
 import { withRouter } from 'react-router-dom';
 import IssueDetail from './IssueDetail';
 import MapWithAMarkerClusterer from './MapWithAMarkerClusterer';
+import { url } from '../globals';
 
 class MyGoogleMap extends React.Component {
   constructor(props) {
@@ -41,7 +42,7 @@ class MyGoogleMap extends React.Component {
   }
 
   getIssues = _ => {
-    fetch('http://localhost:5000/issues')
+    fetch(url + '/issues')
       .then(response => response.json())
       .then(response => this.setState({ issues: response.data }))
       .catch(err => console.log(err))

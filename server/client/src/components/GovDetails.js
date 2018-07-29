@@ -16,6 +16,7 @@ import { Link } from 'react-router-dom';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import Collapse from '@material-ui/core/Collapse';
+import { url } from '../globals';
 
 
 const styles = theme => ({
@@ -76,14 +77,14 @@ class GovDetails extends React.Component {
     }
 
     // get_category_mun = _ => {
-    //     fetch('http://localhost:5000/munDetails/' + this.state.mun_level + '/' + this.state.mun_name)
+    //     fetch(url + '/munDetails/' + this.state.mun_level + '/' + this.state.mun_name)
     //     .then(response => response.json())
     //     .then(response => this.setState({ muns_list: response.data }))
     //     .catch(err => console.log(err))
     // }
 
     get_issues = _ => {
-        fetch('http://localhost:5000/munDetailsIssues/' + this.state.mun_level + '/' + this.state.mun_name)
+        fetch(url + '/munDetailsIssues/' + this.state.mun_level + '/' + this.state.mun_name)
         .then(response => response.json())
         .then(response => this.setState({ issues_list: response.data }))
         .catch(err => console.log(err))

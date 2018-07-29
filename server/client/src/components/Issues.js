@@ -4,6 +4,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import { Link } from 'react-router-dom';
+import { url } from '../globals';
 
 class Issues extends React.Component {
   style = {
@@ -20,7 +21,7 @@ class Issues extends React.Component {
   }
 
   getIssues = _ => {
-    fetch('http://localhost:5000/issues')
+    fetch(url + '/issues')
       .then(response => response.json())
       .then(response => this.setState({ issues: response.data }))
       .catch(err => console.log(err))

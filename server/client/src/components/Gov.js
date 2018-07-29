@@ -10,6 +10,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { levels } from '../globals';
 import Typography from '@material-ui/core/Typography';
+import { url } from '../globals';
 
 const styles = theme => ({
     root: {
@@ -72,16 +73,9 @@ class Gov extends React.Component {
     //     this.getMunDetails();
     // }
 
-    // getIssueDetail = _ => {
-    //     fetch('http://localhost:5000/issueDetail/' + this.props.issueId)
-    //       .then(response => response.json())
-    //       .then(response => this.setState({ issueDetail: response.data }))
-    //       .catch(err => console.log(err))
-    //   }
-
     getMunDetails = _ => {
         // console.log(this.state.mun_level);
-        fetch("http://localhost:5000/munDetails/" + this.state.mun_level)
+        fetch(url + "/munDetails/" + this.state.mun_level)
         .then(response => response.json())
         .then(response => this.setState({mun_details: response.data}))
         .catch(err => console.log(err))
