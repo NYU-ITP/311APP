@@ -138,7 +138,7 @@ class NewIssue extends React.Component {
   }
 
   handleChange(event) {
-    if (event.target.name === "time") {
+    if (event._isAMomentObject) {
       const beginDate = moment(event).format('YYYY-MM-DD');
       this.setState({
         time: beginDate
