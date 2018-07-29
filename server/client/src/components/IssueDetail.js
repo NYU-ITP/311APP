@@ -129,11 +129,11 @@ class IssueDetail extends React.Component {
       .then(data => {
         console.log(data);
         if (!this.state.disabledUpvote) {
-          this.state.issueDetail[0].upvote = this.state.issueDetail[0].upvote + 1;
-          this.setState({
+          this.setState(preState => ({
+            issueDetail: [{...preState.issueDetail[0], upvote: this.state.issueDetail[0].upvote + 1}],
             disabledUpvote: true,
             disabledDownvote: true,
-          })
+          }))
         }
       })
       .catch(err => {
@@ -159,11 +159,11 @@ class IssueDetail extends React.Component {
       .then(data => {
         console.log(data);
         if (!this.state.disabledDownvote) {
-          this.state.issueDetail[0].downvote = this.state.issueDetail[0].downvote + 1;
-          this.setState({
+          this.setState(preState => ({
+            issueDetail: [{...preState.issueDetail[0], downvote: this.state.issueDetail[0].downvote + 1}],
             disabledUpvote: true,
             disabledDownvote: true
-          });
+          }));
         }
       })
       .catch(err => {
