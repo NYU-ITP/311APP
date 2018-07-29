@@ -17,6 +17,7 @@ import Typography from '@material-ui/core/Typography';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import { url } from '../globals';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const styles = theme => ({
   root: {
@@ -65,8 +66,9 @@ class NewIssue extends React.Component {
       open: false,
       classes: props.classes,
       heading: '',
-      content:'',
+      content: '',
       category: '',
+      urgent: '',
       City: '',
       County: '',
       State: '',
@@ -76,7 +78,6 @@ class NewIssue extends React.Component {
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.handleDateChange = this.handleDateChange.bind(this);
     // function validate(email, password) {
     //   // true means invalid, so our conditions got reversed
     //   return {
@@ -106,7 +107,7 @@ class NewIssue extends React.Component {
       category: this.state.category,
       content: this.state.content,
       location: this.props.history.location.state.address,
-      urgent: 1,
+      urgent: this.state.urgent === true ? 1 : 0,
       downvote: 0,
       upvote: 0,
       City: this.props.history.location.state.City,
@@ -137,31 +138,33 @@ class NewIssue extends React.Component {
   }
 
   handleChange(event) {
-    this.setState({[event.target.name]: event.target.value});
+    if (event.target.name === "time") {
+      const beginDate = moment(event).format('YYYY-MM-DD');
+      this.setState({
+        time: beginDate
+      });
+    } else if (event.target.name === "urgent") {
+      this.setState({ [event.target.name]: event.target.checked });
+    } else {
+      this.setState({ [event.target.name]: event.target.value });
+    }
   }
 
-  handleDateChange(date) {
-    const beginDate = moment(date).format('YYYY-MM-DD');
-    this.setState({
-      time: beginDate
-    });
-  }
-  
   render() {
     const isEnabled = this.state.heading.length > 0 && this.state.content.length > 0 && this.state.category.length > 0;
     return (
       <form onSubmit={this.handleSubmit}>
         <div className={this.state.classes.root}>
           <div className={this.state.classes.container}>
-          <Typography variant="subheading" gutterBottom>
-            <b>DISCLAIMER:</b> Emergency assistance is not available through this Service Request. 
-            <br/>Call 911 to report a crime or medical emergency; fighting, screaming, gunshots, explosions, or suspicious breaking of glass or wood.
+            <Typography variant="subheading" gutterBottom>
+              <b>DISCLAIMER:</b> Emergency assistance is not available through this Service Request.
+            <br />Call 911 to report a crime or medical emergency; fighting, screaming, gunshots, explosions, or suspicious breaking of glass or wood.
           </Typography>
             <Grid container spacing={24}>
               <Grid item xs={12}>
-              <Typography variant = "subheading">
-                <br/><b>What is your complain about?</b>
-              </Typography>  
+                <Typography variant="subheading">
+                  <br /><b>What is your complain about?</b>
+                </Typography>
                 <TextField
                   name="heading"
                   className={this.state.classes.textField}
@@ -173,23 +176,26 @@ class NewIssue extends React.Component {
                 />
               </Grid>
               <Grid item xs={12}>
-              <Typography variant = "subheading">
-                <br/><b>Please check the box below if the matter is urgent:</b>
-              </Typography> 
+                <Typography variant="subheading">
+                  <br /><b>Please check the box below if the matter is urgent:</b>
+                </Typography>
                 <FormControlLabel
+                  name='urgent'
                   className={this.state.classes.textField}
                   control={
                     <Checkbox
                       color="primary"
+                      checked={this.state.urgent}
+                      onChange={this.handleChange}
                     />
                   }
                   label="Urgent"
                 />
               </Grid>
               <Grid item xs={12}>
-              <Typography variant = "subheading">
-                <br/><b>Describe the issue in detail.</b>
-              </Typography> 
+                <Typography variant="subheading">
+                  <br /><b>Describe the issue in detail.</b>
+                </Typography>
                 <TextField
                   name="content"
                   className={this.state.classes.textField}
@@ -201,37 +207,37 @@ class NewIssue extends React.Component {
                 />
               </Grid>
               <Grid item xs={12}>
-              <Typography variant = "subheading">
-                <br/><b>When was the issue observed? (YYYY-MM-DD)</b>
-              </Typography> 
-              <DatePicker
-                name="time"
-                // dateFormat="YYYY-MM-DD HH:mm:ss"
-                dateFormat="YYYY-MM-DD"
-                selected={moment(this.state.time)}
-                // selected={moment()}
-                // showTimeSelect
-                // timeFormat="HH:mm"
-                // timeIntervals={15}
-                minDate={moment().subtract(1, "months")}
-                maxDate={moment()}
-                showDisabledMonthNavigation
-                onChange={this.handleDateChange}
-              />
+                <Typography variant="subheading">
+                  <br /><b>When was the issue observed? (YYYY-MM-DD)</b>
+                </Typography>
+                <DatePicker
+                  name="time"
+                  // dateFormat="YYYY-MM-DD HH:mm:ss"
+                  dateFormat="YYYY-MM-DD"
+                  selected={moment(this.state.time)}
+                  // selected={moment()}
+                  // showTimeSelect
+                  // timeFormat="HH:mm"
+                  // timeIntervals={15}
+                  minDate={moment().subtract(1, "months")}
+                  maxDate={moment()}
+                  showDisabledMonthNavigation
+                  onChange={this.handleChange}
+                />
               </Grid>
               <Grid item xs={12}>
                 <div className={this.state.classes.textField}>
                   {
                     this.props.history.location.state
-                      ? <Typography variant = "subheading"><b><br/>Location (as selected on map) :</b> {this.props.history.location.state.address}</Typography>
+                      ? <Typography variant="subheading"><b><br />Location (as selected on map) :</b> {this.props.history.location.state.address}</Typography>
                       : null
                   }
                 </div>
               </Grid>
               <Grid item xs={12}>
-              <Typography variant = "subheading">
-                <br/><b>Select the most appropriate category for the observed issue:</b>
-              </Typography> 
+                <Typography variant="subheading">
+                  <br /><b>Select the most appropriate category for the observed issue:</b>
+                </Typography>
                 <FormControl required className={this.state.classes.formControl}>
                   <InputLabel htmlFor="age-helper">Category</InputLabel>
                   <Select
@@ -239,7 +245,7 @@ class NewIssue extends React.Component {
                     value={this.state.category}
                     onChange={this.handleChange}
                     // required="required"
-                    input={<Input name="Category" id="category-helper"/>}
+                    input={<Input name="Category" id="category-helper" />}
                   >
                     <MenuItem value="">
                       <em>None</em>
@@ -252,7 +258,7 @@ class NewIssue extends React.Component {
                 </FormControl>
               </Grid>
               <Typography variant="subheading" gutterBottom>
-                    <em>NOTE: Fields marked with a * are mandatory</em>
+                <em>NOTE: Fields marked with a * are mandatory</em>
               </Typography>
               <Grid item xs={12}>
                 <Button disabled={!isEnabled} variant="contained" size="large" color="primary" type="submit">
