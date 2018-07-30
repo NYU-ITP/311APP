@@ -265,41 +265,6 @@ app.post('/api/changeDown', jsonParser, (req, res) => {
   });
 });
 
-// POST /api/issuesMun
-app.post('/api/issuesMun', jsonParser, (req, res) => {
-  let postData = req.body;
-  getConnection((err, connection) => {
-    if (err) {
-      return res.send(err)
-    } else {
-      // console.log(results[0].id + " from index.js");
-      // Object.keys(results).forEach(function(key) {
-      //   var row = results[key];
-      //   console.log(row.id)
-      // });
-      return res.json({
-        data: results
-      })
-      connection.release();
-      return err;
-    }
-    connection.query(SELECT_ISSUES_MUN_POST, [postData.mun_level, postData.mun_name], (err, results) => {
-      connection.release();
-      if (err) {
-        return res.send(err)
-      } else {
-        // console.log(results[0].id + " from index.js");
-        Object.keys(results).forEach(function(key) {
-          var row = results[key];
-          console.log(row.id)
-        });
-        return res.json({
-          data: results
-        })
-      }
-    });
-  });
-});
 
 if (process.env.NODE_ENV === 'production') {
   // Express will serve up production assets
