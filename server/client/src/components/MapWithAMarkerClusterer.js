@@ -24,7 +24,6 @@ const MapWithAMarkerClusterer = compose(
       console.log(clickedMarkers)
     },
   }),
-  
   withScriptjs,
   withGoogleMap
 )(props =>

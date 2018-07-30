@@ -157,7 +157,6 @@ class MyGoogleMap extends React.Component {
   };
 
   
-
   render() {
     return (
       <div>
@@ -166,7 +165,6 @@ class MyGoogleMap extends React.Component {
           currentLocation={this.state.currentLatLng}
           onMapClick={(e) => this.handleMapClick(e)}
           onMarkerClick={this.handleMarkerClick}
-
         />
         <Dialog
           open={this.state.issueDetailOpen}
