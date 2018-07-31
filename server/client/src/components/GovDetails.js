@@ -1,22 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Input from '@material-ui/core/Input';
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { Link } from 'react-router-dom';
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
-import Collapse from '@material-ui/core/Collapse';
 import { url } from '../globals';
+import Divider from '@material-ui/core/Divider';
 
 
 const styles = theme => ({
@@ -113,24 +103,20 @@ class GovDetails extends React.Component {
                 </List> */}
                 <List>
                     {this.state.munIssues.map(issue => 
+                    <Link
+                    key={issue.issueId}
+                    style={this.style}
+                    to={{
+                      pathname: '/govSelect/govDetails/' + issue.issueId
+                    }}
+                    >
                     <ListItem button onClick={this.handleClick}> 
-                        <ListItemText inset primary={issue.heading} />
-                        {this.state.open ? <ExpandLess /> : <ExpandMore />}
+                        <ListItemText key={issue.issueId} primary={issue.heading} secondary={issue.time.substring(0, 10)} />
                     </ListItem>
-                    // <Collapse in={this.state.open} timeout="auto" unmountOnExit>
-                    //     <List component="div" disablePadding>
-                    //     <ListItem button className={classes.nested}>
-                    //         <ListItemText inset primary={issue.content} />
-                    //     </ListItem>
-                    //     </List>
-                    // </Collapse>
+                    <Divider />
+                    </Link>
                     )}
                 </List>
-                {/* {this.state.issues_list.map(issue =>
-                    if(this.state.mun_level == "City") {
-                        this.setState({})
-                    }
-                )} */}
             </div>
         );
     }

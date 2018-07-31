@@ -13,12 +13,12 @@ const UPDATE_UPV = "UPDATE issue SET upvote = ? WHERE issueId = ?";
 const UPDATE_DOWNV = "UPDATE issue SET downvote = ? WHERE issueId = ?";
 const SELECT_MUN_DETAILS_QUERY = "SELECT * FROM municipality WHERE mun_level = \"";
 const SELECT_ISSUES_FOR_MUN = "SELECT municipality.mun_id AS id, mun_category.issue_category AS category FROM municipality INNER JOIN mun_category ON municipality.mun_id = mun_category.mun_id WHERE municipality.mun_level = \"";
-const SELECT_ISSUES_FOR_MUN2 = "\" AND municipality.mun_name = \"";
-const SELECT_ISSUES_MUN_POST = "SELECT municipality.mun_id AS id, mun_category.issue_category AS category FROM municipality INNER JOIN mun_category ON municipality.mun_id = mun_category.mun_id WHERE municipality.mun_level = ? AND municipality.mun_name = ?"
+// const SELECT_ISSUES_FOR_MUN2 = "\" AND municipality.mun_name = \"";
+// const SELECT_ISSUES_MUN_POST = "SELECT municipality.mun_id AS id, mun_category.issue_category AS category FROM municipality INNER JOIN mun_category ON municipality.mun_id = mun_category.mun_id WHERE municipality.mun_level = ? AND municipality.mun_name = ?"
 // const SELECT_ISSUES_MUN_POST = "SELECT * FROM municipality INNER JOIN mun_category ON municipality.mun_id = mun_category.mun_id WHERE municipality.mun_level = ? AND municipality.mun_name = ?"
-const SELECT_ISSUES_PART1 = "SELECT * FROM issue WHERE ";
-const SELECT_ISSUES_PART2 = " = \"";
-const SELECT_ISSUES_PART3 = "\" AND category = \"";
+// const SELECT_ISSUES_PART1 = "SELECT * FROM issue WHERE ";
+// const SELECT_ISSUES_PART2 = " = \"";
+// const SELECT_ISSUES_PART3 = "\" AND category = \"";
 const SELECT1 = "SELECT * FROM issue WHERE ";
 const SELECT2 = " = '";
 const SELECT3 = "' AND category IN (SELECT mun_category.issue_category FROM municipality INNER JOIN mun_category ON municipality.mun_id = mun_category.mun_id WHERE municipality.mun_name = '";
@@ -159,10 +159,7 @@ app.get('/munDetails/:mlevel/:mname', (req, res) => {
   });
 });
 
-// app.get('/munDetailsIssues/:mlevel/:mname/:cat', (req, res) => {
 app.get('/munDetailsIssues/:mlevel/:mname', (req, res) => {
-  // console.log(req.params.mname + " name");
-  // connection.query(SELECT_ISSUES_PART1 + req.params.mlevel + SELECT_ISSUES_PART2 + req.params.mname + SELECT_ISSUES_PART3 + "\"", (err, results) => {
   getConnection((err, connection) => {
     if (err) {
       connection.release();
