@@ -209,6 +209,7 @@ class NewIssue extends React.Component {
                   className={this.state.classes.textField}
                   label="Content"
                   multiline={true}
+                  // rows={4}
                   value={this.state.content}
                   onChange={this.handleChange}
                   required
