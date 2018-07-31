@@ -49,12 +49,13 @@ const styles = theme => ({
   class GovIssueDetail extends React.Component {
     constructor(props) {
       super(props);
-      // let issueId = props.location.pathname.split('/');
-      // issueId = issueId[issueId.length - 1];
+      let issueId = props.location.pathname.split('/');
+      issueId = issueId[issueId.length - 1];
       this.state = {
         classes: props.classes,
         issueDetail: [],
         comments: [],
+        issueId: issueId,
       }
       // this.handleSubmit = this.handleSubmit.bind(this);
       this.handleChange = this.handleChange.bind(this);
@@ -66,14 +67,14 @@ const styles = theme => ({
     }
 
     getIssueDetail = _ => {
-      fetch(url + '/govIssueDetail/' + this.props.issueId)
+      fetch(url + '/govIssueDetail/' + this.state.issueId)
         .then(response => response.json())
         .then(response => this.setState({ issueDetail: response.data }))
         .catch(err => console.log(err))
     }
 
     getCommentsGorIssue = _ => {
-      fetch(url + '/govIssueComments/' + this.props.issueId)
+      fetch(url + '/govIssueComments/' + this.state.issueId)
         .then(response => response.json())
         .then(response => this.setState({ comments: response.data }))
         .catch(err => console.log(err))
