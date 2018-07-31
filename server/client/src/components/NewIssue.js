@@ -165,7 +165,30 @@ class NewIssue extends React.Component {
             <Grid container spacing={24}>
               <Grid item xs={12}>
                 <Typography variant="subheading">
-                  <br /><b>What is your complain about?</b>
+                  <br /><b>What is your complain about? </b>
+                </Typography>
+                <FormControl required className={this.state.classes.formControl}>
+                  <InputLabel htmlFor="age-helper">Category</InputLabel>
+                  <Select
+                    name="category"
+                    value={this.state.category}
+                    onChange={this.handleChange}
+                    // required="required"
+                    input={<Input name="Category" id="category-helper" />}
+                  >
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    {category.map(issueCategory =>
+                      <MenuItem onClick={this.handleClose} value={issueCategory}>{issueCategory}</MenuItem>
+                    )}
+                  </Select>
+                  <FormHelperText>Required</FormHelperText>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="subheading">
+                  <br /><b>Please enter the heading of issue.</b>
                 </Typography>
                 <TextField
                   name="heading"
@@ -173,6 +196,20 @@ class NewIssue extends React.Component {
                   label="Heading"
                   multiline={true}
                   value={this.state.heading}
+                  onChange={this.handleChange}
+                  required
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="subheading">
+                  <br /><b>Describe the issue in detail.</b>
+                </Typography>
+                <TextField
+                  name="content"
+                  className={this.state.classes.textField}
+                  label="Content"
+                  multiline={true}
+                  value={this.state.content}
                   onChange={this.handleChange}
                   required
                 />
@@ -192,20 +229,6 @@ class NewIssue extends React.Component {
                     />
                   }
                   label="Urgent"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="subheading">
-                  <br /><b>Describe the issue in detail.</b>
-                </Typography>
-                <TextField
-                  name="content"
-                  className={this.state.classes.textField}
-                  label="Content"
-                  multiline={true}
-                  value={this.state.content}
-                  onChange={this.handleChange}
-                  required
                 />
               </Grid>
               <Grid item xs={12}>
@@ -235,29 +258,6 @@ class NewIssue extends React.Component {
                       : null
                   }
                 </div>
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="subheading">
-                  <br /><b>Select the most appropriate category for the observed issue:</b>
-                </Typography>
-                <FormControl required className={this.state.classes.formControl}>
-                  <InputLabel htmlFor="age-helper">Category</InputLabel>
-                  <Select
-                    name="category"
-                    value={this.state.category}
-                    onChange={this.handleChange}
-                    // required="required"
-                    input={<Input name="Category" id="category-helper" />}
-                  >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    {category.map(issueCategory =>
-                      <MenuItem onClick={this.handleClose} value={issueCategory}>{issueCategory}</MenuItem>
-                    )}
-                  </Select>
-                  <FormHelperText>Required</FormHelperText>
-                </FormControl>
               </Grid>
               <Typography variant="subheading" gutterBottom>
                 <em>NOTE: Fields marked with a * are mandatory</em>
