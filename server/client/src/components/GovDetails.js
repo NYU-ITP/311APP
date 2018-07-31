@@ -113,23 +113,17 @@ class GovDetails extends React.Component {
                 </List> */}
                 <List>
                     {this.state.issues_list.map(issue => 
-                    <Link
-                    key={issue.issueId}
-                    style={this.style}
-                    to={{ pathname: '/govSelect/govDetails/' + issue.issueId }}
-                    >
                     <ListItem button onClick={this.handleClick}> 
                         <ListItemText inset primary={issue.heading} />
                         {this.state.open ? <ExpandLess /> : <ExpandMore />}
                     </ListItem>
-                    <Collapse in={this.state.open} timeout="auto" unmountOnExit>
-                        <List component="div" disablePadding>
-                        <ListItem button className={classes.nested}>
-                            <ListItemText inset primary={issue.content} />
-                        </ListItem>
-                        </List>
-                    </Collapse>
-                    </Link>
+                    // <Collapse in={this.state.open} timeout="auto" unmountOnExit>
+                    //     <List component="div" disablePadding>
+                    //     <ListItem button className={classes.nested}>
+                    //         <ListItemText inset primary={issue.content} />
+                    //     </ListItem>
+                    //     </List>
+                    // </Collapse>
                     )}
                 </List>
                 {/* {this.state.issues_list.map(issue =>
