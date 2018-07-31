@@ -88,7 +88,7 @@ class GovDetails extends React.Component {
         console.log(this.state.munLevel);
         console.log(this.state.munName);
         this.getMunIssues();
-      }
+    }
 
     render() {
         return(

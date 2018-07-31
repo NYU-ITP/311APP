@@ -140,14 +140,32 @@ app.get('/issueComments/:issueIdInRouter', (req, res) => {
   });
 });
 
-app.get('/munDetails/:mlevel/:mname', (req, res) => {
-  console.log(req.params.mname + " name");
+// app.get('/munDetails/:mlevel/:mname', (req, res) => {
+//   console.log(req.params.mname + " name");
+//   getConnection((err, connection) => {
+//     if (err) {
+//       connection.release();
+//       return err;
+//     }
+//     connection.query(SELECT_ISSUES_FOR_MUN + req.params.mlevel + SELECT_ISSUES_FOR_MUN2 + req.params.mname + "\"", (err, results) => {
+//       if (err) {
+//         return res.send(err)
+//       } else {
+//         return res.json({
+//           data: results
+//         })
+//       }
+//     });
+//   });
+// });
+
+app.get('/munDetailsIssues/:mlevel/:mname', (req, res) => {
   getConnection((err, connection) => {
     if (err) {
       connection.release();
       return err;
     }
-    connection.query(SELECT_ISSUES_FOR_MUN + req.params.mlevel + SELECT_ISSUES_FOR_MUN2 + req.params.mname + "\"", (err, results) => {
+    connection.query(SELECT1 + req.params.mlevel + SELECT2 + req.params.mname + SELECT3 + req.params.mname + SELECT4 + req.params.mlevel + SELECT5, (err, results) => {
       if (err) {
         return res.send(err)
       } else {
@@ -159,13 +177,35 @@ app.get('/munDetails/:mlevel/:mname', (req, res) => {
   });
 });
 
-app.get('/munDetailsIssues/:mlevel/:mname', (req, res) => {
+
+app.get('/govIssueDetail/:issueIdInRouter', (req, res) => {
   getConnection((err, connection) => {
     if (err) {
       connection.release();
       return err;
     }
-    connection.query(SELECT1 + req.params.mlevel + SELECT2 + req.params.mname + SELECT3 + req.params.mname + SELECT4 + req.params.mlevel + SELECT5, (err, results) => {
+    connection.query(SELECT_SPECIFIC_ISSUE + req.params.issueIdInRouter, (err, results) => {
+      connection.release();
+      if (err) {
+        return res.send(err)
+      } else {
+        return res.json({
+          data: results
+        })
+      }
+    });
+  });
+});
+
+
+app.get('/govIssueComments/:issueIdInRouter', (req, res) => {
+  getConnection((err, connection) => {
+    if (err) {
+      connection.release();
+      return err;
+    }
+    connection.query(SELECT_COMMENTS_FOR_ISSUE + req.params.issueIdInRouter, (err, results) => {
+      connection.release();
       if (err) {
         return res.send(err)
       } else {
