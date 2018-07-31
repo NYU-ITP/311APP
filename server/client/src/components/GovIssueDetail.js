@@ -66,14 +66,14 @@ const styles = theme => ({
     }
 
     getIssueDetail = _ => {
-      fetch(url + '/issueDetail/' + this.props.issueId)
+      fetch(url + '/govIssueDetail/' + this.props.issueId)
         .then(response => response.json())
         .then(response => this.setState({ issueDetail: response.data }))
         .catch(err => console.log(err))
     }
 
     getCommentsGorIssue = _ => {
-      fetch(url + '/issueComments/' + this.props.issueId)
+      fetch(url + '/govIssueComments/' + this.props.issueId)
         .then(response => response.json())
         .then(response => this.setState({ comments: response.data }))
         .catch(err => console.log(err))

@@ -102,7 +102,7 @@ class NewIssue extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     let postData = {
-      time: moment(this.state.time).format('YYYY-MM-DD'),
+      time: moment(this.state.time).format('MM-DD-YYYY'),
       heading: this.state.heading,
       category: this.state.category,
       content: this.state.content,
@@ -124,13 +124,15 @@ class NewIssue extends React.Component {
     })
       .then(response => {
         console.log(response);
+        if (response.status < 400) {
+          this.props.history.push({
+            pathname: '/',
+          });
+        }
         return response.json();
       })
       .then(data => {
         console.log(data);
-        this.props.history.push({
-          pathname: '/',
-        });
       })
       .catch(err => {
         console.log(err);
@@ -139,7 +141,7 @@ class NewIssue extends React.Component {
 
   handleChange(event) {
     if (event._isAMomentObject) {
-      const beginDate = moment(event).format('YYYY-MM-DD');
+      const beginDate = moment(event).format('MM-DD-YYYY');
       this.setState({
         time: beginDate
       });
@@ -163,7 +165,30 @@ class NewIssue extends React.Component {
             <Grid container spacing={24}>
               <Grid item xs={12}>
                 <Typography variant="subheading">
-                  <br /><b>What is your complain about?</b>
+                  <br /><b>What is your complain about? </b>
+                </Typography>
+                <FormControl required className={this.state.classes.formControl}>
+                  <InputLabel htmlFor="age-helper">Category</InputLabel>
+                  <Select
+                    name="category"
+                    value={this.state.category}
+                    onChange={this.handleChange}
+                    // required="required"
+                    input={<Input name="Category" id="category-helper" />}
+                  >
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    {category.map(issueCategory =>
+                      <MenuItem onClick={this.handleClose} value={issueCategory}>{issueCategory}</MenuItem>
+                    )}
+                  </Select>
+                  <FormHelperText>Required</FormHelperText>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="subheading">
+                  <br /><b>Please enter the heading of issue.</b>
                 </Typography>
                 <TextField
                   name="heading"
@@ -171,6 +196,20 @@ class NewIssue extends React.Component {
                   label="Heading"
                   multiline={true}
                   value={this.state.heading}
+                  onChange={this.handleChange}
+                  required
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="subheading">
+                  <br /><b>Describe the issue in detail.</b>
+                </Typography>
+                <TextField
+                  name="content"
+                  className={this.state.classes.textField}
+                  label="Content"
+                  multiline={true}
+                  value={this.state.content}
                   onChange={this.handleChange}
                   required
                 />
@@ -194,26 +233,12 @@ class NewIssue extends React.Component {
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="subheading">
-                  <br /><b>Describe the issue in detail.</b>
-                </Typography>
-                <TextField
-                  name="content"
-                  className={this.state.classes.textField}
-                  label="Content"
-                  multiline={true}
-                  value={this.state.content}
-                  onChange={this.handleChange}
-                  required
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="subheading">
-                  <br /><b>When was the issue observed? (YYYY-MM-DD)</b>
+                  <br /><b>When was the issue observed? (MM-DD-YYYY)</b>
                 </Typography>
                 <DatePicker
                   name="time"
-                  // dateFormat="YYYY-MM-DD HH:mm:ss"
-                  dateFormat="YYYY-MM-DD"
+                  // dateFormat="MM-DD-YYYY HH:mm:ss"
+                  dateFormat="MM-DD-YYYY"
                   selected={moment(this.state.time)}
                   // selected={moment()}
                   // showTimeSelect
@@ -233,29 +258,6 @@ class NewIssue extends React.Component {
                       : null
                   }
                 </div>
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="subheading">
-                  <br /><b>Select the most appropriate category for the observed issue:</b>
-                </Typography>
-                <FormControl required className={this.state.classes.formControl}>
-                  <InputLabel htmlFor="age-helper">Category</InputLabel>
-                  <Select
-                    name="category"
-                    value={this.state.category}
-                    onChange={this.handleChange}
-                    // required="required"
-                    input={<Input name="Category" id="category-helper" />}
-                  >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    {category.map(issueCategory =>
-                      <MenuItem onClick={this.handleClose} value={issueCategory}>{issueCategory}</MenuItem>
-                    )}
-                  </Select>
-                  <FormHelperText>Required</FormHelperText>
-                </FormControl>
               </Grid>
               <Typography variant="subheading" gutterBottom>
                 <em>NOTE: Fields marked with a * are mandatory</em>

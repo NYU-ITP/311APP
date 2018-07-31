@@ -99,12 +99,14 @@ class IssueDetail extends React.Component {
     })
       .then(response => {
         console.log(response);
+        if (response.status < 400) {
+          this.getCommentsGorIssue();
+          this.setState({ newCommentContent: '' });
+        }
         return response.json();
       })
       .then(data => {
         console.log(data);
-        this.getCommentsGorIssue();
-        this.setState({ newCommentContent: '' });
       })
       .catch(err => {
         console.log(err);
