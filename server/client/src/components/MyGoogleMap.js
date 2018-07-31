@@ -136,7 +136,7 @@ class MyGoogleMap extends React.Component {
     this.setState({ issues: newMarkers });
   };
 
-  handleContinueMarker = (event) => {
+  handleContinueMarker = () => {
     this.props.history.push({
       pathname: '/newIssue/',
       state: {
