@@ -8,9 +8,9 @@ export const category = [
 ];
 
 export const levels = [
-  'City',
-  'County',
-  'State'
+  "City",
+  "County",
+  "State"
 ];
 
 // export const url = 'https://morning-brook-45397.herokuapp.com';

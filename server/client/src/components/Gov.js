@@ -57,44 +57,41 @@ class Gov extends React.Component {
         this.state = {
             open: false,
             classes: props.classes,
-            mun_level: '',
-            mun_name: '',
-            mun_details: [],
+            munLevel: "",
+            munName: "",
+            munDetails: [],
             disabled: true,
             subEnabled: false
         }
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleNameChange = this.handleNameChange.bind(this);
-        this.handleLevelChange = this.handleLevelChange.bind(this);
-        this.getMunDetails = this.getMunDetails.bind(this);
+          // this.handleSubmit = this.handleSubmit.bind(this);
+         //  this.handleNameChange = this.handleNameChange.bind(this);
+          // this.handleLevelChange = this.handleLevelChange.bind(this);
+         //  this.getMunDetails = this.getMunDetails.bind(this);
     }
 
-    // componentWillMount() {
-    //     this.getMunDetails();
-    // }
+   
 
     getMunDetails = _ => {
-        // console.log(this.state.mun_level);
-        fetch(url + "/munDetails/" + this.state.mun_level)
+        fetch(url + "/munDetails/" + this.state.munLevel)
         .then(response => response.json())
-        .then(response => this.setState({mun_details: response.data}))
+        .then(response => this.setState({munDetails: response.data}))
         .catch(err => console.log(err))
     }
 
     handleLevelChange(event) {
-        console.log("event.target.value " + event.target.value);
-        // this.setState({mun_level: event.target.value});
-        this.state.mun_level = event.target.value;
-        console.log(" this.state.mun_level " + this.state.mun_level);
+        this.setState({munLevel: event.target.value}, function() {
+          console.log("munLevel " + this.state.munLevel); 
+          this.getMunDetails();  
+        });
         this.setState({disabled: false});
-        this.getMunDetails();
     }
 
     handleNameChange(event) {
         // console.log(event.target.name + " is name, value is " + event.target.value);
         // this.setState({[event.target.name]: event.target.value});
-        this.state.mun_name = event.target.value;
-        console.log(this.state.mun_name + " mun_name");
+        this.setState({munName: event.target.value}, function() {
+            console.log("munName " + this.state.munName);   
+          });
         this.setState({subEnabled: true});
     }
     
@@ -105,32 +102,34 @@ class Gov extends React.Component {
         this.setState({ open: false });
     };
 
-    handleSubmit(e) {
-        e.preventDefault();
+    handleSubmit = () => {
+        // e.preventDefault();
         this.props.history.push({
             pathname: '/govSelect/govDetails/',
             state: {
-                mun_level:this.state.mun_level,
-                mun_name: this.state.mun_name
+                munLevel:this.state.munLevel,
+                munName: this.state.munName
             },
           });
-    }
+    };
 
     render() {
         return(
+
+            <div>
             <form onSubmit={this.handleSubmit}>
                 <div className={this.state.classes.root}>
                     <div className={this.state.classes.container}>
                         <Grid item xs={12}>
                             <FormControl required className={this.state.classes.formControl}>
                             <Typography variant = "subheading">
-                                <br/><b>Select the appropriate municipality level:</b>
+                                <br/><b>Select municipality level:</b>
                             </Typography>
                             {/* <InputLabel htmlFor="mun-helper">Levels</InputLabel> */}
                             <Select
-                                name="mun_level"
-                                value={this.state.mun_level}
-                                onChange={this.handleLevelChange}
+                                name="munLevel"
+                                value={this.state.munLevel}
+                                onChange={(e) => this.handleLevelChange(e)}
                                 // required="required"
                                 input={<Input name="Municipality Level" id="mun-helper"/>}
                             >
@@ -151,9 +150,9 @@ class Gov extends React.Component {
                             </Typography>
                             {/* {this.state.mun_details.toString()} */}
                             <Select
-                                name="mun_name"
-                                value={this.state.mun_name}
-                                onChange={this.handleNameChange}
+                                name="munName"
+                                value={this.state.munName}
+                                onChange={(e) => this.handleNameChange(e)}
                                 // required="required"
                                 disabled={this.state.disabled}
                                 input={<Input name="Municipality Name" id="munname-helper"/>}
@@ -161,7 +160,7 @@ class Gov extends React.Component {
                                 <MenuItem value="">
                                 <em>None</em>
                                 </MenuItem>
-                                {this.state.mun_details.map(nms =>
+                                {this.state.munDetails.map(nms =>
                                 <MenuItem onClick={this.handleClose} value={nms.mun_name}>{nms.mun_name}</MenuItem>
                                 )}
                             </Select>
@@ -176,6 +175,7 @@ class Gov extends React.Component {
                     </div>
                 </div>
             </form>
+            </div>
         );
     }
 }

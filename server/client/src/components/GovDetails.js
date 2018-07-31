@@ -67,13 +67,13 @@ class GovDetails extends React.Component {
         this.state = {
             open: false,
             classes: props.classes,
-            mun_level: this.props.history.location.state.mun_level,
-            mun_name: this.props.history.location.state.mun_name,
+            munLevel: this.props.history.location.state.munLevel,
+            munName: this.props.history.location.state.munName,
             muns_list: [],
-            issues_list: []
+            munIssues: []
         }
-        this.get_issues = this.get_issues.bind(this);
-        this.handleClick = this.handleClick.bind(this);
+        // this.get_issues = this.get_issues.bind(this);
+        // this.handleClick = this.handleClick.bind(this);
     }
 
     // get_category_mun = _ => {
@@ -83,27 +83,27 @@ class GovDetails extends React.Component {
     //     .catch(err => console.log(err))
     // }
 
-    get_issues = _ => {
-        fetch(url + '/munDetailsIssues/' + this.state.mun_level + '/' + this.state.mun_name)
+    getMunIssues = _ => {
+        fetch(url + '/munDetailsIssues/' + this.state.munLevel + '/' + this.state.munName)
         .then(response => response.json())
-        .then(response => this.setState({ issues_list: response.data }))
+        .then(response => this.setState({ munIssues: response.data }))
         .catch(err => console.log(err))
     }
 
-    handleClick() {
-        this.setState(state => ({ open: !state.open }));
+    handleClick = () => {
+        this.setState({ open: !this.state.open });
     }
 
-    // componentWillMount() {
-    //     this.get_category_mun();
-    // }
+    componentWillMount() {
+        console.log(this.state.munLevel);
+        console.log(this.state.munName);
+        this.getMunIssues();
+      }
 
     render() {
-        const { classes } = this.props;
         return(
             <div>
                 {/* {this.state.issues_list[1].id} */}
-                {this.get_issues()}
                 {/* <List>
                     {this.state.muns_list.map(issue => 
                     <ListItem> 
@@ -112,7 +112,7 @@ class GovDetails extends React.Component {
                     )}
                 </List> */}
                 <List>
-                    {this.state.issues_list.map(issue => 
+                    {this.state.munIssues.map(issue => 
                     <ListItem button onClick={this.handleClick}> 
                         <ListItemText inset primary={issue.heading} />
                         {this.state.open ? <ExpandLess /> : <ExpandMore />}
@@ -136,8 +136,4 @@ class GovDetails extends React.Component {
     }
 }
 
-GovDetails.propTypes = {
-    classes: PropTypes.object.isRequired,
-};
-  
 export default withStyles(styles)(GovDetails);
