@@ -102,7 +102,7 @@ class NewIssue extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     let postData = {
-      time: moment(this.state.time).format('YYYY-MM-DD'),
+      time: moment(this.state.time).format('MM-DD-YYYY'),
       heading: this.state.heading,
       category: this.state.category,
       content: this.state.content,
@@ -124,13 +124,15 @@ class NewIssue extends React.Component {
     })
       .then(response => {
         console.log(response);
+        if (response.status < 400) {
+          this.props.history.push({
+            pathname: '/',
+          });
+        }
         return response.json();
       })
       .then(data => {
         console.log(data);
-        this.props.history.push({
-          pathname: '/',
-        });
       })
       .catch(err => {
         console.log(err);
@@ -139,7 +141,7 @@ class NewIssue extends React.Component {
 
   handleChange(event) {
     if (event._isAMomentObject) {
-      const beginDate = moment(event).format('YYYY-MM-DD');
+      const beginDate = moment(event).format('MM-DD-YYYY');
       this.setState({
         time: beginDate
       });
@@ -208,12 +210,12 @@ class NewIssue extends React.Component {
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="subheading">
-                  <br /><b>When was the issue observed? (YYYY-MM-DD)</b>
+                  <br /><b>When was the issue observed? (MM-DD-YYYY)</b>
                 </Typography>
                 <DatePicker
                   name="time"
-                  // dateFormat="YYYY-MM-DD HH:mm:ss"
-                  dateFormat="YYYY-MM-DD"
+                  // dateFormat="MM-DD-YYYY HH:mm:ss"
+                  dateFormat="MM-DD-YYYY"
                   selected={moment(this.state.time)}
                   // selected={moment()}
                   // showTimeSelect
