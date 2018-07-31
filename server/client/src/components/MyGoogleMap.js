@@ -7,8 +7,15 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import { withRouter } from 'react-router-dom';
 import IssueDetail from './IssueDetail';
+import Input from '@material-ui/core/Input';
 import MapWithAMarkerClusterer from './MapWithAMarkerClusterer';
 import { url } from '../globals';
+
+const styles = theme => ({
+  input: {
+    margin: theme.spacing.unit,
+  },
+});
 
 class MyGoogleMap extends React.Component {
   constructor(props) {
@@ -19,6 +26,7 @@ class MyGoogleMap extends React.Component {
       diaogOpen: false,
       instructionOpen: false,
       issueDetailOpen: false,
+      changeAddressOpen: false,
       issueDetailPresent: '0',
       scroll: 'paper',
       lat: 0,
@@ -31,6 +39,7 @@ class MyGoogleMap extends React.Component {
         lat: 0,
         lng: 0
       },
+      inputAddress: "",
       userMarkerShown: false
     }
   }
@@ -94,8 +103,7 @@ class MyGoogleMap extends React.Component {
 
   handleMapClick = (event) => {
     this.setState({ 
-      issues: this.state.issues.concat({ lat: event.latLng.lat(), lng: event.latLng.lng() }),
-      dialogOpen: true });
+      issues: this.state.issues.concat({ lat: event.latLng.lat(), lng: event.latLng.lng() })});
     let geocoder = new window.google.maps.Geocoder();
     geocoder.geocode({ 'location': event.latLng }, function (results, status) {
       if (status === 'OK') {
@@ -107,6 +115,8 @@ class MyGoogleMap extends React.Component {
           lng: event.latLng.lng(),
           address: results[0].formatted_address,
         });
+
+        this.setState({dialogOpen: true});
         
         for (let address of results[0].address_components) {
           for (let level of address.types) {
@@ -136,6 +146,13 @@ class MyGoogleMap extends React.Component {
     this.setState({ issues: newMarkers });
   };
 
+  handleCancleChangeAddress = () => {
+    this.setState({changeAddressOpen: false});
+    var newMarkers = [...this.state.issues];
+    newMarkers.splice(this.state.issues.length - 1, 1);
+    this.setState({ issues: newMarkers });
+  }
+
   handleContinueMarker = () => {
     this.props.history.push({
       pathname: '/newIssue/',
@@ -150,9 +167,20 @@ class MyGoogleMap extends React.Component {
     });
   };
 
+  handleChangeAddress = () => {
+    this.setState({changeAddressOpen: true});
+    this.setState({dialogOpen: false});
+  };
+
   handleGovClick = () => {
     this.props.history.push({
       pathname: '/govSelect/',
+    });
+  };
+
+  handleIputAddress = (event) => {
+    this.setState({inputAddress: event.target.value}, function(){
+      console.log("the inputAddress is" + this.state.inputAddress);
     });
   };
 
@@ -198,21 +226,51 @@ class MyGoogleMap extends React.Component {
             </Button>
           </DialogActions>
         </Dialog>
+
         <Dialog
           open={this.state.dialogOpen}
           onClose={this.handleCancleMarker}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="alert-dialog-title">{"Adding marker to the map?"}</DialogTitle>
+          <DialogTitle id="alert-dialog-title">{"Do you want to make a complaint?"}</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              The marker indicates the location of your issue to be reported. You can continue to tell us more
-              about what happened.
+            do you wish to submit a ticket for location: {this.state.address} 
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleCancleMarker} color="primary">
+            <Button onClick={this.handleChangeAddress} color="primary">
+              Change Address
+            </Button>
+            <Button onClick={this.handleContinueMarker} color="primary" autoFocus>
+              Yes, Please
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        <Dialog
+          open={this.state.changeAddressOpen}
+          onClose={this.handleCancleChangeAddress}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">{"Do you want to change the address?"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+             New Address: 
+             <Input
+              defaultValue={this.state.address}
+              inputProps={{
+                'aria-label': 'Description',
+              }}
+              onChange = {(e) => this.handleIputAddress(e)}
+              fullWidth = {true}
+            />
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleCancleChangeAddress} color="primary">
               Cancel
             </Button>
             <Button onClick={this.handleContinueMarker} color="primary" autoFocus>
@@ -220,6 +278,8 @@ class MyGoogleMap extends React.Component {
             </Button>
           </DialogActions>
         </Dialog>
+
+
         <div position="absolute" bottom="0" left="0">
           <Button variant="contained" size="large" color="primary" onClick={this.handleGovClick}>
             Municipality
