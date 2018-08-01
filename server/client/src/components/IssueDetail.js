@@ -8,6 +8,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import { withStyles } from '@material-ui/core/styles';
+import { withRouter } from 'react-router-dom';
 import Comments from './Comments';
 import { url } from '../globals';
 
@@ -50,8 +51,9 @@ class IssueDetail extends React.Component {
 
   constructor(props) {
     super(props);
-    // let issueId = props.location.pathname.split('/');
-    // issueId = issueId[issueId.length - 1];
+    let pathname = this.props.location.pathname;
+    let issueId = pathname.split('/');
+    issueId = issueId[issueId.length - 1];
     this.state = {
       classes: props.classes,
       issueDetail: [],
@@ -59,6 +61,8 @@ class IssueDetail extends React.Component {
       newCommentContent: '',
       disabledUpvote: false,
       disabledDownvote: false,
+      issueId: issueId,
+      pathname: pathname
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -72,18 +76,38 @@ class IssueDetail extends React.Component {
   }
 
   getIssueDetail = _ => {
-    fetch(url + '/issueDetail/' + this.props.issueId)
+    let pathname = this.state.pathname;
+    let issueDetail = pathname === '/' ? '/issueDetail/' : '/govIssueDetail/';
+    let issueId = pathname === '/' ? this.props.issueId : this.state.issueId;
+    fetch(url + issueDetail + issueId)
       .then(response => response.json())
       .then(response => this.setState({ issueDetail: response.data }))
       .catch(err => console.log(err))
   }
 
   getCommentsGorIssue = _ => {
-    fetch(url + '/issueComments/' + this.props.issueId)
+    let pathname = this.state.pathname;
+    let issueComments = pathname === '/' ? '/issueComments/' : '/govIssueComments/';
+    let issueId = pathname === '/' ? this.props.issueId : this.state.issueId;
+    fetch(url + issueComments + issueId)
       .then(response => response.json())
       .then(response => this.setState({ comments: response.data }))
       .catch(err => console.log(err))
   }
+
+  // getIssueDetail = _ => {
+  //   fetch(url + '/govIssueDetail/' + this.state.issueId)
+  //     .then(response => response.json())
+  //     .then(response => this.setState({ issueDetail: response.data }))
+  //     .catch(err => console.log(err))
+  // }
+
+  // getCommentsGorIssue = _ => {
+  //   fetch(url + '/govIssueComments/' + this.state.issueId)
+  //     .then(response => response.json())
+  //     .then(response => this.setState({ comments: response.data }))
+  //     .catch(err => console.log(err))
+  // }
 
   handleSubmit(e) {
     e.preventDefault();
@@ -132,7 +156,7 @@ class IssueDetail extends React.Component {
         console.log(data);
         if (!this.state.disabledUpvote) {
           this.setState(preState => ({
-            issueDetail: [{...preState.issueDetail[0], upvote: this.state.issueDetail[0].upvote + 1}],
+            issueDetail: [{ ...preState.issueDetail[0], upvote: this.state.issueDetail[0].upvote + 1 }],
             disabledUpvote: true,
             disabledDownvote: true,
           }))
@@ -162,7 +186,7 @@ class IssueDetail extends React.Component {
         console.log(data);
         if (!this.state.disabledDownvote) {
           this.setState(preState => ({
-            issueDetail: [{...preState.issueDetail[0], downvote: this.state.issueDetail[0].downvote + 1}],
+            issueDetail: [{ ...preState.issueDetail[0], downvote: this.state.issueDetail[0].downvote + 1 }],
             disabledUpvote: true,
             disabledDownvote: true
           }));
@@ -181,7 +205,7 @@ class IssueDetail extends React.Component {
     return (
       <div className={this.state.classes.root}>{this.state.issueDetail.map(issue =>
         <div className={this.state.classes.container}>
-        {/* {this.state.issueDetail} */}
+          {/* {this.state.issueDetail} */}
           <Grid container spacing={24}>
             <Grid item xs={12}>
               <Paper className={this.state.classes.paperHeading}>{issue.heading}</Paper>
@@ -220,23 +244,26 @@ class IssueDetail extends React.Component {
             <Grid item xs={12}>
               <Comments commentList={this.state.comments} />
             </Grid>
-            <Grid item xs={12} className={this.state.classes.center}>
-              <form onSubmit={this.handleSubmit}>
-                <TextField
-                  className={this.state.classes.textField}
-                  name='newCommentContent'
-                  value={this.state.newCommentContent}
-                  placeholder="Add a comment"
-                  fullWidth
-                  multiline={true}
-                  onChange={this.handleChange}
-                />
-                <br /><br />
-                <Button variant="contained" size="large" color="primary" type="submit">
-                  Submit Comment
-                </Button>
-              </form>
-            </Grid>
+            {
+              this.state.pathname === '/' ?
+                <Grid item xs={12} className={this.state.classes.center}>
+                  <form onSubmit={this.handleSubmit}>
+                    <TextField
+                      className={this.state.classes.textField}
+                      name='newCommentContent'
+                      value={this.state.newCommentContent}
+                      placeholder="Add a comment"
+                      fullWidth
+                      multiline={true}
+                      onChange={this.handleChange}
+                    />
+                    <br /><br />
+                    <Button variant="contained" size="large" color="primary" type="submit">
+                      Submit Comment
+                          </Button>
+                  </form>
+                </Grid> : null
+            }
           </Grid>
         </div>
       )}</div>
@@ -248,4 +275,4 @@ IssueDetail.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(IssueDetail);
+export default withRouter(withStyles(styles)(IssueDetail));
