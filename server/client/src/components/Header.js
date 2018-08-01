@@ -47,13 +47,9 @@ class Header extends React.Component {
       <div className={this.state.classes.root}>
         <AppBar position="static">
           <Toolbar>
-            <IconButton className={this.state.classes.menuButton} color="inherit" aria-label="Menu">
-              <MenuIcon />
-            </IconButton>
             <Typography variant="title" color="inherit" className={this.state.classes.flex}>
               311
             </Typography>
-            <Button variant="contained" color="primary" className={this.state.classes.button} onClick={this.handleSubmit}>Login</Button>
           </Toolbar>
         </AppBar>
       </div>
