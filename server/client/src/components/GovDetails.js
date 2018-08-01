@@ -17,11 +17,15 @@ class GovDetails extends React.Component {
 
   constructor(props) {
     super(props);
+    let pathname = this.props.location.pathname;
+    let params = pathname.split('/');
+    let munName = params[params.length - 1];
+    let munLevel = params[params.length - 2];
     this.state = {
       open: false,
       classes: props.classes,
-      munLevel: this.props.history.location.state.munLevel,
-      munName: this.props.history.location.state.munName,
+      munLevel: munLevel,
+      munName: munName,
       muns_list: [],
       munIssues: []
     }
