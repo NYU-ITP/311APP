@@ -1,14 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import { withRouter } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
+import NavigationArrowBack from '@material-ui/icons/ArrowBack'
 import MenuIcon from '@material-ui/icons/Menu';
 
-const styles = theme => ( {
+const styles = theme => ({
   button: {
     margin: theme.spacing.unit,
   },
@@ -32,28 +34,57 @@ class Header extends React.Component {
       classes: props.classes,
       disabled: true
     }
-  this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleSubmit(e){
+  handleSubmit(e) {
     e.preventDefault();
     this.props.history.push({
       pathname: '/govSelect/',
     });
   }
 
+  // When back button is clicked
+  handleNavigationClick = () => {
+    let pathname = this.props.location.pathname;
+    console.log(this.props.history);
+    this.props.history.goBack();
+    // if (pathname.startsWith('/matches/')) {
+    //   this.props.history.replace('/');
+    // } else {
+    //   this.props.history.goBack();
+    // }
+  };
+
+  handleGovClick = () => {
+    this.props.history.push({
+      pathname: '/govSelect/',
+    });
+  };
+
   render() {
     return (
       <div className={this.state.classes.root}>
         <AppBar position="static">
           <Toolbar>
-            <IconButton className={this.state.classes.menuButton} color="inherit" aria-label="Menu">
-              <MenuIcon />
-            </IconButton>
+            {
+              this.props.location.pathname === '/' ?
+                <IconButton className={this.state.classes.menuButton} color="inherit" aria-label="Menu">
+                  <MenuIcon />
+                </IconButton>
+                :
+                <IconButton>
+                  <NavigationArrowBack style={{ color: 'white' }} onClick={this.handleNavigationClick} />
+                </IconButton>
+            }
             <Typography variant="title" color="inherit" className={this.state.classes.flex}>
               311
             </Typography>
-            <Button variant="contained" color="primary" className={this.state.classes.button} onClick={this.handleSubmit}>Login</Button>
+
+            <Button variant="contained" color="primary" className={this.state.classes.button} onClick= {this.handleGovClick}>Municipality
+            </Button>
+            <Button variant="contained" color="primary" className={this.state.classes.button} onClick={this.handleSubmit}>Login
+            </Button>
           </Toolbar>
         </AppBar>
       </div>
@@ -62,9 +93,9 @@ class Header extends React.Component {
 }
 
 
-  Header.propTypes = {
+Header.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Header);
+export default withRouter(withStyles(styles)(Header));
 
