@@ -2,7 +2,6 @@ import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
-import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
@@ -55,7 +54,7 @@ const styles = theme => ({
         classes: props.classes,
         issueDetail: [],
         comments: [],
-        issueId: issueId
+        issueId: issueId,
       }
       // this.handleSubmit = this.handleSubmit.bind(this);
       this.handleChange = this.handleChange.bind(this);
@@ -67,14 +66,14 @@ const styles = theme => ({
     }
 
     getIssueDetail = _ => {
-      fetch(url + '/issueDetail/' + this.state.issueId)
+      fetch(url + '/govIssueDetail/' + this.state.issueId)
         .then(response => response.json())
         .then(response => this.setState({ issueDetail: response.data }))
         .catch(err => console.log(err))
     }
 
     getCommentsGorIssue = _ => {
-      fetch(url + '/issueComments/' + this.state.issueId)
+      fetch(url + '/govIssueComments/' + this.state.issueId)
         .then(response => response.json())
         .then(response => this.setState({ comments: response.data }))
         .catch(err => console.log(err))
@@ -88,27 +87,45 @@ const styles = theme => ({
       return(
         <div className={this.state.classes.root}>{this.state.issueDetail.map(issue =>
           <div className={this.state.classes.container}>
-          <Grid container spacing={24}>
-            <Grid item xs={12}>
-              <Paper className={this.state.classes.paperHeading}>{issue.heading}</Paper>
+            <Grid container spacing={24}>
+              <Grid item xs={12}>
+                <Paper className={this.state.classes.paperHeading}>{issue.heading}</Paper>
+              </Grid>
+              <Grid item xs={6} className={this.state.classes.center}>
+                {/* <Button variant="contained" disabled={this.state.disabledUpvote} onClick={this.handleUpvoteClicked}> */}
+                  <ListItemIcon>
+                    <ThumbUpIcon />
+                  </ListItemIcon>
+                  {issue.upvote == null ? 0 : issue.upvote}
+                {/* </Button> */}
+              </Grid>
+              <Grid item xs={6} className={this.state.classes.center}>
+                {/* <Button variant="contained" disabled={this.state.disabledDownvote} onClick={this.handleDownvoteClicked}> */}
+                  <ListItemIcon>
+                    <ThumbDownIcon />
+                  </ListItemIcon>
+                  {issue.downvote == null ? 0 : issue.downvote}
+                {/* </Button> */}
+              </Grid>
+              <Grid item xs={12}>
+                <Paper className={this.state.classes.paper}><b>Urgent:</b> {issue.urgent === 1 ? 'Yes' : 'No'}</Paper>
+              </Grid>
+              <Grid item xs={12}>
+                <Paper className={this.state.classes.paper}><b>Category:</b> {issue.category}</Paper>
+              </Grid>
+              <Grid item xs={12}>
+                <Paper className={this.state.classes.paper}><b>Date Reported:</b> {issue.time.substring(0, 10)}</Paper>
+              </Grid>
+              <Grid item xs={12}>
+                <Paper className={this.state.classes.paperLeft}><b>Details:</b> {issue.content}</Paper>
+              </Grid >
+              <Grid item xs={12}>
+                <Paper className={this.state.classes.paper}><b>Location:</b> {issue.location}</Paper>
+              </Grid>
+              <Grid item xs={12}>
+                <Comments commentList={this.state.comments} />
+              </Grid>
             </Grid>
-            <Grid item xs={6} className={this.state.classes.center}>
-              {/* <Button variant="contained" disabled={this.state.disabledUpvote} onClick={this.handleUpvoteClicked}> */}
-                <ListItemIcon>
-                  <ThumbUpIcon />
-                </ListItemIcon>
-                {issue.upvote == null ? 0 : issue.upvote}
-              {/* </Button> */}
-            </Grid>
-            <Grid item xs={6} className={this.state.classes.center}>
-              {/* <Button variant="contained" disabled={this.state.disabledDownvote} onClick={this.handleDownvoteClicked}> */}
-                <ListItemIcon>
-                  <ThumbDownIcon />
-                </ListItemIcon>
-                {issue.downvote == null ? 0 : issue.downvote}
-              {/* </Button> */}
-            </Grid>
-          </Grid>
           </div> )}
         </div>
       );
