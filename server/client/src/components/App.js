@@ -7,7 +7,6 @@ import IssueDetail from './IssueDetail';
 import NewIssue from './NewIssue';
 import Gov from './Gov';
 import GovDetails from './GovDetails';
-import GovIssueDetail from './GovIssueDetail';
 
 class App extends React.Component {
   render() {
