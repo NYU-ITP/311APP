@@ -23,6 +23,7 @@ const SELECT_MUN_LEVEL_2 = "' AND (mun_name = '";
 const SELECT_MUN_LEVEL_3 = "' OR mun_name = '";
 const SELECT_MUN_LEVEL_4 = "' OR mun_name = '";
 const SELECT_MUN_LEVEL_5 = "')";
+const UPDATE_ISSUE_LEVEL = "UPDATE issue SET level = ? WHERE issueId = ?";;
 
 /*const connection = mysql.createConnection({
   host: '34.234.205.122',
@@ -175,47 +176,6 @@ app.get('/munLevel/:category/:state/:city/:county', jsonParser, (req, res) => {
   });
 });
 
-
-app.get('/govIssueDetail/:issueIdInRouter', (req, res) => {
-  getConnection((err, connection) => {
-    if (err) {
-      connection.release();
-      return err;
-    }
-    connection.query(SELECT_SPECIFIC_ISSUE + req.params.issueIdInRouter, (err, results) => {
-      connection.release();
-      if (err) {
-        return res.send(err)
-      } else {
-        return res.json({
-          data: results
-        })
-      }
-    });
-  });
-});
-
-
-app.get('/govIssueComments/:issueIdInRouter', (req, res) => {
-  getConnection((err, connection) => {
-    if (err) {
-      connection.release();
-      return err;
-    }
-    connection.query(SELECT_COMMENTS_FOR_ISSUE + req.params.issueIdInRouter, (err, results) => {
-      connection.release();
-      if (err) {
-        return res.send(err)
-      } else {
-        return res.json({
-          data: results
-        })
-      }
-    });
-  });
-});
-
-
 // POST /api/newIssue gets JSON bodies
 app.post('/api/newIssue', jsonParser, (req, res) => {
   let postData = req.body;
@@ -288,6 +248,27 @@ app.post('/api/changeDown', jsonParser, (req, res) => {
       return err;
     }
     connection.query(UPDATE_DOWNV, [postData.downvote, postData.issueId], (err, results) => {
+      connection.release();
+      if (err) {
+        return res.send(err)
+      } else {
+        return res.json({
+          data: results
+        })
+      }
+    });
+  });
+});
+
+// POST /api/changeIssueLevel
+app.post('/api/changeIssueLevel', jsonParser, (req, res) => {
+  let postData = req.body;
+  getConnection((err, connection) => {
+    if (err) {
+      connection.release();
+      return err;
+    }
+    connection.query(UPDATE_ISSUE_LEVEL, [postData.munLevel, postData.issueId], (err, results) => {
       connection.release();
       if (err) {
         return res.send(err)

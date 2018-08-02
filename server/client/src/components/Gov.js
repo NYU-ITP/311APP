@@ -145,7 +145,7 @@ class Gov extends React.Component {
               <Grid item xs={12}>
                 <Button disabled={!this.state.subEnabled} variant="contained" size="large" color="primary" type="submit">
                   Submit
-                            </Button>
+                </Button>
               </Grid>
             </div>
           </div>
