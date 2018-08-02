@@ -34,14 +34,6 @@ class Header extends React.Component {
       classes: props.classes,
       disabled: true
     }
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  handleSubmit(e) {
-    e.preventDefault();
-    this.props.history.push({
-      pathname: '/govSelect/',
-    });
   }
 
   // When back button is clicked
@@ -83,7 +75,7 @@ class Header extends React.Component {
 
             <Button variant="contained" color="primary" className={this.state.classes.button} onClick= {this.handleGovClick}>Municipality
             </Button>
-            <Button variant="contained" color="primary" className={this.state.classes.button} onClick={this.handleSubmit}>Login
+            <Button variant="contained" color="primary" className={this.state.classes.button}>Login
             </Button>
           </Toolbar>
         </AppBar>

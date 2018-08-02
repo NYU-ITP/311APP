@@ -18,6 +18,11 @@ const SELECT2 = " = '";
 const SELECT3 = "' AND category IN (SELECT mun_category.issue_category FROM municipality INNER JOIN mun_category ON municipality.mun_id = mun_category.mun_id WHERE municipality.mun_name = '";
 const SELECT4 = "' AND municipality.mun_level = '";
 const SELECT5 = "')";
+const SELECT_MUN_LEVEL_1 = "SELECT mun_name FROM mun_category WHERE issue_category = '";
+const SELECT_MUN_LEVEL_2 = "' AND (mun_name = '";
+const SELECT_MUN_LEVEL_3 = "' OR mun_name = '";
+const SELECT_MUN_LEVEL_4 = "' OR mun_name = '";
+const SELECT_MUN_LEVEL_5 = "')";
 
 /*const connection = mysql.createConnection({
   host: '34.234.205.122',
@@ -134,25 +139,6 @@ app.get('/issueComments/:issueIdInRouter', (req, res) => {
   });
 });
 
-// app.get('/munDetails/:mlevel/:mname', (req, res) => {
-//   console.log(req.params.mname + " name");
-//   getConnection((err, connection) => {
-//     if (err) {
-//       connection.release();
-//       return err;
-//     }
-//     connection.query(SELECT_ISSUES_FOR_MUN + req.params.mlevel + SELECT_ISSUES_FOR_MUN2 + req.params.mname + "\"", (err, results) => {
-//       if (err) {
-//         return res.send(err)
-//       } else {
-//         return res.json({
-//           data: results
-//         })
-//       }
-//     });
-//   });
-// });
-
 app.get('/munDetailsIssues/:mlevel/:mname', (req, res) => {
   getConnection((err, connection) => {
     if (err) {
@@ -160,6 +146,24 @@ app.get('/munDetailsIssues/:mlevel/:mname', (req, res) => {
       return err;
     }
     connection.query(SELECT1 + req.params.mlevel + SELECT2 + req.params.mname + SELECT3 + req.params.mname + SELECT4 + req.params.mlevel + SELECT5, (err, results) => {
+      if (err) {
+        return res.send(err)
+      } else {
+        return res.json({
+          data: results
+        })
+      }
+    });
+  });
+});
+
+app.get('/munLevel/:category/:state/:city/:county', jsonParser, (req, res) => {
+  getConnection((err, connection) => {
+    if (err) {
+      connection.release();
+      return err;
+    }
+    connection.query(SELECT_MUN_LEVEL_1 + req.params.category + SELECT_MUN_LEVEL_2 + req.params.state +  SELECT_MUN_LEVEL_3 + req.params.city + SELECT_MUN_LEVEL_4 + req.params.county + SELECT_MUN_LEVEL_5, (err, results) => {
       if (err) {
         return res.send(err)
       } else {
