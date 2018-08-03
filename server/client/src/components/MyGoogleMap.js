@@ -52,7 +52,8 @@ class MyGoogleMap extends React.Component {
       onMapMounted:(e)=>{},
       onSearchBoxMounted:(e)=>{},
       onPlacesChanged:()=>{},
-      searchBoxDiaOpen: false
+      searchBoxDiaOpen: false,
+      invalidAddressOpen: false,
     }
   }
 
@@ -79,6 +80,7 @@ class MyGoogleMap extends React.Component {
         },
         onPlacesChanged: () => {
           const places = refs.searchBox.getPlaces();
+
           console.log(places);
           const bounds = new window.google.maps.LatLngBounds();
 
@@ -106,23 +108,27 @@ class MyGoogleMap extends React.Component {
           lat: boxLat,
           lng: boxLng
           });
-
-          for (let address of places[0].address_components) {
-            for (let level of address.types) {
-              if (level === "locality" || level === "sublocality") {
-                this.setState({ City: address.long_name });
-              }
-              if (level === "administrative_area_level_2") {
-                this.setState({ County: address.long_name });
-              }
-              if (level === "administrative_area_level_1") {
-                this.setState({ State: address.long_name });
+         // console.log( places[0].address_components=== undefined);
+          if (places[0].address_components === undefined) {
+            this.setState({invalidAddressOpen:true});
+          } else {
+            for (let address of places[0].address_components) {
+              for (let level of address.types) {
+                if (level === "locality" || level === "sublocality") {
+                  this.setState({ City: address.long_name });
+                }
+                if (level === "administrative_area_level_2") {
+                  this.setState({ County: address.long_name });
+                }
+                if (level === "administrative_area_level_1") {
+                  this.setState({ State: address.long_name });
+                }
               }
             }
+            this.setState({searchBoxDiaOpen: true});
           }
 
-          
-          this.setState({searchBoxDiaOpen: true});
+       
 
           
           
@@ -301,8 +307,11 @@ class MyGoogleMap extends React.Component {
 
   handleSearchBoxDiaClose = () => {
     this.setState({searchBoxDiaOpen: false});
-    this.cancelLastMarker();
   }
+  handleInvalidAddressClose = () => {
+    this.setState({invalidAddressOpen: false});
+  }
+
 
   render() {
     return (
@@ -370,6 +379,25 @@ class MyGoogleMap extends React.Component {
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleInstructionClose} color="primary" autoFocus>
+              Ok, Got it !
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        <Dialog
+          open={this.state.invalidAddressOpen}
+          onClose={this.handleInvalidAddressClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">{"Invalid Address"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              We failed to identify the address, please select again.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleInvalidAddressClose} color="primary" autoFocus>
               Ok, Got it !
             </Button>
           </DialogActions>
