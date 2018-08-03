@@ -78,13 +78,6 @@ class NewIssue extends React.Component {
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    // function validate(email, password) {
-    //   // true means invalid, so our conditions got reversed
-    //   return {
-    //     email: email.length === 0,
-    //     password: password.length === 0,
-    //   };
-    // }
   }
 
   handleToggle = () => {
@@ -95,7 +88,6 @@ class NewIssue extends React.Component {
     if (this.target1.contains(event.target)) {
       return;
     }
-
     this.setState({ open: false });
   };
 
