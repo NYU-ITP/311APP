@@ -7,7 +7,6 @@ import IssueDetail from './IssueDetail';
 import NewIssue from './NewIssue';
 import Gov from './Gov';
 import GovDetails from './GovDetails';
-import GovIssueDetail from './GovIssueDetail';
 
 class App extends React.Component {
   render() {
@@ -22,8 +21,8 @@ class App extends React.Component {
             <Route exact path="/issues/:issueIdInRoute" component={IssueDetail} />
             <Route exact path="/newIssue" component={NewIssue} />
             <Route exact path="/govSelect" component={Gov} />
-            <Route exact path="/govSelect/govDetails" component={GovDetails} />
-            <Route exact path="/govSelect/govDetails/:issueId" component={GovIssueDetail} />
+            <Route exact path="/govSelect/govDetails/:munLevel/:munName" component={GovDetails} />
+            <Route exact path="/govSelect/govDetails/:issueId" component={IssueDetail} />
           </div>
           </HashRouter>
       </div>

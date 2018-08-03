@@ -24,38 +24,20 @@ const styles = theme => ({
     display: 'flex',
     flexGrow: 1,
     flexWrap: 'wrap',
-    // ...theme.typography.subheading,
-    // height: 24,
-    // boxSizing: 'content-box',
-    // width: 'auto',
-    // overflow: 'hidden',
-    // textOverflow: 'ellipsis',
-    // whiteSpace: 'nowrap',
-    // paddingLeft: 16,
-    // paddingRight: 16,
   },
   container: {
     maxWidth: 700,
     marginTop: 20,
     margin: "auto"
   },
-  popperClose: {
-    pointerEvents: 'none'
-  },
   textField: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
-  },
-  center: {
-    textAlign: 'center'
   },
   formControl: {
     margin: theme.spacing.unit,
     minWidth: 120,
   },
-  selectEmpty: {
-    marginTop: theme.spacing.unit * 2,
-  }
 });
 
 
@@ -74,7 +56,8 @@ class NewIssue extends React.Component {
       State: '',
       lat: '',
       lng: '',
-      time: moment(this.props.start)
+      time: moment(this.props.start),
+      munLevel: []
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -91,6 +74,14 @@ class NewIssue extends React.Component {
     this.setState({ open: false });
   };
 
+  getIssueLevel() {
+    let data = this.props.history.location.state;
+    fetch(url + '/munLevel/' + this.state.category + '/' + data.State + '/' + data.City + '/' + data.County)
+      .then(response => response.json())
+      .then(response => this.setState({ munLevel: response.data }))
+      .catch(err => console.log(err))
+  }
+
   handleSubmit(e) {
     e.preventDefault();
     let postData = {
@@ -106,8 +97,10 @@ class NewIssue extends React.Component {
       County: this.props.history.location.state.County,
       State: this.props.history.location.state.State,
       lat: this.props.history.location.state.lat,
-      lng: this.props.history.location.state.lng
+      lng: this.props.history.location.state.lng,
+      level: this.state.munLevel[0]
     };
+
     // On submit of the form, send a POST request with the data to the server.
     fetch(url + '/api/newIssue', {
       method: 'POST',

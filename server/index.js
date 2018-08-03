@@ -18,6 +18,12 @@ const SELECT2 = " = '";
 const SELECT3 = "' AND category IN (SELECT mun_category.issue_category FROM municipality INNER JOIN mun_category ON municipality.mun_id = mun_category.mun_id WHERE municipality.mun_name = '";
 const SELECT4 = "' AND municipality.mun_level = '";
 const SELECT5 = "')";
+const SELECT_MUN_LEVEL_1 = "SELECT mun_name FROM mun_category WHERE issue_category = '";
+const SELECT_MUN_LEVEL_2 = "' AND (mun_name = '";
+const SELECT_MUN_LEVEL_3 = "' OR mun_name = '";
+const SELECT_MUN_LEVEL_4 = "' OR mun_name = '";
+const SELECT_MUN_LEVEL_5 = "')";
+const UPDATE_ISSUE_LEVEL = "UPDATE issue SET level = ? WHERE issueId = ?";;
 
 /*const connection = mysql.createConnection({
   host: '34.234.205.122',
@@ -134,25 +140,6 @@ app.get('/issueComments/:issueIdInRouter', (req, res) => {
   });
 });
 
-// app.get('/munDetails/:mlevel/:mname', (req, res) => {
-//   console.log(req.params.mname + " name");
-//   getConnection((err, connection) => {
-//     if (err) {
-//       connection.release();
-//       return err;
-//     }
-//     connection.query(SELECT_ISSUES_FOR_MUN + req.params.mlevel + SELECT_ISSUES_FOR_MUN2 + req.params.mname + "\"", (err, results) => {
-//       if (err) {
-//         return res.send(err)
-//       } else {
-//         return res.json({
-//           data: results
-//         })
-//       }
-//     });
-//   });
-// });
-
 app.get('/munDetailsIssues/:mlevel/:mname', (req, res) => {
   getConnection((err, connection) => {
     if (err) {
@@ -171,15 +158,13 @@ app.get('/munDetailsIssues/:mlevel/:mname', (req, res) => {
   });
 });
 
-
-app.get('/govIssueDetail/:issueIdInRouter', (req, res) => {
+app.get('/munLevel/:category/:state/:city/:county', jsonParser, (req, res) => {
   getConnection((err, connection) => {
     if (err) {
       connection.release();
       return err;
     }
-    connection.query(SELECT_SPECIFIC_ISSUE + req.params.issueIdInRouter, (err, results) => {
-      connection.release();
+    connection.query(SELECT_MUN_LEVEL_1 + req.params.category + SELECT_MUN_LEVEL_2 + req.params.state +  SELECT_MUN_LEVEL_3 + req.params.city + SELECT_MUN_LEVEL_4 + req.params.county + SELECT_MUN_LEVEL_5, (err, results) => {
       if (err) {
         return res.send(err)
       } else {
@@ -190,27 +175,6 @@ app.get('/govIssueDetail/:issueIdInRouter', (req, res) => {
     });
   });
 });
-
-
-app.get('/govIssueComments/:issueIdInRouter', (req, res) => {
-  getConnection((err, connection) => {
-    if (err) {
-      connection.release();
-      return err;
-    }
-    connection.query(SELECT_COMMENTS_FOR_ISSUE + req.params.issueIdInRouter, (err, results) => {
-      connection.release();
-      if (err) {
-        return res.send(err)
-      } else {
-        return res.json({
-          data: results
-        })
-      }
-    });
-  });
-});
-
 
 // POST /api/newIssue gets JSON bodies
 app.post('/api/newIssue', jsonParser, (req, res) => {
@@ -284,6 +248,27 @@ app.post('/api/changeDown', jsonParser, (req, res) => {
       return err;
     }
     connection.query(UPDATE_DOWNV, [postData.downvote, postData.issueId], (err, results) => {
+      connection.release();
+      if (err) {
+        return res.send(err)
+      } else {
+        return res.json({
+          data: results
+        })
+      }
+    });
+  });
+});
+
+// POST /api/changeIssueLevel
+app.post('/api/changeIssueLevel', jsonParser, (req, res) => {
+  let postData = req.body;
+  getConnection((err, connection) => {
+    if (err) {
+      connection.release();
+      return err;
+    }
+    connection.query(UPDATE_ISSUE_LEVEL, [postData.munLevel, postData.issueId], (err, results) => {
       connection.release();
       if (err) {
         return res.send(err)
