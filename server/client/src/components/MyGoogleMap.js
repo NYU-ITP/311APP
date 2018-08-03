@@ -52,7 +52,7 @@ class MyGoogleMap extends React.Component {
       onMapMounted:(e)=>{},
       onSearchBoxMounted:(e)=>{},
       onPlacesChanged:()=>{},
-      snackBarOpen: false
+      searchBoxDiaOpen: false
     }
   }
 
@@ -91,8 +91,8 @@ class MyGoogleMap extends React.Component {
           });
           const boxLat = places[0].geometry.location.lat();
           const boxLng = places[0].geometry.location.lng();
-          this.setState({issues: 
-            this.state.issues.concat({ lat: boxLat, lng: boxLng })});
+         // this.setState({issues: 
+          //  this.state.issues.concat({ lat: boxLat, lng: boxLng })});
 
           this.setState({
             currentLatLng: {
@@ -122,7 +122,7 @@ class MyGoogleMap extends React.Component {
           }
 
           
-          this.setState({snackBarOpen: true});
+          this.setState({searchBoxDiaOpen: true});
 
           
           
@@ -299,8 +299,8 @@ class MyGoogleMap extends React.Component {
     this.cancelLastMarker();
   }
 
-  handleSnackBarClose = () => {
-    this.setState({snackBarOpen: false});
+  handleSearchBoxDiaClose = () => {
+    this.setState({searchBoxDiaOpen: false});
     this.cancelLastMarker();
   }
 
@@ -319,27 +319,28 @@ class MyGoogleMap extends React.Component {
           onPlacesChanged={this.state.onPlacesChanged}
           colorChange={this.state.colorChange}
         />
-        <Snackbar
-          open={this.state.snackBarOpen}
-          onClose={this.handleSnackBarClose}
-          ContentProps={{
-            'aria-describedby': 'message-id',
-          }}
-          message={<span id="message-id">Adding marker to the map ?</span>}
-          action={[
-            <Button key="undo" color="secondary" size="small" onClick={this.handleContinueMarker}>
-              Continue
-            </Button>,
-            <IconButton
-              key="close"
-              aria-label="Close"
-              color="inherit"
-              onClick={this.handleSnackBarClose}
-            >
-              <CloseIcon />
-            </IconButton>,
-          ]}
-        />
+        <Dialog
+          open={this.state.searchBoxDiaOpen}
+          onClose={this.handleCancleMarker}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">{"Adding marker to the map?"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+            We found the place !
+            do you wish to submit a ticket for location: {this.state.address}
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+          <Button onClick={this.handleSearchBoxDiaClose} color="primary">	            
+              Cancle	
+            </Button>	
+            <Button onClick={this.handleContinueMarker} color="primary" autoFocus>	
+              Yes,Please
+            </Button>
+          </DialogActions>
+        </Dialog>
         <Dialog
           open={this.state.issueDetailOpen}
           onClose={this.handleIssueDetailClose}
@@ -363,7 +364,7 @@ class MyGoogleMap extends React.Component {
           <DialogTitle id="alert-dialog-title">{"Do you want to make a complaint?"}</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              Please click on map to tell us the location of your issue. Clicking on a marker will take you to the
+              Please click or search places on map to tell us the location of your issue. Clicking on a marker will take you to the
               existing issue.
             </DialogContentText>
           </DialogContent>
