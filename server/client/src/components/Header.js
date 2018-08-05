@@ -10,6 +10,7 @@ import IconButton from '@material-ui/core/IconButton';
 import NavigationArrowBack from '@material-ui/icons/ArrowBack'
 import MenuIcon from '@material-ui/icons/Menu';
 
+
 const styles = theme => ({
   button: {
     margin: theme.spacing.unit,
@@ -32,9 +33,17 @@ class Header extends React.Component {
     this.state = {
       open: false,
       classes: props.classes,
-      disabled: true
+      disabled: true,
     }
   }
+
+ /* componentDidMount() {
+    const height = document.getElementById('appBar').clientHeight;
+    this.setState({appBarHeight: height}, function() {
+      console.log("height of the appBar is " + this.state.appBarHeight); 
+    });
+    
+  }*/
 
   // When back button is clicked
   handleNavigationClick = () => {
@@ -56,7 +65,7 @@ class Header extends React.Component {
 
   render() {
     return (
-      <div className={this.state.classes.root}>
+      <div className={this.state.classes.root} id='appBar'>
         <AppBar position="static">
           <Toolbar>
             {
