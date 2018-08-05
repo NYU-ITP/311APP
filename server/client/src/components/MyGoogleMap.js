@@ -8,17 +8,7 @@ import Button from '@material-ui/core/Button';
 import { withRouter } from 'react-router-dom';
 import IssueDetail from './IssueDetail';
 import MapWithAMarkerClusterer from './MapWithAMarkerClusterer';
-import Input from '@material-ui/core/Input';
-import Snackbar from '@material-ui/core/Snackbar';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
 import { url } from '../globals';
-
-const styles = theme => ({	
-  input: {	
-    margin: theme.spacing.unit,	
-  },	
-});
 
 class MyGoogleMap extends React.Component {
   constructor(props) {
@@ -54,7 +44,14 @@ class MyGoogleMap extends React.Component {
       onPlacesChanged:()=>{},
       searchBoxDiaOpen: false,
       invalidAddressOpen: false,
+      appBarHeight:0
     }
+  }
+  componentDidMount() {
+    const height = document.getElementById('appBar').clientHeight;
+    this.setState({appBarHeight: height}, function() {
+      console.log("height of the appBar is " + this.state.appBarHeight); 
+    });
   }
 
   componentWillMount() {
@@ -160,7 +157,7 @@ class MyGoogleMap extends React.Component {
         }
       )
     } else {
-      error => console.log(error)
+      (error) => {console.log(error)}
     }
   }
 
@@ -327,6 +324,7 @@ class MyGoogleMap extends React.Component {
           bounds={this.state.bounds}
           onPlacesChanged={this.state.onPlacesChanged}
           colorChange={this.state.colorChange}
+          containerElement={<div style={{ height: `${window.innerHeight-this.state.appBarHeight}px` }} />}
         />
         <Dialog
           open={this.state.searchBoxDiaOpen}

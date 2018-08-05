@@ -1,6 +1,6 @@
 import React from 'react';
-const _ = require("lodash");
-const { compose, withProps, withHandlers , lifecycle} = require("recompose");
+
+const { compose, withProps, withHandlers} = require("recompose");
 const {
   withScriptjs,
   withGoogleMap,
@@ -9,24 +9,11 @@ const {
 } = require("react-google-maps");
 const { MarkerClusterer } = require("react-google-maps/lib/components/addons/MarkerClusterer");
 const { SearchBox } = require("react-google-maps/lib/components/places/SearchBox");
-const mapHeight = window.innerHeight
-
-const defaultIcon = {
-  url: 'http://mt.googleapis.com/vt/icon/name=icons/spotlight/spotlight-poi.png&scale=1', // url
-  // scaledSize: new window.google.maps.Size(20, 30), // scaled size
-};
-const blueIcon = {
-  url:  'https://mt.google.com/vt/icon/name=icons/spotlight/spotlight-waypoint-blue.png&ax=44&ay=48&scale=1', // url
-  // scaledSize: new window.google.maps.Size(20, 30), // scaled size
-};
-
-
 
 const MapWithAMarkerClusterer = compose(
   withProps({
     googleMapURL: "https://maps.googleapis.com/maps/api/js?key=AIzaSyDjFZnvXXlS5OXSbKSpLRSD-c6dFdsplo4&v=3.exp&libraries=geometry,drawing,places",
     loadingElement: <div style={{ height: `100%` }} />,
-    containerElement: <div style={{ height: `${mapHeight}px` }} />,
     mapElement: <div style={{ height: `100%` }} />,
   }),
   withHandlers({
