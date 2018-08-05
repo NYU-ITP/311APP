@@ -10,6 +10,7 @@ const {
 const { MarkerClusterer } = require("react-google-maps/lib/components/addons/MarkerClusterer");
 const { SearchBox } = require("react-google-maps/lib/components/places/SearchBox");
 const mapHeight = window.innerHeight
+
 const defaultIcon = {
   url: 'http://mt.googleapis.com/vt/icon/name=icons/spotlight/spotlight-poi.png&scale=1', // url
   // scaledSize: new window.google.maps.Size(20, 30), // scaled size

@@ -416,45 +416,14 @@ class MyGoogleMap extends React.Component {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-          <Button onClick={this.handleChangeAddress} color="primary">	            
-              Change Address	
+          <Button onClick={this.handleCancleMarker} color="primary">	            
+              Cancel	
             </Button>	
             <Button onClick={this.handleContinueMarker} color="primary" autoFocus>	
               Yes, Please	
             </Button>
           </DialogActions>
         </Dialog>
-
-        <Dialog	
-          open={this.state.changeAddressOpen}	
-          onClose={this.handleCancleChangeAddress}	
-          aria-labelledby="alert-dialog-title"	
-          aria-describedby="alert-dialog-description"	
-        >	
-          <DialogTitle id="alert-dialog-title">{"Do you want to change the address?"}</DialogTitle>	
-          <DialogContent>	
-            <DialogContentText id="alert-dialog-description">	
-             New Address: 	
-             <Input	
-              defaultValue={this.state.address}	
-              inputProps={{	
-                'aria-label': 'Description',	
-              }}	
-              onChange = {(e) => this.handleIputAddress(e)}	
-              fullWidth = {true}	
-            />	
-            </DialogContentText>	
-          </DialogContent>	
-          <DialogActions>	
-            <Button onClick={this.handleCancleChangeAddress} color="primary">	
-              Cancel	              
-            </Button>	 
-            <Button onClick={this.handleChangeAddressContinue} color="primary" autoFocus>
-             Continue
-            </Button>           
-          </DialogActions>	          
-        </Dialog>
-
       </div>
     );
   }
