@@ -57,10 +57,13 @@ class NewIssue extends React.Component {
       lat: '',
       lng: '',
       time: moment(this.props.start),
-      munLevel: []
+      munLevel: 'State',
+      munFull: []
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleCatChange = this.handleCatChange.bind(this);
+    this.getIssueLevel = this.getIssueLevel.bind(this);
   }
 
   handleToggle = () => {
@@ -74,16 +77,28 @@ class NewIssue extends React.Component {
     this.setState({ open: false });
   };
 
+  handleCatChange(event) {
+    this.setState({ category: event.target.value }, function() {
+      this.getIssueLevel(
+        // function(){this.setState({munLevel: this.state.munFull.munLevel});}
+      );
+      // this.setState({munLevel: this.state.munFull.munLevel});
+    });
+  };
+
   getIssueLevel() {
     let data = this.props.history.location.state;
     fetch(url + '/munLevel/' + this.state.category + '/' + data.State + '/' + data.City + '/' + data.County)
       .then(response => response.json())
-      .then(response => this.setState({ munLevel: response.data }))
-      .catch(err => console.log(err))
+      .then(response => console.log(response.data))
+      // .then(data => this.setState({munFull: data}))
+      .then(data => this.setState({munLevel: data}))
+      .catch(err => console.log(err));
   }
 
   handleSubmit(e) {
     e.preventDefault();
+    // console.log("level is " + this.state.munLevel);
     let postData = {
       time: moment(this.state.time).format('MM-DD-YYYY'),
       heading: this.state.heading,
@@ -98,7 +113,8 @@ class NewIssue extends React.Component {
       State: this.props.history.location.state.State,
       lat: this.props.history.location.state.lat,
       lng: this.props.history.location.state.lng,
-      level: this.state.munLevel[0]
+      level: this.state.munLevel
+      // level: "State"
     };
 
     // On submit of the form, send a POST request with the data to the server.
@@ -122,6 +138,31 @@ class NewIssue extends React.Component {
       .catch(err => {
         console.log(err);
       });
+
+    // let postData2 = {
+
+    // }
+
+    // fetch(url + '/api/changeIssueLevel', {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify(postData2),
+    // })
+    //   .then(response => {
+    //     console.log(response);
+    //     if (response.status < 400) {
+    //       this.props.history.push({
+    //         pathname: '/',
+    //       });
+    //     }
+    //     return response.json();
+    //   })
+    //   .then(data => {
+    //     console.log(data);
+    //   })
+    //   .catch(err => {
+    //     console.log(err);
+    //   });
   }
 
   handleChange(event) {
@@ -157,7 +198,7 @@ class NewIssue extends React.Component {
                   <Select
                     name="category"
                     value={this.state.category}
-                    onChange={this.handleChange}
+                    onChange={this.handleCatChange}
                     // required="required"
                     input={<Input name="Category" id="category-helper" />}
                   >

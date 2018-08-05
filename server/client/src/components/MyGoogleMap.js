@@ -343,7 +343,7 @@ class MyGoogleMap extends React.Component {
           </DialogContent>
           <DialogActions>
           <Button onClick={this.handleSearchBoxDiaClose} color="primary">	            
-              Cancle	
+              Cancel	
             </Button>	
             <Button onClick={this.handleContinueMarker} color="primary" autoFocus>	
               Yes,Please
@@ -355,8 +355,16 @@ class MyGoogleMap extends React.Component {
           onClose={this.handleIssueDetailClose}
           scroll={this.state.scroll}
           aria-labelledby="scroll-dialog-title"
+          modal={true}
+          autoDetectWindowHeight={true}
+          autoScrollBodyContent={true}
+          repositionOnUpdate={true}
+          // contentStyle={
+          //   width: '90%',
+          //   height: '90%'
+          // }
         >
-          <DialogTitle id="scroll-dialog-title">IssueDetail</DialogTitle>
+          <DialogTitle id="scroll-dialog-title">Issue Details</DialogTitle>
           <DialogContent>
             <DialogContentText>
               <IssueDetail issueId= {this.state.issueDetailPresent}/>
