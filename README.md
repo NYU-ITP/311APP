@@ -17,3 +17,6 @@ You need to clone this repo for setting up.
     cd ..
     npm run dev
 ```
+
+It is also accessible on the following URL:
+https://morning-brook-45397.herokuapp.com/311#/
