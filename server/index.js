@@ -18,6 +18,7 @@ const SELECT2 = " = '";
 const SELECT3 = "' AND category IN (SELECT mun_category.issue_category FROM municipality INNER JOIN mun_category ON municipality.mun_id = mun_category.mun_id WHERE municipality.mun_name = '";
 const SELECT4 = "' AND municipality.mun_level = '";
 const SELECT5 = "')";
+
 const SELECT_MUN_LEVEL_1 = "SELECT mun_name FROM mun_category WHERE issue_category = '";
 const SELECT_MUN_LEVEL_2 = "' AND (mun_name = '";
 const SELECT_MUN_LEVEL_3 = "' OR mun_name = '";
@@ -36,6 +37,12 @@ const SELECTL7 = "\") OR (municipality.mun_name = \"";
 const SELECTL8 = "\" AND municipality.mun_level = \"";
 const SELECTL9 = "\" AND mun_category.issue_category = \"";
 const SELECTL10 = "\")"
+
+// new query after adding issue level in db while inserting
+const NEWSEL1 = "SELECT * FROM issue WHERE level = \""
+const NEWSEL2 = "\" AND ";
+const NEWSEL3 = " = \"";
+const NEWSEL4 = "\"";
 
 /*const connection = mysql.createConnection({
   host: '34.234.205.122',
@@ -160,7 +167,8 @@ app.get('/munDetailsIssues/:mlevel/:mname', (req, res) => {
       connection.release();
       return err;
     }
-    connection.query(SELECT1 + req.params.mlevel + SELECT2 + req.params.mname + SELECT3 + req.params.mname + SELECT4 + req.params.mlevel + SELECT5, (err, results) => {
+    // connection.query(SELECT1 + req.params.mlevel + SELECT2 + req.params.mname + SELECT3 + req.params.mname + SELECT4 + req.params.mlevel + SELECT5, (err, results) => {
+    connection.query(NEWSEL1 + req.params.mlevel + NEWSEL2 + req.params.mlevel + NEWSEL3 + req.params.mname + NEWSEL4, (err, results) => {    
       if (err) {
         return res.send(err)
       } else {

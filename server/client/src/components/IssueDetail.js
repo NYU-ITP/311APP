@@ -325,10 +325,13 @@ class IssueDetail extends React.Component {
                         // required="required"
                         input={<Input name="level" id="mun-helper" />}
                       >
-                        <MenuItem value=""><em>None</em></MenuItem>
-                        <MenuItem value={issue.State}>{issue.State}</MenuItem>
-                        <MenuItem value={issue.City}>{issue.City}</MenuItem>
-                        <MenuItem value={issue.County}>{issue.County}</MenuItem>
+                        {/* <MenuItem value=""><em>None</em></MenuItem> */}
+                        {/* <MenuItem value={issue.City}>{"City: " + issue.City}</MenuItem>
+                        <MenuItem value={issue.County}>{"County: " + issue.County}</MenuItem>
+                        <MenuItem value={issue.State}>{"State: " + issue.State}</MenuItem> */}
+                        <MenuItem value={"City"}>{"City: " + issue.City}</MenuItem>
+                        <MenuItem value={"County"}>{"County: " + issue.County}</MenuItem>
+                        <MenuItem value={"State"}>{"State: " + issue.State}</MenuItem>
                       </Select>
                       <FormHelperText>Required</FormHelperText>
                     </FormControl>
