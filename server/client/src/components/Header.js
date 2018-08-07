@@ -36,15 +36,7 @@ class Header extends React.Component {
       disabled: true,
     }
   }
-
- /* componentDidMount() {
-    const height = document.getElementById('appBar').clientHeight;
-    this.setState({appBarHeight: height}, function() {
-      console.log("height of the appBar is " + this.state.appBarHeight); 
-    });
-    
-  }*/
-
+  
   // When back button is clicked
   handleNavigationClick = () => {
     let pathname = this.props.location.pathname;

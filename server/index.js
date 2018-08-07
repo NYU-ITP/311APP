@@ -46,6 +46,7 @@ const SELECTL10 = "\")"
 });*/
 
 const pool = mysql.createPool({
+  connectionLimit : 10,
   host: '34.234.205.122',
   user: 'root',
   password: 'DWDStudent2017',
