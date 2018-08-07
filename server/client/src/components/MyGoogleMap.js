@@ -336,7 +336,7 @@ class MyGoogleMap extends React.Component {
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
             We found the place !
-            do you wish to submit a ticket for location: {this.state.address}
+            Do you wish to submit a ticket for location: {this.state.address}
             </DialogContentText>
           </DialogContent>
           <DialogActions>

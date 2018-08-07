@@ -26,16 +26,16 @@ const SELECT_MUN_LEVEL_5 = "')";
 const UPDATE_ISSUE_LEVEL = "UPDATE issue SET level = ? WHERE issueId = ?";;
 
 // query for selecting level
-const SELECTL1 = "SELECT * FROM municipality INNER JOIN mun_category ON municipality.mun_id=mun_category.mun_id WHERE (municipality.mun_name = '";
-const SELECTL2 = "' AND municipality.mun_level = '";
-const SELECTL3 = "' AND mun_category.issue_category = '";
-const SELECTL4 = "') OR (municipality.mun_name = '";
-const SELECTL5 = "' AND municipality.mun_level = '";
-const SELECTL6 = "' AND mun_category.issue_category = '";
-const SELECTL7 = "') OR (municipality.mun_name = '";
-const SELECTL8 = "' AND municipality.mun_level = '";
-const SELECTL9 = "' AND mun_category.issue_category = '";
-const SELECTL10 = "')"
+const SELECTL1 = "SELECT * FROM municipality INNER JOIN mun_category ON municipality.mun_id=mun_category.mun_id WHERE (municipality.mun_name = \"";
+const SELECTL2 = "\" AND municipality.mun_level = \"";
+const SELECTL3 = "\" AND mun_category.issue_category = \"";
+const SELECTL4 = "\") OR (municipality.mun_name = \"";
+const SELECTL5 = "\" AND municipality.mun_level = \"";
+const SELECTL6 = "\" AND mun_category.issue_category = \"";
+const SELECTL7 = "\") OR (municipality.mun_name = \"";
+const SELECTL8 = "\" AND municipality.mun_level = \"";
+const SELECTL9 = "\" AND mun_category.issue_category = \"";
+const SELECTL10 = "\")"
 
 /*const connection = mysql.createConnection({
   host: '34.234.205.122',
@@ -102,7 +102,7 @@ app.get('/munDetails/:level', (req, res) => {
       connection.release();
       return err;
     }
-    connection.query(SELECT_MUN_DETAILS_QUERY + mysql.escape(req.params.level) + "\"", (err, results) => {
+    connection.query(SELECT_MUN_DETAILS_QUERY + req.params.level + "\"", (err, results) => {
       connection.release();
       if (err) {
         return res.send(err)
@@ -121,7 +121,7 @@ app.get('/issueDetail/:issueIdInRouter', (req, res) => {
       connection.release();
       return err;
     }
-    connection.query(SELECT_SPECIFIC_ISSUE + mysql.escape(req.params.issueIdInRouter), (err, results) => {
+    connection.query(SELECT_SPECIFIC_ISSUE + req.params.issueIdInRouter, (err, results) => {
       connection.release();
       if (err) {
         return res.send(err)
@@ -140,7 +140,7 @@ app.get('/issueComments/:issueIdInRouter', (req, res) => {
       connection.release();
       return err;
     }
-    connection.query(SELECT_COMMENTS_FOR_ISSUE + mysql.escape(req.params.issueIdInRouter), (err, results) => {
+    connection.query(SELECT_COMMENTS_FOR_ISSUE + req.params.issueIdInRouter, (err, results) => {
       connection.release();
       if (err) {
         return res.send(err)
@@ -159,7 +159,7 @@ app.get('/munDetailsIssues/:mlevel/:mname', (req, res) => {
       connection.release();
       return err;
     }
-    connection.query(SELECT1 + mysql.escape(req.params.mlevel) + SELECT2 + mysql.escape(req.params.mname) + SELECT3 + mysql.escape(req.params.mname) + SELECT4 + mysql.escape(req.params.mlevel) + SELECT5, (err, results) => {
+    connection.query(SELECT1 + req.params.mlevel + SELECT2 + req.params.mname + SELECT3 + req.params.mname + SELECT4 + req.params.mlevel + SELECT5, (err, results) => {
       if (err) {
         return res.send(err)
       } else {
@@ -178,7 +178,7 @@ app.get('/munLevel/:category/:State/:City/:County', jsonParser, (req, res) => {
       return err;
     }
     // connection.query(SELECT_MUN_LEVEL_1 + req.params.category + SELECT_MUN_LEVEL_2 + req.params.state +  SELECT_MUN_LEVEL_3 + req.params.city + SELECT_MUN_LEVEL_4 + req.params.county + SELECT_MUN_LEVEL_5, (err, results) => {
-    connection.query(SELECTL1 + mysql.escape(req.params.State) + SELECTL2 + "State" + SELECTL3 + mysql.escape(req.params.category) + SELECTL4 + mysql.escape(req.params.County) + SELECTL5 + "County" + SELECTL6 + mysql.escape(req.params.category) + SELECTL7 + mysql.escape(req.params.City) + SELECTL8 + "City" + SELECTL9 + mysql.escape(req.params.category) + SELECTL10,(err, results) => {
+    connection.query(SELECTL1 + req.params.State + SELECTL2 + "State" + SELECTL3 + req.params.category + SELECTL4 + req.params.County + SELECTL5 + "County" + SELECTL6 + req.params.category + SELECTL7 + req.params.City + SELECTL8 + "City" + SELECTL9 + req.params.category + SELECTL10,(err, results) => {
     if (err) {
         return res.send(err)
       } else {
