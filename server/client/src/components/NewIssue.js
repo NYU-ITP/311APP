@@ -90,9 +90,10 @@ class NewIssue extends React.Component {
     let data = this.props.history.location.state;
     fetch(url + '/munLevel/' + this.state.category + '/' + data.State + '/' + data.City + '/' + data.County)
       .then(response => response.json())
-      .then(response => console.log(response.data))
+      // .then(response => console.log(response.data))
+      .then(response => this.setState({munLevel: response.data}))
       // .then(data => this.setState({munFull: data}))
-      .then(data => this.setState({munLevel: data}))
+      // .then(data => this.setState({munLevel: data}))
       .catch(err => console.log(err));
   }
 
