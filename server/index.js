@@ -23,7 +23,7 @@ const SELECT_MUN_LEVEL_1 = "SELECT mun_name FROM mun_category WHERE issue_catego
 const SELECT_MUN_LEVEL_2 = "' AND (mun_name = '";
 const SELECT_MUN_LEVEL_3 = "' OR mun_name = '";
 const SELECT_MUN_LEVEL_4 = "' OR mun_name = '";
-const SELECT_MUN_LEVEL_5 = "')";
+const SELECT_MUN_LEVEL_5 = "') LIMIT 1";
 const UPDATE_ISSUE_LEVEL = "UPDATE issue SET level = ? WHERE issueId = ?";;
 
 // query for selecting level
@@ -53,7 +53,7 @@ const NEWSEL4 = "\"";
 });*/
 
 const pool = mysql.createPool({
-  connectionLimit : 10,
+  connectionLimit: 10,
   host: '34.234.205.122',
   user: 'root',
   password: 'DWDStudent2017',
@@ -168,7 +168,8 @@ app.get('/munDetailsIssues/:mlevel/:mname', (req, res) => {
       return err;
     }
     // connection.query(SELECT1 + req.params.mlevel + SELECT2 + req.params.mname + SELECT3 + req.params.mname + SELECT4 + req.params.mlevel + SELECT5, (err, results) => {
-    connection.query(NEWSEL1 + req.params.mlevel + NEWSEL2 + req.params.mlevel + NEWSEL3 + req.params.mname + NEWSEL4, (err, results) => {    
+    connection.query(NEWSEL1 + req.params.mlevel + NEWSEL2 + req.params.mlevel + NEWSEL3 + req.params.mname + NEWSEL4, (err, results) => {
+      connection.release();
       if (err) {
         return res.send(err)
       } else {
@@ -187,8 +188,9 @@ app.get('/munLevel/:category/:State/:City/:County', jsonParser, (req, res) => {
       return err;
     }
     // connection.query(SELECT_MUN_LEVEL_1 + req.params.category + SELECT_MUN_LEVEL_2 + req.params.state +  SELECT_MUN_LEVEL_3 + req.params.city + SELECT_MUN_LEVEL_4 + req.params.county + SELECT_MUN_LEVEL_5, (err, results) => {
-    connection.query(SELECTL1 + req.params.State + SELECTL2 + "State" + SELECTL3 + req.params.category + SELECTL4 + req.params.County + SELECTL5 + "County" + SELECTL6 + req.params.category + SELECTL7 + req.params.City + SELECTL8 + "City" + SELECTL9 + req.params.category + SELECTL10,(err, results) => {
-    if (err) {
+    connection.query(SELECTL1 + req.params.State + SELECTL2 + "State" + SELECTL3 + req.params.category + SELECTL4 + req.params.County + SELECTL5 + "County" + SELECTL6 + req.params.category + SELECTL7 + req.params.City + SELECTL8 + "City" + SELECTL9 + req.params.category + SELECTL10, (err, results) => {
+      connection.release();
+      if (err) {
         return res.send(err)
       } else {
         return res.json({

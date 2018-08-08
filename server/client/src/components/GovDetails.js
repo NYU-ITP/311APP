@@ -22,7 +22,6 @@ class GovDetails extends React.Component {
     let munName = params[params.length - 1];
     let munLevel = params[params.length - 2];
     this.state = {
-      open: false,
       classes: props.classes,
       munLevel: munLevel,
       munName: munName,
@@ -47,10 +46,6 @@ class GovDetails extends React.Component {
       .catch(err => console.log(err))
   }
 
-  handleClick = () => {
-    this.setState({ open: !this.state.open });
-  }
-
   componentWillMount() {
     console.log(this.state.munLevel);
     console.log(this.state.munName);
@@ -69,8 +64,8 @@ class GovDetails extends React.Component {
                 pathname: '/govSelect/govDetails/' + issue.issueId
               }}
             >
-              <ListItem button onClick={this.handleClick}>
-                <ListItemText key={issue.issueId} primary={issue.heading} secondary={issue.time.substring(0, 10)} />
+              <ListItem>
+                <ListItemText key={issue.issueId} primary={issue.heading} secondary={issue.time.substring(0, 10) + "  "+ issue.content} />
               </ListItem>
               <Divider />
             </Link>

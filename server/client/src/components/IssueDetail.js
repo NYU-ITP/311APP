@@ -167,7 +167,6 @@ class IssueDetail extends React.Component {
           this.setState(preState => ({
             issueDetail: [{ ...preState.issueDetail[0], level: this.state.munLevel }],
           }))
-          alert("Issue level is changed successfully!");
         }
         console.log(response);
         return response.json();
