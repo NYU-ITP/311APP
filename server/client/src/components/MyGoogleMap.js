@@ -11,6 +11,10 @@ import MapWithAMarkerClusterer from './MapWithAMarkerClusterer';
 import { url } from '../globals';
 
 class MyGoogleMap extends React.Component {
+  style = {
+    overflowX: 'hidden'
+  };
+
   constructor(props) {
     super(props)
     this.state = {
@@ -363,7 +367,7 @@ class MyGoogleMap extends React.Component {
           // }
         >
           <DialogTitle id="scroll-dialog-title">Issue Details</DialogTitle>
-          <DialogContent>
+          <DialogContent style={this.style}>
             <DialogContentText>
               <IssueDetail issueId= {this.state.issueDetailPresent}/>
             </DialogContentText>
